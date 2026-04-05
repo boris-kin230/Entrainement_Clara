@@ -357,22 +357,81 @@
 
 <script>
 // ==========================================
-// BANQUE DE DONNÉES DU QCM (12 Questions)
-// 5 Pourcentages, 2 Equations, 2 Fractions, 1 Prix, 1 Dérivée, 1 Scalaire
+// BANQUE DE DONNÉES DU QCM (12 Questions - Épreuve 2)
 // ==========================================
 const qcmData = [
-    { q: "Calculer 40% de 250.", opts: ["100", "40", "250", "1000"], ans: 0, corr: "$0,40 \\times 250 = 100$." },
-    { q: "Augmenter une valeur de 20% revient à la multiplier par :", opts: ["$1,2$", "$0,2$", "$0,8$", "$1,02$"], ans: 0, corr: "Coefficient multiplicateur : $CM = 1 + \\frac{t}{100} = 1 + 0,20 = 1,2$." },
-    { q: "Diminuer un prix de 25% revient à le multiplier par :", opts: ["$0,75$", "$1,25$", "$0,25$", "$-0,25$"], ans: 0, corr: "Coefficient multiplicateur : $CM = 1 - \\frac{25}{100} = 0,75$." },
-    { q: "Quelle est la proportion de 30 par rapport à 150 ?", opts: ["20%", "30%", "15%", "25%"], ans: 0, corr: "$\\frac{30}{150} = \\frac{1}{5} = 0,2 = 20\\%$." },
-    { q: "Une action grimpe de 10% puis chute de 10%. Globalement, elle a :", opts: ["Baissé de 1%", "Stagné (0%)", "Augmenté de 1%", "Baissé de 10%"], ans: 0, corr: "Le coefficient global est $1,1 \\times 0,9 = 0,99$. Or $0,99 = 1 - 0,01$. C'est une baisse de 1%." },
-    { q: "Résoudre : $3x - 5 = x + 7$", opts: ["$x = 6$", "$x = 1$", "$x = -6$", "$x = 12$"], ans: 0, corr: "$3x - x = 7 + 5 \\iff 2x = 12 \\iff x = 6$." },
-    { q: "Combien de solutions admet $x^2 + x + 5 = 0$ ?", opts: ["0", "1", "2", "3"], ans: 0, corr: "$\\Delta = 1^2 - 4(1)(5) = 1 - 20 = -19$. Le discriminant est négatif, il n'y a aucune solution réelle." },
-    { q: "Calculer : $\\frac{2}{3} + \\frac{1}{4}$", opts: ["$\\frac{11}{12}$", "$\\frac{3}{7}$", "$\\frac{8}{12}$", "$\\frac{3}{12}$"], ans: 0, corr: "Dénominateur commun (12) : $\\frac{8}{12} + \\frac{3}{12} = \\frac{11}{12}$." },
-    { q: "Calculer : $\\frac{5}{6} \\times \\frac{3}{10}$", opts: ["$\\frac{1}{4}$", "$\\frac{15}{60}$", "$\\frac{8}{16}$", "$\\frac{50}{18}$"], ans: 0, corr: "On multiplie les numérateurs et dénominateurs : $\\frac{15}{60}$, ce qui se simplifie en $\\frac{1}{4}$." },
-    { q: "Un jeu coûte 120€. Il est soldé à -15%. Nouveau prix ?", opts: ["102€", "105€", "100€", "115€"], ans: 0, corr: "Remise : $120 \\times 0,15 = 18$€. Nouveau prix : $120 - 18 = 102$€. (Ou $120 \\times 0,85$)." },
-    { q: "Dérivée de $f(x) = x^3 - 2x^2 + 5$", opts: ["$3x^2 - 4x$", "$x^2 - 4x$", "$3x^2 - 2x + 5$", "$3x^2 - 4$"], ans: 0, corr: "Règle des puissances : $(x^n)' = nx^{n-1}$. La dérivée d'une constante (5) est nulle." },
-    { q: "Soient $\\vec{u}(2 ; -3)$ et $\\vec{v}(4 ; 1)$. Produit scalaire $\\vec{u} \\cdot \\vec{v}$ ?", opts: ["$5$", "$8$", "$-3$", "$11$"], ans: 0, corr: "$xx' + yy' = (2 \\times 4) + (-3 \\times 1) = 8 - 3 = 5$." }
+    { 
+        q: "Développer et réduire l'expression $(3x - 1)(x + 2)$", 
+        opts: ["$3x^2 + 5x - 2$", "$3x^2 - 2$", "$3x^2 + 7x - 2$", "$3x^2 - x - 2$"], 
+        ans: 0, 
+        corr: "On distribue : $3x(x) + 3x(2) - 1(x) - 1(2) = 3x^2 + 6x - x - 2 = 3x^2 + 5x - 2$." 
+    },
+    { 
+        q: "Résoudre $4x - 5 = 7x + 4$", 
+        opts: ["$x = -3$", "$x = 3$", "$x = 1$", "$x = -1$"], 
+        ans: 0, 
+        corr: "$4x - 7x = 4 + 5 \\Longleftrightarrow -3x = 9 \\Longleftrightarrow x = \\frac{9}{-3} = -3$." 
+    },
+    { 
+        q: "Résoudre $-2x + 6 \\gt 0$", 
+        opts: ["$x \\lt 3$", "$x \\gt 3$", "$x \\lt -3$", "$x \\gt -3$"], 
+        ans: 0, 
+        corr: "$-2x \\gt -6$. En divisant par $-2$ (un nombre négatif), on change le sens de l'inégalité : $x \\lt \\frac{-6}{-2} \\Longleftrightarrow x \\lt 3$." 
+    },
+    { 
+        q: "Quelles sont les racines de $x^2 - 7x + 10 = 0$ ?", 
+        opts: ["$2$ et $5$", "$-2$ et $-5$", "$3$ et $4$", "Pas de racine"], 
+        ans: 0, 
+        corr: "$\\Delta = (-7)^2 - 4(1)(10) = 49 - 40 = 9$.<br>Racines : $x_1 = \\frac{7 - 3}{2} = 2$ et $x_2 = \\frac{7 + 3}{2} = 5$." 
+    },
+    { 
+        q: "Résoudre $x^2 - 16 \\lt 0$", 
+        opts: ["$x \\in ]-4 ; 4[$", "$x \\in ]-\\infty ; -4[ \\cup ]4 ; +\\infty[$", "$x \\in [-4 ; 4]$", "Pas de solution"], 
+        ans: 0, 
+        corr: "L'expression est une identité remarquable : $(x-4)(x+4) \\lt 0$.<br>Le coefficient $a=1$ est positif, donc le trinôme est strictement négatif à l'intérieur des racines (entre $-4$ et $4$)." 
+    },
+    { 
+        q: "Calculer et simplifier $\\frac{5}{6} - \\frac{1}{4}$", 
+        opts: ["$\\frac{7}{12}$", "$\\frac{4}{2}$", "$\\frac{1}{2}$", "$\\frac{14}{24}$"], 
+        ans: 0, 
+        corr: "Dénominateur commun : $12$.<br>$\\frac{5 \\times 2}{12} - \\frac{1 \\times 3}{12} = \\frac{10 - 3}{12} = \\frac{7}{12}$." 
+    },
+    { 
+        q: "Comparer les fractions $\\frac{3}{8}$ et $\\frac{2}{5}$", 
+        opts: ["$\\frac{3}{8} \\lt \\frac{2}{5}$", "$\\frac{3}{8} = \\frac{2}{5}$", "$\\frac{3}{8} \\gt \\frac{2}{5}$", "Incomparables"], 
+        ans: 0, 
+        corr: "On met au même dénominateur (40) : $\\frac{3 \\times 5}{40} = \\frac{15}{40}$ et $\\frac{2 \\times 8}{40} = \\frac{16}{40}$.<br>Puisque $15 \\lt 16$, on a $\\frac{3}{8} \\lt \\frac{2}{5}$." 
+    },
+    { 
+        q: "Maths coef 4 (note 11), Français coef 2 (note 10), Anglais coef 2 (note $x$). Clara veut 12 de moyenne. Trouver $x$.", 
+        opts: ["$16$", "$14$", "$15$", "$18$"], 
+        ans: 0, 
+        corr: "$\\frac{4(11) + 2(10) + 2(x)}{4+2+2} = 12 \\Longleftrightarrow \\frac{44 + 20 + 2x}{8} = 12 \\Longleftrightarrow 64 + 2x = 96 \\Longleftrightarrow 2x = 32 \\Longleftrightarrow x = 16$." 
+    },
+    { 
+        q: "Résoudre $\\cos(x) = -\\frac{1}{2}$ sur $]-\\pi ; \\pi]$", 
+        opts: ["$\\frac{2\\pi}{3}$ et $-\\frac{2\\pi}{3}$", "$\\frac{\\pi}{3}$ et $-\\frac{\\pi}{3}$", "$\\frac{5\\pi}{6}$ et $-\\frac{5\\pi}{6}$", "$\\frac{3\\pi}{4}$ et $-\\frac{3\\pi}{4}$"], 
+        ans: 0, 
+        corr: "D'après le cercle trigonométrique, le cosinus vaut $-\\frac{1}{2}$ pour les angles correspondant à $\\frac{2\\pi}{3}$ et $-\\frac{2\\pi}{3}$." 
+    },
+    { 
+        q: "Soient $\\vec{u}(-3 ; 4)$ et $\\vec{v}(2 ; 5)$. Calculer $\\vec{u} \\cdot \\vec{v}$.", 
+        opts: ["$14$", "$-14$", "$26$", "$-26$"], 
+        ans: 0, 
+        corr: "Formule analytique : $\\vec{u} \\cdot \\vec{v} = x_u x_v + y_u y_v = (-3 \\times 2) + (4 \\times 5) = -6 + 20 = 14$." 
+    },
+    { 
+        q: "Déterminer la dérivée de la fonction $g(x) = 2x^3 - 4x^2 + x - 5$", 
+        opts: ["$6x^2 - 8x + 1$", "$6x^2 - 8x$", "$2x^2 - 4x + 1$", "$5x^2 - 8x + 1$"], 
+        ans: 0, 
+        corr: "En appliquant les règles de dérivation usuelles : $g'(x) = 2(3x^2) - 4(2x) + 1 - 0 = 6x^2 - 8x + 1$." 
+    },
+    { 
+        q: "Simplifier l'expression $\\sqrt{50} - \\sqrt{8}$", 
+        opts: ["$3\\sqrt{2}$", "$4\\sqrt{2}$", "$\\sqrt{42}$", "$7\\sqrt{2}$"], 
+        ans: 0, 
+        corr: "On extrait les carrés parfaits : $\\sqrt{50} = \\sqrt{25 \\times 2} = 5\\sqrt{2}$ et $\\sqrt{8} = \\sqrt{4 \\times 2} = 2\\sqrt{2}$.<br>Donc $5\\sqrt{2} - 2\\sqrt{2} = 3\\sqrt{2}$." 
+    }
 ];
 
 // ==========================================
