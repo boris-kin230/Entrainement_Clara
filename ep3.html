@@ -401,24 +401,83 @@
 
 <script>
 // ==========================================
-// DONNÉES QCM (12 Questions Expert)
-// 5 Pourcentages, 2 Equations, 2 Fractions, 1 Prix, 1 Dérivée, 1 Scalaire
+// ==========================================
+// BANQUE DE DONNÉES DU QCM (12 Questions - Épreuve 3 EXPERT)
 // ==========================================
 const qcmData = [
-    { q: "Calculer 15% de 300.", opts: ["45", "15", "30", "300"], ans: 0, corr: "$0,15 \\times 300 = 45$." },
-    { q: "Augmenter une valeur de 10% revient à la multiplier par :", opts: ["$1,1$", "$0,1$", "$1,01$", "$0,9$"], ans: 0, corr: "$CM = 1 + 0,10 = 1,1$." },
-    { q: "Une action perd 25% de sa valeur. Son CM est :", opts: ["$0,75$", "$1,25$", "$-0,25$", "$0,25$"], ans: 0, corr: "$CM = 1 - 0,25 = 0,75$." },
-    { q: "Combien font 40% de 60 ?", opts: ["24", "40", "12", "60"], ans: 0, corr: "$0,40 \\times 60 = 24$." },
-    { q: "75% de 200 vaut :", opts: ["150", "75", "100", "200"], ans: 0, corr: "75% c'est les 3/4. $\\frac{3}{4} \\times 200 = 150$." },
-    { q: "Résoudre : $5x - 3 = 2x + 9$", opts: ["$x = 4$", "$x = 2$", "$x = -4$", "$x = 12$"], ans: 0, corr: "$5x - 2x = 9 + 3 \\iff 3x = 12 \\iff x = 4$." },
-    { q: "Les racines de $x^2 - 3x - 4 = 0$ sont :", opts: ["-1 et 4", "1 et -4", "3 et 4", "Pas de racine"], ans: 0, corr: "$\\Delta = (-3)^2 - 4(1)(-4) = 9 + 16 = 25$. Racines : $x_1 = \\frac{3-5}{2} = -1$ et $x_2 = \\frac{3+5}{2} = 4$." },
-    { q: "Calculer : $\\frac{2}{5} + \\frac{1}{4}$", opts: ["$\\frac{13}{20}$", "$\\frac{3}{9}$", "$\\frac{8}{20}$", "$\\frac{3}{20}$"], ans: 0, corr: "Dénominateur commun (20) : $\\frac{8}{20} + \\frac{5}{20} = \\frac{13}{20}$." },
-    { q: "Calculer : $\\frac{3}{7} \\times \\frac{14}{9}$", opts: ["$\\frac{2}{3}$", "$\\frac{42}{63}$", "$\\frac{17}{16}$", "$\\frac{1}{3}$"], ans: 0, corr: "$\\frac{3 \\times 14}{7 \\times 9} = \\frac{3 \\times 2 \\times 7}{7 \\times 3 \\times 3} = \\frac{2}{3}$." },
-    { q: "Un meuble à 200€ est soldé à -30%. Quel est son prix ?", opts: ["140€", "170€", "60€", "160€"], ans: 0, corr: "Remise : $200 \\times 0,30 = 60$€. Prix final : $200 - 60 = 140$€." },
-    { q: "Dérivée de $f(x) = \\frac{2x+1}{x-1}$", opts: ["$-\\frac{3}{(x-1)^2}$", "$\\frac{2}{(x-1)^2}$", "$-\\frac{1}{(x-1)^2}$", "$\\frac{3}{(x-1)^2}$"], ans: 0, corr: "Formule $(u/v)' = \\frac{u'v - uv'}{v^2} = \\frac{2(x-1) - (2x+1)(1)}{(x-1)^2} = \\frac{2x - 2 - 2x - 1}{(x-1)^2} = -\\frac{3}{(x-1)^2}$." },
-    { q: "Soient $\\vec{u}(-2 ; 5)$ et $\\vec{v}(3 ; 1)$. $\\vec{u} \\cdot \\vec{v} = ?$", opts: ["$-1$", "$11$", "$1$", "$-11$"], ans: 0, corr: "$xx' + yy' = (-2 \\times 3) + (5 \\times 1) = -6 + 5 = -1$." }
+    { 
+        q: "Développer et réduire $(x - 4)^2 - (2x + 1)(x - 4)$", 
+        opts: ["$-x^2 - 15x + 20$", "$-x^2 - x + 20$", "$3x^2 - x + 12$", "$-x^2 - 7x + 12$"], 
+        ans: 1, 
+        corr: "On développe chaque partie : $(x^2 - 8x + 16) - (2x^2 - 8x + x - 4)$.<br>En retirant les parenthèses : $x^2 - 8x + 16 - 2x^2 + 7x + 4 = -x^2 - x + 20$." 
+    },
+    { 
+        q: "Résoudre $\\frac{2x - 3}{5} = \\frac{x + 4}{3}$", 
+        opts: ["$x = 11$", "$x = 1$", "$x = \\frac{29}{11}$", "$x = 29$"], 
+        ans: 3, 
+        corr: "Produit en croix : $3(2x - 3) = 5(x + 4) \\Longleftrightarrow 6x - 9 = 5x + 20 \\Longleftrightarrow 6x - 5x = 20 + 9 \\Longleftrightarrow x = 29$." 
+    },
+    { 
+        q: "Résoudre $-4x + 7 \\ge 2x - 5$", 
+        opts: ["$x \\le 2$", "$x \\ge 2$", "$x \\le -2$", "$x \\ge -2$"], 
+        ans: 0, 
+        corr: "$-4x - 2x \\ge -5 - 7 \\Longleftrightarrow -6x \\ge -12$.<br>On divise par $-6$ (qui est négatif), donc on inverse le sens de l'inégalité : $x \\le \\frac{-12}{-6} \\Longleftrightarrow x \\le 2$." 
+    },
+    { 
+        q: "Quelles sont les racines de $-2x^2 + 5x + 3 = 0$ ?", 
+        opts: ["$-3$ et $0,5$", "$1$ et $1,5$", "$3$ et $-0,5$", "Pas de racine"], 
+        ans: 2, 
+        corr: "$\\Delta = 5^2 - 4(-2)(3) = 25 + 24 = 49$.<br>Racines : $x_1 = \\frac{-5 - 7}{-4} = 3$ et $x_2 = \\frac{-5 + 7}{-4} = -0,5$." 
+    },
+    { 
+        q: "Résoudre $3x^2 - 12x \\lt 0$", 
+        opts: ["$]-\\infty ; 0[ \\cup ]4 ; +\\infty[$", "$]0 ; 4[$", "$[-4 ; 0]$", "$]0 ; 2[$"], 
+        ans: 1, 
+        corr: "On factorise : $3x(x - 4) \\lt 0$. Les racines sont $0$ et $4$.<br>Le coefficient $a=3$ est positif, le trinôme est donc strictement négatif à l'intérieur des racines : $x \\in ]0 ; 4[$." 
+    },
+    { 
+        q: "Calculer et simplifier $\\frac{5}{14} - \\frac{2}{21}$", 
+        opts: ["$\\frac{13}{42}$", "$\\frac{3}{-7}$", "$\\frac{11}{42}$", "$\\frac{1}{7}$"], 
+        ans: 2, 
+        corr: "Le dénominateur commun (PPCM de 14 et 21) est 42.<br>$\\frac{5 \\times 3}{42} - \\frac{2 \\times 2}{42} = \\frac{15 - 4}{42} = \\frac{11}{42}$." 
+    },
+    { 
+        q: "Comparer les fractions $\\frac{7}{15}$ et $\\frac{4}{9}$", 
+        opts: ["$\\frac{7}{15} \\lt \\frac{4}{9}$", "$\\frac{7}{15} = \\frac{4}{9}$", "$\\frac{7}{15} \\gt \\frac{4}{9}$", "Incomparables"], 
+        ans: 2, 
+        corr: "Le dénominateur commun est 45. $\\frac{7 \\times 3}{45} = \\frac{21}{45}$ et $\\frac{4 \\times 5}{45} = \\frac{20}{45}$.<br>Puisque $21 \\gt 20$, on a $\\frac{7}{15} \\gt \\frac{4}{9}$." 
+    },
+    { 
+        q: "Maths coef 5 (note 10), Physique coef 3 (note 14), NSI coef 2 (note $x$). Clara veut 12 de moyenne. Trouver $x$.", 
+        opts: ["$15$", "$14$", "$16$", "$12$"], 
+        ans: 1, 
+        corr: "$\\frac{5(10) + 3(14) + 2(x)}{5+3+2} = 12 \\Longleftrightarrow \\frac{50 + 42 + 2x}{10} = 12 \\Longleftrightarrow 92 + 2x = 120 \\Longleftrightarrow 2x = 28 \\Longleftrightarrow x = 14$." 
+    },
+    { 
+        q: "Résoudre $\\cos(x) = \\frac{\\sqrt{3}}{2}$ sur $]-\\pi ; \\pi]$", 
+        opts: ["$\\frac{\\pi}{3}$ et $-\\frac{\\pi}{3}$", "$\\frac{5\\pi}{6}$ et $-\\frac{5\\pi}{6}$", "$\\frac{\\pi}{6}$ et $-\\frac{\\pi}{6}$", "$\\frac{\\pi}{4}$ et $-\\frac{\\pi}{4}$"], 
+        ans: 2, 
+        corr: "D'après les valeurs remarquables du cercle trigonométrique, le cosinus vaut $\\frac{\\sqrt{3}}{2}$ pour les angles $\\frac{\\pi}{6}$ et $-\\frac{\\pi}{6}$." 
+    },
+    { 
+        q: "Soient $\\vec{u}(-4 ; 7)$ et $\\vec{v}(5 ; 3)$. Calculer $\\vec{u} \\cdot \\vec{v}$.", 
+        opts: ["$-41$", "$1$", "$-1$", "$41$"], 
+        ans: 1, 
+        corr: "Formule analytique : $\\vec{u} \\cdot \\vec{v} = x_u x_v + y_u y_v = (-4 \\times 5) + (7 \\times 3) = -20 + 21 = 1$." 
+    },
+    { 
+        q: "Déterminer la dérivée de la fonction $h(x) = \\frac{3x - 1}{2x + 5}$", 
+        opts: ["$\\frac{17}{(2x+5)^2}$", "$\\frac{13}{(2x+5)^2}$", "$\\frac{-17}{(2x+5)^2}$", "$\\frac{3}{2}$"], 
+        ans: 0, 
+        corr: "On pose $u(x)=3x-1 \\Longrightarrow u'(x)=3$ et $v(x)=2x+5 \\Longrightarrow v'(x)=2$.<br>$h'(x) = \\frac{u'v - uv'}{v^2} = \\frac{3(2x+5) - 2(3x-1)}{(2x+5)^2} = \\frac{6x + 15 - 6x + 2}{(2x+5)^2} = \\frac{17}{(2x+5)^2}$." 
+    },
+    { 
+        q: "Un prix subit une hausse de 20% puis une baisse de 15%. Globalement, il a :", 
+        opts: ["Augmenté de 5%", "Baissé de 5%", "Augmenté de 2%", "Stagné"], 
+        ans: 2, 
+        corr: "On multiplie les coefficients multiplicateurs : $CM = 1,20 \\times 0,85 = 1,02$.<br>Or $1,02 = 1 + 0,02$, ce qui correspond à une augmentation globale de 2%." 
+    }
 ];
-
 // ==========================================
 // MOTEUR D'AFFICHAGE QCM
 // ==========================================
