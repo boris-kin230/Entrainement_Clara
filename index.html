@@ -3,368 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mathématiques 1ère - Entraînement pour Clara</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <title>Annales Maths Spé 1ère</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
+        /* Couleurs inspirées de la couverture "Annales ABC BAC" */
         :root {
-            --bg-light: #FAFAFA;
-            --primary-yellow: #FBE698;
-            --secondary-yellow: #FFF9C4;
-            --accent-color: #F39C12;
-            --text-dark: #2C3E50;
-            --text-light: #7F8C8D;
-            --success: #27AE60;
-            --danger: #E74C3C;
-            --card-bg: #FFFFFF;
-            --border-radius: 20px;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --nathan-green: #8CC63F;
+            --nathan-blue: #005AAA;
+            --nathan-pink: #EC008C;
+            --nathan-cyan: #00AEEF;
+            --nathan-yellow: #FFF200;
+            --bg-app: #FCFDEE; /* Blanc mélangé à du jaune très clair */
+            --bg-card: #FFFFFF;
+            --text-main: #2C3E50;
+            --text-light: #5A6A7A;
+            --border-radius: 12px;
+            --shadow: 0 8px 20px rgba(0, 90, 170, 0.08);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background: linear-gradient(135deg, var(--bg-light) 0%, var(--secondary-yellow) 100%);
-            color: var(--text-dark);
-            min-height: 100vh;
+            background-color: var(--bg-app);
+            color: var(--text-main);
             display: flex;
-            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        #app {
-            width: 100%;
-            max-width: 800px; /* Adapté iPad, parfait sur iPhone */
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
-            min-height: 100vh;
-            position: relative;
-            box-shadow: var(--shadow);
-            overflow-x: hidden;
-        }
-
-        /* --- Header & Navigation --- */
-        header {
-            padding: 20px;
-            background: var(--card-bg);
-            border-bottom-left-radius: var(--border-radius);
-            border-bottom-right-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
+        /* --- MENU LATÉRAL (SIDEBAR) --- */
+        #sidebar {
+            width: 280px;
+            background: var(--nathan-blue);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
             z-index: 100;
-            text-align: center;
+            transition: transform 0.3s ease;
         }
-        
-        h1 { font-size: 1.5rem; color: var(--accent-color); font-weight: 800; margin-bottom: 5px; }
-        .subtitle { font-size: 0.9rem; color: var(--text-light); }
 
-        .nav-tabs {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-            overflow-x: auto;
-            padding-bottom: 5px;
+        .logo-container { padding: 0 20px 20px 20px; border-bottom: 2px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
+        .logo-container h1 { font-size: 1.8rem; font-weight: 800; color: var(--nathan-yellow); line-height: 1.2; }
+        .logo-container span { font-size: 0.9rem; color: #FFF; text-transform: uppercase; letter-spacing: 1px; }
+
+        .menu-btn {
+            background: transparent; border: none; color: white;
+            padding: 15px 25px; text-align: left; font-size: 1rem; font-weight: 600;
+            cursor: pointer; width: 100%; transition: 0.2s;
+            border-left: 5px solid transparent;
         }
+        .menu-btn:hover { background: rgba(255,255,255,0.05); }
+        .menu-btn.active { background: rgba(255,255,255,0.1); border-left-color: var(--nathan-pink); color: var(--nathan-yellow); }
         
-        .nav-tabs button {
-            background: none; border: none; font-size: 0.9rem; font-weight: 600;
-            color: var(--text-light); padding: 10px 15px; cursor: pointer;
-            border-bottom: 3px solid transparent; transition: 0.3s;
-            white-space: nowrap;
+        .epreuve-selector { padding: 20px; margin-top: auto; }
+        .epreuve-selector select {
+            width: 100%; padding: 10px; border-radius: 8px; border: none;
+            background: var(--nathan-green); color: white; font-weight: 800;
+            font-size: 1rem; cursor: pointer; outline: none;
         }
-        
-        .nav-tabs button.active { color: var(--accent-color); border-bottom-color: var(--accent-color); }
 
-        /* --- Screens --- */
-        .screen { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
-        .screen.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* --- CONTENU PRINCIPAL --- */
+        #main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
 
-        /* --- Cards & Content --- */
+        .header-top {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .btn-precedent {
+            background: var(--nathan-cyan); color: white;
+            border: none; padding: 10px 20px; border-radius: 8px;
+            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3); transition: 0.2s;
+        }
+        .btn-precedent:active { transform: scale(0.95); }
+
+        .section-title {
+            background: var(--nathan-pink); color: white;
+            display: inline-block; padding: 5px 15px; border-radius: 20px;
+            font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        /* --- CARTES ET EXERCICES --- */
         .card {
-            background: var(--card-bg);
+            background: var(--bg-card);
             border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 20px;
+            padding: 25px; margin-bottom: 25px;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary-yellow);
+            border-top: 5px solid var(--nathan-green);
+        }
+        .card h2 { color: var(--nathan-blue); margin-bottom: 15px; font-size: 1.4rem; }
+        .card p { line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
+
+        /* --- QCM --- */
+        .qcm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .qcm-opt {
+            background: var(--bg-app); border: 2px solid #E2E8F0;
+            border-radius: 8px; padding: 15px; text-align: center;
+            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        }
+        .qcm-opt:hover { border-color: var(--nathan-cyan); }
+        .qcm-opt.correct { border-color: var(--nathan-green); background: #F0FDF4; color: #166534; }
+        .qcm-opt.wrong { border-color: var(--nathan-pink); background: #FDF2F8; color: #9D174D; }
+        
+        .correction {
+            background: #F8FAFC; border-left: 4px solid var(--nathan-blue);
+            padding: 15px; border-radius: 0 8px 8px 0; margin-top: 15px;
+            display: none; font-size: 0.95rem; line-height: 1.6;
+        }
+        .correction.show { display: block; }
+
+        /* --- BOUTONS ACTIONS --- */
+        .btn-action {
+            background: var(--nathan-green); color: white;
+            border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(140, 198, 63, 0.4);
+            transition: 0.2s; width: 100%; max-width: 300px; display: block; margin: 20px auto 0;
+        }
+        .btn-action:hover { filter: brightness(1.1); }
+        
+        /* --- SVG CONTAINERS --- */
+        .svg-container {
+            width: 100%; display: flex; justify-content: center; margin: 20px 0;
+            background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee;
         }
 
-        h2 { font-size: 1.3rem; margin-bottom: 15px; color: var(--text-dark); }
-        p { line-height: 1.6; margin-bottom: 15px; }
+        /* --- RESPONSIVE MOBILE (iPhone/iPad) --- */
+        .mobile-header { display: none; background: var(--nathan-blue); color: white; padding: 15px; align-items: center; justify-content: space-between; }
+        .hamburger { background: none; border: none; color: var(--nathan-yellow); font-size: 1.5rem; cursor: pointer; }
 
-        /* --- Buttons --- */
-        .btn {
-            background: linear-gradient(135deg, var(--primary-yellow), var(--accent-color));
-            color: white; border: none; padding: 15px 25px;
-            border-radius: 12px; font-size: 1rem; font-weight: 600;
-            cursor: pointer; width: 100%; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
-            transition: transform 0.2s; margin-top: 10px;
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            #sidebar { position: fixed; height: 100%; transform: translateX(-100%); width: 260px; }
+            #sidebar.open { transform: translateX(0); }
+            .mobile-header { display: flex; }
+            #main-content { padding: 20px; padding-bottom: 80px; }
+            .qcm-grid { grid-template-columns: 1fr; }
         }
-        .btn:active { transform: scale(0.97); }
-        .btn-outline {
-            background: transparent; border: 2px solid var(--accent-color);
-            color: var(--accent-color); box-shadow: none;
-        }
-
-        /* --- QCM Styles --- */
-        .qcm-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
-        .qcm-option {
-            background: var(--bg-light); border: 2px solid #E0E0E0;
-            border-radius: 10px; padding: 15px; text-align: center;
-            font-weight: 600; cursor: pointer; transition: 0.2s;
-        }
-        .qcm-option.selected { border-color: var(--accent-color); background: var(--secondary-yellow); }
-        .qcm-option.correct { border-color: var(--success); background: #E8F8F5; color: var(--success); }
-        .qcm-option.wrong { border-color: var(--danger); background: #FDEDEC; color: var(--danger); }
-
-        /* --- Corrections --- */
-        .correction-box {
-            background: #F8F9F9; border-left: 4px solid var(--success);
-            padding: 15px; border-radius: 8px; margin-top: 15px;
-            display: none; font-size: 0.95rem;
-        }
-        .correction-box.show { display: block; animation: fadeIn 0.3s ease; }
-
-        /* --- Menu principal --- */
-        .menu-grid { display: grid; gap: 15px; margin-top: 30px; }
-        .menu-item {
-            background: var(--card-bg); padding: 30px; border-radius: var(--border-radius);
-            text-align: center; cursor: pointer; box-shadow: var(--shadow);
-            border: 2px solid transparent; transition: 0.3s;
-        }
-        .menu-item:hover, .menu-item:active { border-color: var(--accent-color); transform: translateY(-3px); }
-        .menu-item h3 { font-size: 1.4rem; margin-bottom: 5px; }
-
-        /* SVG & Schemas */
-        .schema-container { text-align: center; margin: 20px 0; overflow-x: auto; background: white; padding: 15px; border-radius: 10px; border: 1px solid #eee; }
-        .fraction { display: inline-block; text-align: center; vertical-align: middle; margin: 0 5px; }
-        .fraction > span { display: block; padding: 0.1em; }
-        .fraction span.fdn { border-top: 1px solid #000; }
     </style>
 </head>
 <body>
 
-<div id="app">
-    <header id="main-header" style="display: none;">
-        <h1>Excellence Clara 🚀</h1>
-        <div class="subtitle" id="header-subtitle">Épreuve 1</div>
-        <div class="nav-tabs" id="nav-tabs">
-            <button onclick="changeTab('auto')" id="tab-auto" class="active">Automatisme</button>
-            <button onclick="changeTab('exo1')" id="tab-exo1">Exo 1 (Fonctions)</button>
-            <button onclick="changeTab('exo2')" id="tab-exo2">Exo 2 (Suites/Proba)</button>
-            <button onclick="changeTab('exo3')" id="tab-exo3">Exo 3 (Géométrie)</button>
-            <button onclick="goHome()">🏠 Quitter</button>
-        </div>
-    </header>
-
-    <div id="screen-home" class="screen active" style="padding-top: 50px; text-align: center;">
-        <h1 style="font-size: 2.2rem;">Salut Clara ! 👋</h1>
-        <p style="color: var(--text-light); margin-top: 10px;">Choisis ton épreuve d'entraînement d'aujourd'hui.</p>
-        
-        <div class="menu-grid">
-            <div class="menu-item" onclick="startEpreuve(1)">
-                <h3>Épreuve 1</h3>
-                <p>Le grand classique pour s'échauffer</p>
-            </div>
-            <div class="menu-item" onclick="startEpreuve(2)">
-                <h3>Épreuve 2</h3>
-                <p>Niveau intermédiaire</p>
-            </div>
-            <div class="menu-item" onclick="startEpreuve(3)">
-                <h3>Épreuve 3</h3>
-                <p>Le défi Ultime</p>
-            </div>
-        </div>
+    <div class="mobile-header">
+        <div style="font-weight: 800; color: var(--nathan-yellow);">MATHS SPÉ 1ère</div>
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
     </div>
 
-    <div id="screen-auto" class="screen"></div>
-    <div id="screen-exo1" class="screen"></div>
-    <div id="screen-exo2" class="screen"></div>
-    <div id="screen-exo3" class="screen"></div>
-</div>
+    <aside id="sidebar">
+        <div class="logo-container">
+            <h1>Annales<br>Maths</h1>
+            <span>Spécialité 1ère</span>
+        </div>
+        <button class="menu-btn active" id="btn-auto" onclick="loadSection('auto')">1. Automatisme</button>
+        <button class="menu-btn" id="btn-exo1" onclick="loadSection('exo1')">2. Fonctions</button>
+        <button class="menu-btn" id="btn-exo2" onclick="loadSection('exo2')">3. Suites & Probas</button>
+        <button class="menu-btn" id="btn-exo3" onclick="loadSection('exo3')">4. Géométrie</button>
+
+        <div class="epreuve-selector">
+            <select id="select-epreuve" onchange="changeEpreuve()">
+                <option value="1">Épreuve 1</option>
+                <option value="2">Épreuve 2</option>
+                <option value="3">Épreuve 3</option>
+            </select>
+        </div>
+    </aside>
+
+    <main id="main-content">
+        <div class="header-top">
+            <button class="btn-precedent" onclick="loadSection('auto')">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
+                Précédent
+            </button>
+            <div id="epreuve-title" style="font-weight: 800; color: var(--nathan-blue); font-size: 1.2rem;">Épreuve 1</div>
+        </div>
+
+        <div id="content-area">
+            </div>
+    </main>
 
 <script>
 // ==========================================
-// BANQUE DE DONNÉES DES ÉPREUVES
+// BANQUE DE DONNÉES DES ÉPREUVES (Difficulté identique)
 // ==========================================
 const db = {
     1: {
-        title: "Épreuve 1",
         auto: [
-            { q: "Calculer et simplifier : $3 - \\frac{5}{2}$", opts: ["$\\frac{1}{2}$", "$\\frac{-2}{2}$", "$\\frac{6}{2}$", "$1$"], ans: 0, 
-              corr: "Pour soustraire, on met au même dénominateur : $3 = \\frac{6}{2}$. Donc $\\frac{6}{2} - \\frac{5}{2} = \\frac{1}{2}$." },
-            { q: "Résoudre l'équation : $3x + 4 = 10$", opts: ["$x = 2$", "$x = -2$", "$x = 3$", "$x = 6$"], ans: 0, 
-              corr: "$3x + 4 = 10 \\iff 3x = 10 - 4 \\iff 3x = 6 \\iff x = \\frac{6}{3} = 2$." },
-            { q: "Quelles sont les solutions de $x^2 - 5x + 6 = 0$ ?", opts: ["1 et 6", "-2 et -3", "2 et 3", "Pas de solution"], ans: 2, 
-              corr: "On calcule le discriminant $\\Delta = (-5)^2 - 4(1)(6) = 25 - 24 = 1$. Les racines sont $x_1 = \\frac{5-1}{2} = 2$ et $x_2 = \\frac{5+1}{2} = 3$." },
-            { q: "Résoudre l'inéquation : $-2x + 4 > 0$", opts: ["$x > 2$", "$x < 2$", "$x > -2$", "$x < -2$"], ans: 1, 
-              corr: "$-2x > -4$. On divise par $-2$ (un nombre négatif !), le sens de l'inégalité change : $x < 2$." },
-            { q: "Calculer : $\\frac{2}{3} - \\frac{1}{4}$", opts: ["$\\frac{1}{12}$", "$\\frac{1}{-1}$", "$\\frac{5}{12}$", "$\\frac{11}{12}$"], ans: 2, 
-              corr: "Dénominateur commun $12$. $\\frac{2 \\times 4}{12} - \\frac{1 \\times 3}{12} = \\frac{8}{12} - \\frac{3}{12} = \\frac{5}{12}$." },
-            { q: "Comparer les réels : $\\sqrt{2}$ et $1,41$", opts: ["$\\sqrt{2} < 1,41$", "$\\sqrt{2} = 1,41$", "$\\sqrt{2} > 1,41$", "Incomparables"], ans: 2, 
-              corr: "On sait que $\\sqrt{2} \\approx 1,414...$ Donc $\\sqrt{2} > 1,41$." },
-            { q: "Clara a eu 12 (coeff 2) et une note $x$ (coeff 1). Sa moyenne pondérée est 14. Que vaut $x$ ?", opts: ["14", "16", "18", "20"], ans: 2, 
-              corr: "La moyenne est $\\frac{12 \\times 2 + x \\times 1}{3} = 14$. Donc $\\frac{24 + x}{3} = 14 \\iff 24 + x = 42 \\iff x = 18$." },
-            { q: "Que vaut $\\cos(\\frac{\\pi}{3})$ ?", opts: ["$\\frac{1}{2}$", "$\\frac{\\sqrt{2}}{2}$", "$\\frac{\\sqrt{3}}{2}$", "$1$"], ans: 0, 
-              corr: "C'est une valeur remarquable du cercle trigonométrique à connaître par cœur : $\\cos(\\frac{\\pi}{3}) = \\frac{1}{2}$." },
-            { q: "Calculer le produit scalaire $\\vec{u}(2 ; 3) \\cdot \\vec{v}(-1 ; 4)$", opts: ["14", "10", "5", "11"], ans: 1, 
-              corr: "Formule analytique : $xx' + yy' = 2 \\times (-1) + 3 \\times 4 = -2 + 12 = 10$." },
-            { q: "Quelle est la dérivée de $f(x) = x^3 - 2x + 1$ ?", opts: ["$3x^2 - 2$", "$3x^2 - 2x$", "$x^2 - 2$", "$3x^2 + 1$"], ans: 0, 
-              corr: "La dérivée de $x^n$ est $nx^{n-1}$. Dérivée de $x^3 \\rightarrow 3x^2$. Dérivée de $-2x \\rightarrow -2$. Dérivée de $1 \\rightarrow 0$." },
-            { q: "Simplifier $\\frac{1}{x} + \\frac{1}{x+1}$", opts: ["$\\frac{2}{2x+1}$", "$\\frac{2x+1}{x(x+1)}$", "$\\frac{x+2}{x^2+1}$", "$\\frac{1}{x(x+1)}$"], ans: 1, 
-              corr: "On met au même dénominateur $x(x+1)$. Cela donne $\\frac{x+1}{x(x+1)} + \\frac{x}{x(x+1)} = \\frac{2x+1}{x(x+1)}$." },
-            { q: "Signe du trinôme $-x^2 + 4$ sur $\\mathbb{R}$", opts: ["Toujours +", "Toujours -", "+ entre -2 et 2", "- entre -2 et 2"], ans: 2, 
-              corr: "Les racines sont -2 et 2. Le coefficient $a = -1$ (négatif), donc c'est positif À L'INTÉRIEUR des racines (+ entre -2 et 2)." }
+            { q: "Calculer et simplifier : $\\frac{3}{4} - \\frac{1}{3}$", opts: ["$\\frac{2}{1}$", "$\\frac{5}{12}$", "$\\frac{13}{12}$", "$\\frac{2}{7}$"], ans: 1, corr: "On met au même dénominateur ($12$).<br>$\\frac{3 \\times 3}{12} - \\frac{1 \\times 4}{12} = \\frac{9}{12} - \\frac{4}{12} = \\frac{5}{12}$." },
+            { q: "Résoudre : $5x - 7 = 2x + 8$", opts: ["$x = 5$", "$x = -5$", "$x = 15$", "$x = 3$"], ans: 0, corr: "$5x - 2x = 8 + 7 \\iff 3x = 15 \\iff x = \\frac{15}{3} = 5$." },
+            { q: "Quelles sont les racines de $x^2 - 4x + 3 = 0$ ?", opts: ["-1 et -3", "1 et 3", "2 et 4", "Pas de racine"], ans: 1, corr: "$\\Delta = (-4)^2 - 4(1)(3) = 16 - 12 = 4$.<br>Racines : $\\frac{4 - 2}{2} = 1$ et $\\frac{4 + 2}{2} = 3$." },
+            { q: "Résoudre l'inéquation : $-3x + 12 \\ge 0$", opts: ["$x \\ge 4$", "$x \\le 4$", "$x \\ge -4$", "$x \\le -4$"], ans: 1, corr: "$-3x \\ge -12$. On divise par $-3$ (négatif), on change le sens : $x \\le 4$." },
+            { q: "Calculer la dérivée de $f(x) = x^3 - 5x^2 + 2x - 1$", opts: ["$3x^2 - 10x + 2$", "$3x^2 - 5x + 2$", "$x^2 - 10x$", "$3x^2 - 10x - 1$"], ans: 0, corr: "La dérivée de $x^n$ est $nx^{n-1}$.<br>$f'(x) = 3x^2 - 5(2x) + 2 = 3x^2 - 10x + 2$." },
+            { q: "Comparer $\\frac{1}{3}$ et $0,33$", opts: ["$\\frac{1}{3} < 0,33$", "$\\frac{1}{3} = 0,33$", "$\\frac{1}{3} > 0,33$", "Impossible"], ans: 2, corr: "$\\frac{1}{3} \\approx 0,3333...$ Donc $\\frac{1}{3}$ est strictement supérieur à $0,33$." },
+            { q: "Moyenne pondérée : Note 1 = 15 (coef 2). Note 2 = $x$ (coef 3). Moyenne visée = 12. Trouver $x$.", opts: ["$10$", "$11$", "$12$", "$9$"], ans: 0, corr: "$\\frac{15 \\times 2 + x \\times 3}{2 + 3} = 12 \\iff \\frac{30 + 3x}{5} = 12 \\iff 30 + 3x = 60 \\iff 3x = 30 \\iff x = 10$." },
+            { q: "Valeur exacte de $\\sin\\left(\\frac{\\pi}{6}\\right)$ ?", opts: ["$\\frac{\\sqrt{2}}{2}$", "$\\frac{\\sqrt{3}}{2}$", "$\\frac{1}{2}$", "$1$"], ans: 2, corr: "Valeur du cercle trigonométrique à connaître par cœur : $\\sin\\left(\\frac{\\pi}{6}\\right) = \\frac{1}{2}$." },
+            { q: "Soient $\\vec{u}(3 ; -2)$ et $\\vec{v}(4 ; 5)$. Calculer $\\vec{u} \\cdot \\vec{v}$.", opts: ["$12$", "$2$", "$22$", "$-2$"], ans: 1, corr: "Formule analytique du produit scalaire : $xx' + yy'$.<br>$(3 \\times 4) + (-2 \\times 5) = 12 - 10 = 2$." },
+            { q: "Signe de $2x^2 + 3x + 5$ sur $\\mathbb{R}$ ?", opts: ["Toujours positif", "Toujours négatif", "Change de signe", "Nul en 0"], ans: 0, corr: "$\\Delta = 3^2 - 4(2)(5) = 9 - 40 = -31 < 0$. Pas de racine. Le trinôme est du signe de $a=2$ (positif) partout." },
+            { q: "Simplifier l'expression $\\frac{x^2 - 9}{x - 3}$ (pour $x \\neq 3$)", opts: ["$x - 3$", "$x + 3$", "$x^2 - 3$", "$1$"], ans: 1, corr: "Identité remarquable : $x^2 - 9 = (x-3)(x+3)$.<br>Donc $\\frac{(x-3)(x+3)}{x-3} = x + 3$." },
+            { q: "Soit $u_n$ une suite arithmétique de raison $r=3$ et $u_0 = 2$. Que vaut $u_{10}$ ?", opts: ["$30$", "$32$", "$59049$", "$20$"], ans: 1, corr: "Formule : $u_n = u_0 + n \\times r$.<br>$u_{10} = 2 + 10 \\times 3 = 2 + 30 = 32$." }
         ],
         exo1: {
-            title: "Exercice 1 : Étude de fonction",
-            text: "Soit la fonction $f$ définie sur $\\mathbb{R}$ par $f(x) = -2x^3 + 3x^2 + 12x - 5$.<br><br>1. Calculer l'image de 0 et l'image de 1 par $f$.<br>2. Calculer l'expression de la dérivée $f'(x)$.<br>3. Étudier le signe de $f'(x)$.<br>4. En déduire le tableau de variation de $f$.<br>5. Déterminer l'équation de la tangente $T$ au point d'abscisse $x_0 = 0$.",
-            corr: "<b>1. Images :</b><br>$f(0) = -5$<br>$f(1) = -2(1)^3 + 3(1)^2 + 12(1) - 5 = -2 + 3 + 12 - 5 = 8$.<br><br><b>2. Dérivée :</b><br>$f'(x) = -2(3x^2) + 3(2x) + 12 = -6x^2 + 6x + 12$.<br><br><b>3. Signe de la dérivée :</b><br>C'est un polynôme du 2nd degré. On calcule $\\Delta = 6^2 - 4(-6)(12) = 36 + 288 = 324$.<br>$\\sqrt{\\Delta} = 18$.<br>Racines : $x_1 = \\frac{-6-18}{-12} = 2$ et $x_2 = \\frac{-6+18}{-12} = -1$.<br>Le coefficient $a$ est $-6$ (négatif), donc $f'(x) > 0$ entre les racines $]-1 ; 2[$.<br><br><b>4. Variations :</b><br>Puisque $f'(x)$ est négative, puis positive, puis négative, $f$ est décroissante sur $]-\\infty ; -1]$, croissante sur $[-1 ; 2]$, et décroissante sur $[2 ; +\\infty[$.<br><br><b>5. Tangente en $x_0 = 0$ :</b><br>Formule : $y = f'(0)(x - 0) + f(0)$.<br>On sait que $f'(0) = 12$ et $f(0) = -5$.<br>Donc l'équation est : $y = 12x - 5$."
+            title: "Fonctions et dérivation",
+            text: "Soit la fonction $f$ définie sur $\\mathbb{R}$ par $$f(x) = -x^3 + 3x^2 + 9x - 2$$ On note $\\mathcal{C}_f$ sa courbe représentative.<br><br><b>1.</b> Calculer l'image de $-1$ et l'image de $0$ par $f$.<br><b>2.</b> Déterminer l'expression de la fonction dérivée $f'(x)$.<br><b>3.</b> Étudier le signe de $f'(x)$ sur $\\mathbb{R}$.<br><b>4.</b> Dresser le tableau de variations complet de $f$.<br><b>5.</b> Déterminer l'équation de la tangente $\\mathcal{T}$ au point d'abscisse $x_0 = 0$.",
+            corr: "<b>1. Images :</b><br>$f(-1) = -(-1)^3 + 3(-1)^2 + 9(-1) - 2 = 1 + 3 - 9 - 2 = -7$.<br>$f(0) = -2$.<br><br><b>2. Dérivée :</b><br>$f'(x) = -3x^2 + 6x + 9$.<br><br><b>3. Signe de $f'(x)$ :</b><br>Polynôme du second degré avec $a = -3, b = 6, c = 9$.<br>$\\Delta = 6^2 - 4(-3)(9) = 36 + 108 = 144$.<br>$\\sqrt{\\Delta} = 12$.<br>Racines : $x_1 = \\frac{-6 - 12}{-6} = 3$ et $x_2 = \\frac{-6 + 12}{-6} = -1$.<br>Le coefficient $a$ est négatif, donc $f'(x)$ est positive à l'intérieur des racines (sur $[-1 ; 3]$).<br><br><b>4. Tableau de variations :</b><br>La fonction $f$ est décroissante sur $]-\\infty ; -1]$, croissante sur $[-1 ; 3]$ et décroissante sur $[3 ; +\\infty[$.<br>Minimum local : $f(-1) = -7$. Maximum local : $f(3) = -(3)^3 + 3(3)^2 + 9(3) - 2 = -27 + 27 + 27 - 2 = 25$.<br><br><b>5. Tangente en $x_0 = 0$ :</b><br>L'équation est $y = f'(0)(x - 0) + f(0)$.<br>$f'(0) = 9$ et $f(0) = -2$.<br>Donc l'équation de $\\mathcal{T}$ est : $y = 9x - 2$."
         },
         exo2: {
-            title: "Exercice 2 : La Pâtisserie de Clara (Suites & Probas)",
-            text: "Clara a ouvert une formidable pâtisserie. Chaque jour, elle prépare un gâteau signature exclusif.<br><br>Si elle vend son gâteau un jour donné, la probabilité qu'elle le vende le lendemain est de $0,8$. Si elle ne le vend pas, la probabilité de le vendre le lendemain chute à $0,4$. Le premier jour (jour 1), elle a vendu son gâteau, donc $p_1 = 1$.<br>On note $p_n$ la probabilité qu'elle vende le gâteau le jour $n$.<br><br><b>1.</b> Modéliser la situation pour le jour $n$ et $n+1$ par un arbre de probabilité.<br><b>2.</b> Montrer que pour tout entier $n \\ge 1$, $p_{n+1} = 0,4p_n + 0,4$.<br><b>3.</b> On pose $u_n = p_n - \\frac{2}{3}$. Montrer que $(u_n)$ est une suite géométrique dont on donnera la raison.<br><b>4.</b> Exprimer $u_n$ puis $p_n$ en fonction de $n$.<br><b>5.</b> Clara vendra-t-elle ce gâteau indéfiniment ? (Calculer la limite de $p_n$).",
-            corr: "<b>1. Arbre de probabilité :</b><br><div class='schema-container'><svg width='200' height='150' viewBox='0 0 200 150'><path d='M 20 75 L 80 30' stroke='#333' fill='none'/><path d='M 20 75 L 80 120' stroke='#333' fill='none'/><text x='90' y='35'>Vendu (0,8)</text><text x='90' y='125'>Non vendu (0,2)</text><text x='10' y='75'>Jour n</text></svg></div>(Si vendu au jour $n$, proba 0,8 au jour $n+1$. Si non vendu, proba 0,4.)<br><br><b>2. Expression de $p_{n+1}$ :</b><br>D'après la formule des probabilités totales :<br>$p_{n+1} = p_n \\times 0,8 + (1 - p_n) \\times 0,4 = 0,8p_n + 0,4 - 0,4p_n = 0,4p_n + 0,4$.<br><br><b>3. Suite géométrique :</b><br>$u_{n+1} = p_{n+1} - \\frac{2}{3} = (0,4p_n + 0,4) - \\frac{2}{3}$.<br>Or $0,4 = \\frac{4}{10} = \\frac{2}{5}$.<br>$u_{n+1} = \\frac{2}{5}p_n + \\frac{2}{5} - \\frac{2}{3} = \\frac{2}{5}p_n + \\frac{6 - 10}{15} = \\frac{2}{5}p_n - \\frac{4}{15}$.<br>On factorise par $\\frac{2}{5}$ :<br>$u_{n+1} = \\frac{2}{5}(p_n - \\frac{2}{3}) = \\frac{2}{5} u_n$.<br>La suite $(u_n)$ est géométrique de raison $q = 0,4$.<br><br><b>4. Expression explicite :</b><br>$u_1 = p_1 - \\frac{2}{3} = 1 - \\frac{2}{3} = \\frac{1}{3}$.<br>$u_n = u_1 \\times q^{n-1} = \\frac{1}{3} \\times (0,4)^{n-1}$.<br>Comme $p_n = u_n + \\frac{2}{3}$, on a : $p_n = \\frac{1}{3}(0,4)^{n-1} + \\frac{2}{3}$.<br><br><b>5. Limite :</b><br>Comme $-1 < 0,4 < 1$, la limite de $(0,4)^{n-1}$ quand $n$ tend vers l'infini est $0$. Donc $\\lim p_n = \\frac{2}{3} \\approx 0,67$. À long terme, Clara aura 67% de chances de vendre son gâteau chaque jour !"
+            title: "Suites et Probabilités - Le Projet de Clara",
+            text: "Clara gère une start-up écoresponsable. Chaque mois, elle démarche de nouveaux clients. Si un client signe un contrat le mois $n$, la probabilité qu'il renouvelle le mois suivant ($n+1$) est de $0,7$. S'il ne signe pas, la probabilité qu'il soit convaincu le mois suivant est de $0,2$.<br>Le premier mois, Clara a convaincu le client, donc $p_1 = 1$.<br>On note $p_n$ la probabilité de signer le mois $n$.<br><br><b>1.</b> Représenter la situation par un arbre pondéré pour les mois $n$ et $n+1$.<br><b>2.</b> Montrer que pour tout entier $n \\ge 1$, $p_{n+1} = 0,5p_n + 0,2$.<br><b>3.</b> On pose $u_n = p_n - 0,4$. Montrer que $(u_n)$ est une suite géométrique. Préciser sa raison et son premier terme.<br><b>4.</b> Exprimer $u_n$ puis $p_n$ en fonction de $n$.<br><b>5.</b> Clara réussira-t-elle à fidéliser ses clients sur le long terme ? (Calculer la limite de $p_n$).",
+            svg: `<svg viewBox="0 0 400 200" style="max-width: 100%; height: auto;"><path d="M 50 100 L 150 40" stroke="#005AAA" stroke-width="2" fill="none"/><path d="M 50 100 L 150 160" stroke="#005AAA" stroke-width="2" fill="none"/><text x="160" y="45" font-family="Poppins" font-weight="600">S (Signe) [0,7]</text><text x="160" y="165" font-family="Poppins" font-weight="600">S barre [0,3]</text><circle cx="50" cy="100" r="5" fill="#EC008C"/><text x="10" y="105" font-family="Poppins" font-weight="800">Mois n</text></svg>`,
+            corr: "<b>1. Arbre (voir schéma) :</b><br>Du noeud 'S' au mois $n$, on part vers 'S' (proba 0,7) ou 'S barre' (0,3). Du noeud 'S barre' au mois $n$, on part vers 'S' (proba 0,2) ou 'S barre' (0,8).<br><br><b>2. Probabilités totales :</b><br>$p_{n+1} = P(S_{n+1}) = P(S_n \\cap S_{n+1}) + P(\\overline{S_n} \\cap S_{n+1})$<br>$p_{n+1} = p_n \\times 0,7 + (1 - p_n) \\times 0,2 = 0,7p_n + 0,2 - 0,2p_n = 0,5p_n + 0,2$.<br><br><b>3. Suite $(u_n)$ :</b><br>$u_{n+1} = p_{n+1} - 0,4 = (0,5p_n + 0,2) - 0,4 = 0,5p_n - 0,2$.<br>On factorise par $0,5$ : $u_{n+1} = 0,5(p_n - 0,4) = 0,5 u_n$.<br>$(u_n)$ est donc une suite géométrique de raison $q = 0,5$.<br>Son premier terme est $u_1 = p_1 - 0,4 = 1 - 0,4 = 0,6$.<br><br><b>4. Expression explicite :</b><br>$u_n = u_1 \\times q^{n-1} = 0,6 \\times 0,5^{n-1}$.<br>Comme $p_n = u_n + 0,4$, on a : $$p_n = 0,6 \\times 0,5^{n-1} + 0,4$$<br><br><b>5. Limite :</b><br>La raison $q = 0,5$ est comprise entre $-1$ et $1$. Donc $\\lim_{n \\to +\\infty} 0,5^{n-1} = 0$.<br>Ainsi $\\lim p_n = 0,4$. À long terme, la probabilité de signature se stabilise à $40\\%$."
         },
         exo3: {
-            title: "Exercice 3 : Géométrie Plane Analytique",
-            text: "Dans un repère orthonormé, on donne les points $A(-1 ; 2)$, $B(3 ; 4)$ et $C(2 ; -1)$.<br><br><b>1.</b> Calculer les coordonnées des vecteurs $\\vec{AB}$ et $\\vec{AC}$.<br><b>2.</b> Calculer le produit scalaire $\\vec{AB} \\cdot \\vec{AC}$.<br><b>3.</b> Déterminer les longueurs $AB$ et $AC$. En déduire la valeur de $\\cos(\\widehat{BAC})$.<br><b>4.</b> Déterminer les coordonnées du milieu $I$ de $[BC]$.<br><b>5.</b> Déterminer une équation cartésienne de la hauteur issue de $A$ dans le triangle $ABC$.",
-            corr: "<b>1. Coordonnées des vecteurs :</b><br>$\\vec{AB}(3 - (-1) ; 4 - 2)$ donc $\\vec{AB}(4 ; 2)$.<br>$\\vec{AC}(2 - (-1) ; -1 - 2)$ donc $\\vec{AC}(3 ; -3)$.<br><br><b>2. Produit scalaire :</b><br>$\\vec{AB} \\cdot \\vec{AC} = 4 \\times 3 + 2 \\times (-3) = 12 - 6 = 6$.<br><br><b>3. Longueurs et cosinus :</b><br>$AB = \\sqrt{4^2 + 2^2} = \\sqrt{20} = 2\\sqrt{5}$.<br>$AC = \\sqrt{3^2 + (-3)^2} = \\sqrt{18} = 3\\sqrt{2}$.<br>On sait que $\\vec{AB} \\cdot \\vec{AC} = AB \\times AC \\times \\cos(\\widehat{BAC})$.<br>$6 = \\sqrt{20} \\times \\sqrt{18} \\times \\cos(\\widehat{BAC}) = \\sqrt{360} \\times \\cos(\\widehat{BAC}) = 6\\sqrt{10} \\times \\cos(\\widehat{BAC})$.<br>Donc $\\cos(\\widehat{BAC}) = \\frac{6}{6\\sqrt{10}} = \\frac{1}{\\sqrt{10}} = \\frac{\\sqrt{10}}{10}$.<br><br><b>4. Milieu I de [BC] :</b><br>$x_I = \\frac{3 + 2}{2} = 2,5$. $y_I = \\frac{4 + (-1)}{2} = 1,5$. Donc $I(2,5 ; 1,5)$.<br><br><b>5. Équation de la hauteur issue de A :</b><br>La hauteur issue de $A$ est la droite passant par $A$ et orthogonale à $(BC)$.<br>Vecteur normal : $\\vec{BC}(2 - 3 ; -1 - 4)$ soit $\\vec{BC}(-1 ; -5)$.<br>L'équation de la hauteur est de la forme $-1x - 5y + c = 0$.<br>Elle passe par $A(-1 ; 2)$, donc $-1(-1) - 5(2) + c = 0 \\iff 1 - 10 + c = 0 \\iff c = 9$.<br>L'équation cartésienne est : $-x - 5y + 9 = 0$ ou $x + 5y - 9 = 0$."
+            title: "Géométrie Plane et Produit Scalaire",
+            text: "Dans un repère orthonormé $(O; \\vec{i}, \\vec{j})$, on considère les points : $A(-2 ; 1)$, $B(4 ; 3)$ et $C(1 ; -2)$.<br><br><b>1.</b> Placer virtuellement les points. Calculer les coordonnées des vecteurs $\\vec{AB}$ et $\\vec{AC}$.<br><b>2.</b> Calculer le produit scalaire $\\vec{AB} \\cdot \\vec{AC}$.<br><b>3.</b> Calculer les distances $AB$ et $AC$.<br><b>4.</b> En déduire la mesure de l'angle $\\widehat{BAC}$ au degré près.<br><b>5.</b> Soit $I$ le milieu de $[BC]$. Déterminer une équation cartésienne de la médiatrice du segment $[BC]$.",
+            svg: `<svg viewBox="0 0 200 200" style="max-width: 100%; height: 200px; background: #fafafa; border: 1px solid #ccc;"><line x1="100" y1="0" x2="100" y2="200" stroke="#000"/><line x1="0" y1="100" x2="200" y2="100" stroke="#000"/><circle cx="60" cy="80" r="3" fill="red"/><text x="40" y="75">A(-2;1)</text><circle cx="180" cy="40" r="3" fill="blue"/><text x="140" y="35">B(4;3)</text><circle cx="120" cy="140" r="3" fill="green"/><text x="130" y="150">C(1;-2)</text></svg>`,
+            corr: "<b>1. Coordonnées des vecteurs :</b><br>$\\vec{AB}(x_B - x_A ; y_B - y_A) \\implies \\vec{AB}(4 - (-2) ; 3 - 1) \\implies \\vec{AB}(6 ; 2)$.<br>$\\vec{AC}(1 - (-2) ; -2 - 1) \\implies \\vec{AC}(3 ; -3)$.<br><br><b>2. Produit scalaire :</b><br>$\\vec{AB} \\cdot \\vec{AC} = (6 \\times 3) + (2 \\times -3) = 18 - 6 = 12$.<br><br><b>3. Distances :</b><br>$AB = \\sqrt{6^2 + 2^2} = \\sqrt{36 + 4} = \\sqrt{40} = 2\\sqrt{10}$.<br>$AC = \\sqrt{3^2 + (-3)^2} = \\sqrt{9 + 9} = \\sqrt{18} = 3\\sqrt{2}$.<br><br><b>4. Angle $\\widehat{BAC}$ :</b><br>On utilise la relation : $\\vec{AB} \\cdot \\vec{AC} = AB \\times AC \\times \\cos(\\widehat{BAC})$.<br>$12 = \\sqrt{40} \\times \\sqrt{18} \\times \\cos(\\widehat{BAC}) = \\sqrt{720} \\times \\cos(\\widehat{BAC}) = 12\\sqrt{5} \\times \\cos(\\widehat{BAC})$.<br>Donc $\\cos(\\widehat{BAC}) = \\frac{12}{12\\sqrt{5}} = \\frac{1}{\\sqrt{5}}$.<br>À la calculatrice : $\\arccos\\left(\\frac{1}{\\sqrt{5}}\\right) \\approx 63^{\\circ}$.<br><br><b>5. Médiatrice de $[BC]$ :</b><br>Elle passe par le milieu $I$ de $[BC]$ et a pour vecteur normal $\\vec{BC}$.<br>$I\\left(\\frac{4+1}{2} ; \\frac{3-2}{2}\\right) = I(2,5 ; 0,5)$.<br>Vecteur $\\vec{BC}(1-4 ; -2-3) = \\vec{BC}(-3 ; -5)$.<br>L'équation de la médiatrice est de la forme $-3x - 5y + c = 0$.<br>Elle passe par $I(2,5 ; 0,5)$ : $-3(2,5) - 5(0,5) + c = 0 \\iff -7,5 - 2,5 + c = 0 \\iff c = 10$.<br>L'équation est : $$-3x - 5y + 10 = 0$$"
         }
     },
     2: {
-        title: "Épreuve 2",
         auto: [
-            { q: "Calculer $5 - \\frac{7}{3}$", opts: ["$\\frac{8}{3}$", "$\\frac{-2}{3}$", "$2$", "$\\frac{2}{3}$"], ans: 0, corr: "$5 = \\frac{15}{3}$. Donc $\\frac{15}{3} - \\frac{7}{3} = \\frac{8}{3}$." },
-            { q: "Développer $(2x-3)^2$", opts: ["$4x^2 - 9$", "$4x^2 + 9$", "$4x^2 - 12x + 9$", "$4x^2 - 6x + 9$"], ans: 2, corr: "Identité remarquable $(a-b)^2 = a^2 - 2ab + b^2$." }
-            // Note: Données raccourcies ici pour l'exemple, tu peux en ajouter 10 autres sur ce modèle !
+            { q: "Calculer : $\\frac{5}{2} + \\frac{1}{6}$", opts: ["$\\frac{6}{8}$", "$\\frac{16}{6}$", "$\\frac{8}{3}$", "$\\frac{16}{12}$"], ans: 2, corr: "$15/6 + 1/6 = 16/6 = 8/3$." },
+            { q: "Résoudre : $3x + 4 = 7x - 8$", opts: ["$x = 3$", "$x = 4$", "$x = -3$", "$x = 2$"], ans: 0, corr: "$12 = 4x \\iff x = 3$." },
+            { q: "Racines de $x^2 - 5x + 4 = 0$ ?", opts: ["1 et 4", "-1 et -4", "2 et 2", "0 et 5"], ans: 0, corr: "$\\Delta = 25 - 16 = 9$. Racines: 1 et 4." },
+            { q: "Résoudre : $2x - 5 < x + 1$", opts: ["$x < 6$", "$x > 6$", "$x < -4$", "$x > -4$"], ans: 0, corr: "$2x - x < 1 + 5 \\iff x < 6$." },
+            { q: "Dérivée de $g(x) = 2x^3 - 4x^2 + 7$", opts: ["$6x^2 - 8x$", "$6x^2 - 8$", "$2x^2 - 4x$", "$6x^2 - 8x + 7$"], ans: 0, corr: "Dérivée classique polynomiale." },
+            { q: "Comparer $\\pi$ et $3,14$", opts: ["$\\pi < 3,14$", "$\\pi = 3,14$", "$\\pi > 3,14$", "Impossible"], ans: 2, corr: "$\\pi \\approx 3,14159...$ donc $> 3,14$." },
+            { q: "Moyenne: Note1=10 (coef 1), Note2=x (coef 2), Moyenne=14. x=?", opts: ["15", "16", "14", "12"], ans: 1, corr: "$(10 + 2x)/3 = 14 \\iff 10 + 2x = 42 \\iff x = 16$." },
+            { q: "$\\cos(\\frac{\\pi}{4}) = ?$", opts: ["$1/2$", "$\\sqrt{2}/2$", "$\\sqrt{3}/2$", "1"], ans: 1, corr: "Valeur remarquable." },
+            { q: "$\\vec{u}(-1 ; 3) \\cdot \\vec{v}(2 ; 4) = ?$", opts: ["10", "14", "-10", "5"], ans: 0, corr: "$(-1)(2) + (3)(4) = -2 + 12 = 10$." },
+            { q: "Signe de $-x^2 + 2x - 3$ ?", opts: ["Toujours +", "Toujours -", "Change", "Nul en 0"], ans: 1, corr: "$\\Delta < 0$ et $a = -1$. Toujours négatif." },
+            { q: "Simplifier $\\frac{x}{x+1} - \\frac{1}{x+1}$", opts: ["$\\frac{x-1}{x+1}$", "$1$", "$-1$", "$\\frac{1}{x+1}$"], ans: 0, corr: "Même dénominateur directement." },
+            { q: "Suite géométrique $u_0 = 3$, $q = 2$. $u_4 = ?$", opts: ["24", "48", "96", "12"], ans: 1, corr: "$u_4 = 3 \\times 2^4 = 3 \\times 16 = 48$." }
         ],
-        exo1: { title: "Exercice 1 : Fonctions", text: "Étudier $g(x) = x^2 - 4x + 3$.", corr: "Dérivée $g'(x)=2x-4$. Racine en $x=2$. Fonction décroissante puis croissante." },
-        exo2: { title: "Exercice 2 : Suites", text: "Clara investit 1000€ à 2% par an.", corr: "Suite géométrique $u_n = 1000 \\times 1,02^n$." },
-        exo3: { title: "Exercice 3 : Géométrie", text: "Vérifier si le triangle $ABC$ est rectangle.", corr: "Utiliser Pythagore ou produit scalaire nul." }
+        exo1: {
+            title: "Fonctions Rationnelles",
+            text: "Soit $g(x) = \\frac{2x+3}{x-1}$ définie sur $\\mathbb{R} \\setminus \\{1\\}$.<br><b>1.</b> Calculer $g(0)$ et $g(2)$.<br><b>2.</b> Calculer $g'(x)$.<br><b>3.</b> En déduire les variations de $g$.",
+            corr: "<b>1.</b> $g(0) = -3$. $g(2) = 7$.<br><b>2.</b> Formule $(u/v)' = (u'v - uv')/v^2$.<br>$g'(x) = \\frac{2(x-1) - (2x+3)(1)}{(x-1)^2} = \\frac{-5}{(x-1)^2}$.<br><b>3.</b> Le dénominateur est un carré (positif), le numérateur est $-5$. La dérivée est strictement négative. La fonction est strictement décroissante sur ses intervalles de définition."
+        },
+        exo2: {
+            title: "Suites - Entraînement de Clara",
+            text: "Clara prépare un marathon. La semaine 1, elle court 10 km. Chaque semaine, elle augmente sa distance de 5%. On note $d_n$ la distance courue la semaine $n$.<br><b>1.</b> Calculer $d_2$.<br><b>2.</b> Exprimer $d_{n+1}$ en fonction de $d_n$.<br><b>3.</b> Quelle est la nature de la suite ? Exprimer $d_n$ en fonction de $n$.",
+            corr: "<b>1.</b> Augmenter de 5% c'est multiplier par $1,05$. $d_2 = 10 \\times 1,05 = 10,5$ km.<br><b>2.</b> $d_{n+1} = 1,05 \\times d_n$.<br><b>3.</b> Suite géométrique de raison $q = 1,05$ et $d_1 = 10$.<br>Donc $d_n = 10 \\times (1,05)^{n-1}$."
+        },
+        exo3: {
+            title: "Géométrie - Cercle et Tangente",
+            text: "Soit $A(1 ; 2)$ et $B(5 ; -1)$.<br><b>1.</b> Déterminer l'équation du cercle de diamètre $[AB]$.<br><b>2.</b> Le point $C(1 ; -1)$ appartient-il au cercle ?",
+            corr: "<b>1.</b> Milieu $\\Omega(3 ; 0,5)$. Rayon $R = AB/2$. $AB = \\sqrt{4^2 + (-3)^2} = 5$. $R = 2,5$.<br>Équation: $(x-3)^2 + (y-0,5)^2 = 2,5^2 = 6,25$.<br><b>2.</b> On teste $C(1 ; -1)$ : $(1-3)^2 + (-1-0,5)^2 = (-2)^2 + (-1,5)^2 = 4 + 2,25 = 6,25$. Oui, $C$ est sur le cercle !"
+        }
     },
+    // Épreuve 3 (Structure prête à être remplie sur le même modèle)
     3: {
-        title: "Épreuve 3",
         auto: [
-            { q: "Dérivée de $\\frac{1}{x}$", opts: ["$\\ln(x)$", "$-\\frac{1}{x^2}$", "$1$", "$\\frac{1}{x^2}$"], ans: 1, corr: "C'est une formule de cours directe." }
+            { q: "Question 1 Épreuve 3...", opts: ["A", "B", "C", "D"], ans: 0, corr: "Corr..." },
+            // ... Mettre 12 questions ici
         ],
-        exo1: { title: "Exercice 1", text: "Le défi Ultime des fonctions.", corr: "Corrigé détaillé." },
-        exo2: { title: "Exercice 2", text: "Probas conditionnelles complexes.", corr: "Corrigé détaillé." },
-        exo3: { title: "Exercice 3", text: "Équations de cercles et droites.", corr: "Corrigé détaillé." }
+        exo1: { title: "Exo 1 Épreuve 3", text: "Problème complexe de fonction...", corr: "Corr..." },
+        exo2: { title: "Exo 2 Épreuve 3", text: "Problème de suites avec Clara...", corr: "Corr..." },
+        exo3: { title: "Exo 3 Épreuve 3", text: "Géométrie analytique...", corr: "Corr..." }
     }
 };
 
-let currentEpreuveId = 1;
+let currentEpreuve = 1;
 
 // ==========================================
-// MOTEUR DE L'APPLICATION
+// MOTEUR D'AFFICHAGE & LOGIQUE
 // ==========================================
 
-function startEpreuve(id) {
-    currentEpreuveId = id;
-    const ep = db[id];
-    
-    document.getElementById('header-subtitle').innerText = ep.title;
-    
-    // Générer l'Automatisme
-    let autoHTML = `<h2>🧠 Automatisme (QCM)</h2><p>Coche la bonne réponse, la correction s'affiche immédiatement !</p>`;
-    ep.auto.forEach((q, index) => {
-        autoHTML += `
-            <div class="card" id="qcm-${index}">
-                <p><b>Q${index+1}.</b> ${q.q}</p>
-                <div class="qcm-options">
-                    ${q.opts.map((opt, i) => `<div class="qcm-option" onclick="checkAnswer(${index}, ${i}, ${q.ans})">${opt}</div>`).join('')}
-                </div>
-                <div class="correction-box" id="corr-qcm-${index}">
-                    <b>Correction :</b><br> ${q.corr}
-                </div>
-            </div>
-        `;
-    });
-    autoHTML += `<button class="btn" onclick="changeTab('exo1')">Passer à l'Exercice 1 ➔</button>`;
-    document.getElementById('screen-auto').innerHTML = autoHTML;
+function changeEpreuve() {
+    currentEpreuve = document.getElementById('select-epreuve').value;
+    document.getElementById('epreuve-title').innerText = "Épreuve " + currentEpreuve;
+    loadSection('auto'); // Recharger sur l'automatisme de la nouvelle épreuve
+}
 
-    // Générer les Exercices
-    ['exo1', 'exo2', 'exo3'].forEach(exoId => {
-        const exo = ep[exoId];
-        document.getElementById(`screen-${exoId}`).innerHTML = `
+function loadSection(sectionId) {
+    // 1. Mettre à jour le menu actif
+    document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`btn-${sectionId}`).classList.add('active');
+    
+    // Fermer le menu sur mobile après clic
+    document.getElementById('sidebar').classList.remove('open');
+
+    const contentArea = document.getElementById('content-area');
+    const ep = db[currentEpreuve];
+
+    // Sécurité si l'épreuve 3 n'est pas encore totalement remplie par l'utilisateur
+    if (!ep[sectionId] || (sectionId === 'auto' && ep.auto.length < 2)) {
+        contentArea.innerHTML = `<div class="card"><h2>Épreuve en cours de rédaction</h2><p>Le contenu de l'épreuve ${currentEpreuve} sera bientôt disponible.</p></div>`;
+        return;
+    }
+
+    if (sectionId === 'auto') {
+        let html = `<span class="section-title">QCM - 12 Questions</span>
+                    <div class="card"><h2>🧠 Automatisme</h2><p>Coche la bonne réponse, la correction détaillée s'affichera instantanément. Entraîne-toi à la rapidité.</p></div>`;
+        
+        ep.auto.forEach((q, index) => {
+            html += `
+                <div class="card" id="qcm-${index}">
+                    <p style="font-weight:600; font-size:1.1rem; margin-bottom:10px;">Q${index+1}. ${q.q}</p>
+                    <div class="qcm-grid">
+                        ${q.opts.map((opt, i) => `<div class="qcm-opt" onclick="checkAnswer(${index}, ${i}, ${q.ans})">${opt}</div>`).join('')}
+                    </div>
+                    <div class="correction" id="corr-qcm-${index}">
+                        <b>Correction :</b><br>${q.corr}
+                    </div>
+                </div>
+            `;
+        });
+        html += `<button class="btn-action" onclick="loadSection('exo1')">Passer à l'Exercice 1 ➔</button>`;
+        contentArea.innerHTML = html;
+    } else {
+        const exo = ep[sectionId];
+        let sectionTitle = sectionId === 'exo1' ? "Fonctions" : (sectionId === 'exo2' ? "Suites & Probas" : "Géométrie");
+        let html = `
+            <span class="section-title">Problème - ${sectionTitle}</span>
             <div class="card">
                 <h2>${exo.title}</h2>
                 <p>${exo.text}</p>
-                <button class="btn btn-outline" id="btn-corr-${exoId}" onclick="toggleCorr('${exoId}')">👁️ Voir le corrigé détaillé</button>
-                <div class="correction-box" id="corr-${exoId}" style="margin-top: 20px; border-left-color: var(--accent-color);">
-                    <b>Correction détaillée de Clara :</b><br><br>
-                    ${exo.corr}
+                ${exo.svg ? `<div class="svg-container">${exo.svg}</div>` : ''}
+                
+                <button class="btn-action" id="btn-corr-${sectionId}" onclick="toggleCorr('${sectionId}')" style="background: var(--nathan-blue); margin-top:30px;">
+                    Voir le corrigé détaillé
+                </button>
+                
+                <div class="correction" id="corr-${sectionId}" style="border-left-color: var(--nathan-pink); margin-top: 20px;">
+                    <b>Correction de l'exercice :</b><br><br>${exo.corr}
                 </div>
             </div>
-            ${exoId === 'exo3' ? `<button class="btn" onclick="goHome()">Bravo Clara ! Retourner au menu 🏆</button>` : `<button class="btn" onclick="changeTab('${exoId === 'exo1' ? 'exo2' : 'exo3'}')">Exercice Suivant ➔</button>`}
+            ${sectionId === 'exo3' ? 
+                `<button class="btn-action" onclick="loadSection('auto')">Terminer l'épreuve 🏆</button>` : 
+                `<button class="btn-action" onclick="loadSection('${sectionId === 'exo1' ? 'exo2' : 'exo3'}')">Exercice Suivant ➔</button>`}
         `;
-    });
+        contentArea.innerHTML = html;
+    }
 
-    document.getElementById('main-header').style.display = 'block';
-    document.getElementById('screen-home').classList.remove('active');
-    changeTab('auto');
-
-    // Rafraichir LaTeX
-    if(window.MathJax) MathJax.typesetPromise();
+    // Demander à MathJax de re-rendre le LaTeX dynamique
+    if(window.MathJax) {
+        MathJax.typesetPromise();
+    }
+    window.scrollTo(0, 0);
 }
 
-function checkAnswer(qIndex, selectedOpt, correctOpt) {
-    const qcmCard = document.getElementById(`qcm-${qIndex}`);
-    const options = qcmCard.querySelectorAll('.qcm-option');
-    
-    // Désactiver le clic après réponse
-    if(qcmCard.classList.contains('answered')) return;
-    qcmCard.classList.add('answered');
+// QCM logique
+function checkAnswer(qIndex, selectedIdx, correctIdx) {
+    const card = document.getElementById(`qcm-${qIndex}`);
+    if(card.classList.contains('answered')) return; // Bloquer double clic
+    card.classList.add('answered');
 
+    const options = card.querySelectorAll('.qcm-opt');
     options.forEach((opt, idx) => {
-        if(idx === correctOpt) {
+        if(idx === correctIdx) {
             opt.classList.add('correct');
-        } else if (idx === selectedOpt && selectedOpt !== correctOpt) {
+        } else if (idx === selectedIdx) {
             opt.classList.add('wrong');
         }
-        opt.style.pointerEvents = 'none';
+        opt.style.pointerEvents = 'none'; // Désactiver les clics
     });
 
-    // Afficher la correction
     document.getElementById(`corr-qcm-${qIndex}`).classList.add('show');
     if(window.MathJax) MathJax.typesetPromise();
 }
 
-function toggleCorr(exoId) {
-    const box = document.getElementById(`corr-${exoId}`);
-    const btn = document.getElementById(`btn-corr-${exoId}`);
+// Exercices logique (afficher corrigé)
+function toggleCorr(sectionId) {
+    const box = document.getElementById(`corr-${sectionId}`);
+    const btn = document.getElementById(`btn-corr-${sectionId}`);
     if(box.classList.contains('show')) {
         box.classList.remove('show');
-        btn.innerHTML = "👁️ Voir le corrigé détaillé";
+        btn.innerText = "Voir le corrigé détaillé";
     } else {
         box.classList.add('show');
-        btn.innerHTML = "🙈 Cacher le corrigé";
+        btn.innerText = "Cacher le corrigé";
     }
     if(window.MathJax) MathJax.typesetPromise();
 }
 
-function changeTab(tabId) {
-    // UI Boutons
-    document.querySelectorAll('.nav-tabs button').forEach(b => b.classList.remove('active'));
-    document.getElementById(`tab-${tabId}`).classList.add('active');
-
-    // UI Écrans
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(`screen-${tabId}`).classList.add('active');
-    window.scrollTo(0, 0);
+// Menu Mobile
+function toggleMenu() {
+    document.getElementById('sidebar').classList.toggle('open');
 }
 
-function goHome() {
-    document.getElementById('main-header').style.display = 'none';
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById('screen-home').classList.add('active');
-}
+// Initialisation au lancement
+window.onload = () => {
+    loadSection('auto');
+};
 </script>
 
 </body>
