@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Épreuve 2 - Maths Spé 1ère</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. VARIABLES ET RESET IPHONE
+           ========================================================================== */
+        :root {
+            --nathan-green: #8CC63F; --nathan-blue: #005AAA; --nathan-pink: #EC008C; 
+            --nathan-cyan: #00AEEF; --nathan-yellow: #FFF200; --bg-app: #FCFDEE; 
+            --bg-card: #FFFFFF; --text-main: #1E293B; --text-light: #475569;
+            --radius: 16px; --shadow: 0 10px 25px rgba(0, 90, 170, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        /* Anti-flottement absolu iOS */
+        html, body {
+            width: 100vw; height: 100dvh; overflow: hidden; position: fixed;
+            background-color: var(--bg-app); color: var(--text-main); touch-action: none;
+        }
+
+        /* ==========================================================================
+           2. HEADER ET NAVIGATION STICKY
+           ========================================================================== */
+        header {
+            background: var(--nathan-blue); padding: env(safe-area-inset-top) 20px 15px 20px;
+            display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-bottom: 4px solid var(--nathan-cyan);
+        }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; }
+        
+        .btn-icon {
+            background: rgba(255,255,255,0.1); color: white; border: none; padding: 12px 18px;
+            border-radius: 12px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.2s;
+        }
+        .btn-icon:active { background: rgba(255,255,255,0.2); transform: scale(0.95); }
+        .btn-pdf { background: var(--nathan-pink); }
+
+        .nav-select {
+            width: 100%; padding: 15px 20px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);
+            background: var(--nathan-blue); color: white; font-weight: 800; font-size: 1.1rem;
+            outline: none; appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 20px top 50%; background-size: 14px auto;
+        }
+
+        /* ==========================================================================
+           3. MOTEUR D'AFFICHAGE DES SECTIONS (SCROLLABLE)
+           ========================================================================== */
+        #content-wrapper {
+            height: calc(100dvh - 140px); /* Ajuste selon la taille du header */
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 20px 20px 60px 20px;
+        }
+
+        main { max-width: 800px; margin: 0 auto; }
+        .section-view { display: none; animation: fadeIn 0.4s ease; }
+        .section-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .title-badge {
+            display: inline-block; background: var(--nathan-yellow); color: var(--nathan-blue);
+            padding: 8px 20px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; margin-bottom: 20px;
+        }
+
+        /* ==========================================================================
+           4. CARTES ET QCM
+           ========================================================================== */
+        .card {
+            background: var(--bg-card); border-radius: var(--radius); padding: 30px 20px;
+            margin-bottom: 25px; box-shadow: var(--shadow); border-top: 6px solid var(--nathan-green);
+        }
+        .card.exo { border-top-color: var(--nathan-cyan); }
+        .card h2 { color: var(--nathan-blue); margin-bottom: 20px; font-size: 1.4rem; font-weight: 800; }
+        .card p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px; }
+
+        .qcm-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+        @media(min-width: 600px) { .qcm-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .qcm-opt {
+            background: #F8FAFC; border: 3px solid #E2E8F0; border-radius: 12px; padding: 18px;
+            text-align: center; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
+        }
+        .qcm-opt:active { transform: scale(0.96); }
+        .qcm-opt.correct { border-color: var(--nathan-green); background: #F0FDF4; color: #166534; box-shadow: 0 0 15px rgba(140,198,63,0.3); }
+        .qcm-opt.wrong { border-color: var(--nathan-pink); background: #FDF2F8; color: #9D174D; }
+
+        /* ==========================================================================
+           5. CORRECTIONS & BOUTONS
+           ========================================================================== */
+        .correction {
+            background: #F8FAFC; border-left: 6px solid var(--nathan-cyan); padding: 20px;
+            border-radius: 0 12px 12px 0; margin-top: 25px; display: none; font-size: 1.05rem; line-height: 1.8;
+        }
+        .correction.show { display: block; animation: fadeIn 0.3s ease; }
+        .corr-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #E2E8F0; }
+        .corr-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .btn-corr {
+            width: 100%; background: #F1F5F9; color: var(--nathan-blue); border: 3px solid var(--nathan-blue);
+            padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.15rem; cursor: pointer; margin-top: 25px;
+            transition: 0.2s;
+        }
+        .btn-corr:active { background: #E2E8F0; transform: scale(0.98); }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; margin-top: 35px; }
+        .btn-nav {
+            flex: 1; padding: 18px; border-radius: 14px; border: none; font-weight: 800;
+            font-size: 1.1rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; color: white;
+        }
+        .btn-prev { background: #94A3B8; }
+        .btn-next { background: var(--nathan-cyan); box-shadow: 0 4px 15px rgba(0,174,239,0.3); }
+        
+        /* ==========================================================================
+           6. SVG & DESSINS INCROYABLES
+           ========================================================================== */
+        .svg-box {
+            width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 16px;
+            padding: 20px; margin: 25px 0; display: flex; justify-content: center; align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <a href="index.html" class="btn-icon">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                Accueil
+            </a>
+            <button class="btn-icon btn-pdf" onclick="alert('PDF de l\'épreuve 2 en cours de génération...')">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                PDF
+            </button>
+        </div>
+        <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
+            <option value="auto">1. Automatisme (QCM)</option>
+            <option value="exo1">2. Exercice 1 : Fonctions Rationnelles</option>
+            <option value="exo2">3. Exercice 2 : Suites (Clara_Pix)</option>
+            <option value="exo3">4. Exercice 3 : Probabilités (Arbre)</option>
+        </select>
+    </header>
+
+    <div id="content-wrapper">
+        <main>
+            <div id="auto" class="section-view active">
+                <div class="title-badge">Échauffement</div>
+                <div class="card">
+                    <h2>Automatisme - 12 Questions</h2>
+                    <p>Respect des quotas : 5 pourcentages, 2 équations, 2 fractions, 1 prix, 2 généraux. La correction s'affiche au clic.</p>
+                </div>
+
+                <div id="qcm-container"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo1'; switchSection('exo1');">Suivant : Fonctions <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo1" class="section-view">
+                <div class="title-badge">Analyse</div>
+                <div class="card exo">
+                    <h2>Exercice 1 : Fonction Rationnelle (8 pts)</h2>
+                    <p>On considère la fonction $f$ définie sur $\mathbb{R} \setminus \{1\}$ par : $$f(x) = \frac{x^2 + 3}{x - 1}$$ On note $\mathcal{C}_f$ sa courbe représentative.</p>
+                    <hr style="border:0; border-top:2px solid #E2E8F0; margin: 20px 0;">
+                    <p><b>1.</b> Calculer l'image de $0$ et l'image de $3$ par $f$.</p>
+                    <p><b>2.</b> Montrer que pour tout $x \neq 1$, la dérivée s'écrit $f'(x) = \frac{x^2 - 2x - 3}{(x - 1)^2}$.</p>
+                    <p><b>3.</b> Étudier le signe du trinôme $x^2 - 2x - 3$.</p>
+                    <p><b>4.</b> En déduire le signe de $f'(x)$ sur $\mathbb{R} \setminus \{1\}$.</p>
+                    <p><b>5.</b> Dresser le tableau de variations de $f$.</p>
+                    <p><b>6.</b> Déterminer l'équation de la tangente $\mathcal{T}$ au point d'abscisse $x_0 = 0$.</p>
+                    <p><b>7.</b> Résoudre l'équation $f(x) = 0$. Que peut-on en déduire pour la courbe $\mathcal{C}_f$ ?</p>
+                    <p><b>8.</b> Déterminer les coordonnées des points de $\mathcal{C}_f$ où la tangente est horizontale.</p>
+                    
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo1" class="correction">
+                        <div class="corr-step"><b>1.</b> $f(0) = \frac{0^2 + 3}{0 - 1} = \frac{3}{-1} = -3$.<br> $f(3) = \frac{3^2 + 3}{3 - 1} = \frac{9 + 3}{2} = \frac{12}{2} = 6$.</div>
+                        <div class="corr-step"><b>2.</b> $f$ est de la forme $\frac{u}{v}$ avec $u(x) = x^2+3 \implies u'(x)=2x$ et $v(x)=x-1 \implies v'(x)=1$.<br>$f'(x) = \frac{u'v - uv'}{v^2} = \frac{2x(x-1) - (x^2+3)(1)}{(x-1)^2} = \frac{2x^2 - 2x - x^2 - 3}{(x-1)^2} = \frac{x^2 - 2x - 3}{(x-1)^2}$.</div>
+                        <div class="corr-step"><b>3.</b> Signe de $x^2 - 2x - 3$ : $\Delta = (-2)^2 - 4(1)(-3) = 4 + 12 = 16$. $\sqrt{\Delta} = 4$.<br>Racines : $x_1 = \frac{2 - 4}{2} = -1$ et $x_2 = \frac{2 + 4}{2} = 3$.<br>Le trinôme est positif à l'extérieur des racines ($a=1>0$) et négatif entre $-1$ et $3$.</div>
+                        <div class="corr-step"><b>4.</b> Le dénominateur $(x-1)^2$ est toujours strictement positif sur le domaine. Le signe de $f'(x)$ est donc strictement identique au signe du numérateur étudié à la question 3.</div>
+                        <div class="corr-step"><b>5.</b> $f'(x) > 0$ sur $]-\infty ; -1[$ et $]3 ; +\infty[ \implies f$ est croissante.<br>$f'(x) < 0$ sur $]-1 ; 1[$ et $]1 ; 3[ \implies f$ est décroissante. (Attention à la double barre en $x=1$).</div>
+                        <div class="corr-step"><b>6.</b> $\mathcal{T} : y = f'(0)(x-0) + f(0)$.<br>$f'(0) = \frac{-3}{(-1)^2} = -3$. On sait que $f(0) = -3$. Donc $y = -3x - 3$.</div>
+                        <div class="corr-step"><b>7.</b> $f(x) = 0 \iff x^2 + 3 = 0 \iff x^2 = -3$. Impossible dans $\mathbb{R}$.<br>La courbe $\mathcal{C}_f$ ne coupe jamais l'axe des abscisses.</div>
+                        <div class="corr-step"><b>8.</b> Tangente horizontale $\iff f'(x) = 0 \iff x^2 - 2x - 3 = 0$.<br>Les abscisses sont $x_1 = -1$ et $x_2 = 3$.<br>On calcule les ordonnées : $f(-1) = \frac{4}{-2} = -2$ et $f(3) = 6$.<br>Les points sont $A(-1 ; -2)$ et $B(3 ; 6)$.</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='auto'; switchSection('auto');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo2'; switchSection('exo2');">Suivant : Suites <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo2" class="section-view">
+                <div class="title-badge">Modélisation</div>
+                <div class="card exo">
+                    <h2>Exercice 2 : Les abonnés de Clara_Pix (8 pts)</h2>
+                    <p>En parallèle de ses études, Clara gère une page sur un réseau social. Au début de l'année, elle compte 10 000 abonnés. L'algorithme de la plateforme a changé. Une étude statistique montre que chaque mois :</p>
+                    <ul style="margin-left: 30px; margin-bottom: 15px;">
+                        <li>Elle perd 5% de son audience totale.</li>
+                        <li>Elle gagne 1 000 nouveaux abonnés de manière organique.</li>
+                    </ul>
+                    <p>On modélise le nombre d'abonnés au mois $n$ par la suite $(f_n)$. Ainsi, $f_0 = 10 000$.</p>
+
+                    <div class="svg-box" style="background: transparent; border: none;">
+                        <svg viewBox="0 0 250 450" width="100%" height="350px" style="max-width: 250px; drop-shadow: 0 20px 30px rgba(0,0,0,0.2);">
+                            <rect x="10" y="10" width="230" height="430" rx="30" fill="#FFFFFF" stroke="#D1D5DB" stroke-width="4"/>
+                            <path d="M 85 10 L 85 25 Q 85 35 95 35 L 155 35 Q 165 35 165 25 L 165 10" fill="#1E293B"/>
+                            <circle cx="125" cy="80" r="30" fill="url(#grad-insta)"/>
+                            <text x="125" y="88" font-family="Poppins" font-size="24" font-weight="bold" fill="white" text-anchor="middle">C</text>
+                            <text x="125" y="135" font-family="Poppins" font-size="16" font-weight="bold" fill="#1E293B" text-anchor="middle">@Clara_Pix</text>
+                            <text x="50" y="170" font-family="Poppins" font-size="16" font-weight="bold" fill="#1E293B" text-anchor="middle">10 K</text>
+                            <text x="50" y="185" font-family="Poppins" font-size="10" fill="#64748B" text-anchor="middle">ABONNÉS</text>
+                            
+                            <text x="125" y="170" font-family="Poppins" font-size="16" font-weight="bold" fill="#1E293B" text-anchor="middle">1.2 K</text>
+                            <text x="125" y="185" font-family="Poppins" font-size="10" fill="#64748B" text-anchor="middle">SUIVIS</text>
+
+                            <text x="200" y="170" font-family="Poppins" font-size="16" font-weight="bold" fill="#1E293B" text-anchor="middle">450</text>
+                            <text x="200" y="185" font-family="Poppins" font-size="10" fill="#64748B" text-anchor="middle">POSTS</text>
+                            
+                            <rect x="25" y="210" width="200" height="150" rx="15" fill="#F8FAFC"/>
+                            <text x="40" y="235" font-family="Poppins" font-size="12" font-weight="bold" fill="#1E293B">Croissance (Mois n)</text>
+                            <path d="M 40 330 Q 90 280 140 260 T 210 250" fill="none" stroke="#00AEEF" stroke-width="3"/>
+                            <circle cx="40" cy="330" r="4" fill="white" stroke="#EC008C" stroke-width="2"/>
+                            <line x1="40" y1="245" x2="210" y2="245" stroke="#EC008C" stroke-width="1" stroke-dasharray="4,4"/>
+                            <text x="160" y="240" font-family="Poppins" font-size="8" font-weight="bold" fill="#EC008C">Max : 20 K</text>
+
+                            <defs>
+                                <linearGradient id="grad-insta" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="#fd5949" />
+                                    <stop offset="50%" stop-color="#d6249f" />
+                                    <stop offset="100%" stop-color="#285AEB" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <p><b>1.</b> Calculer le nombre d'abonnés de Clara aux mois 1 et 2 ($f_1$ et $f_2$).</p>
+                    <p><b>2.</b> Justifier analytiquement que la relation de récurrence est : $f_{n+1} = 0,95f_n + 1000$.</p>
+                    <p><b>3.</b> Clara craint que son nombre d'abonnés ne finisse par stagner. Pour l'étudier, on pose la suite $g_n = f_n - 20 000$. Calculer $g_0$.</p>
+                    <p><b>4.</b> Démontrer que la suite $(g_n)$ est géométrique. Préciser sa raison $q$.</p>
+                    <p><b>5.</b> Exprimer $g_n$ en fonction de $n$.</p>
+                    <p><b>6.</b> En déduire que pour tout entier naturel $n$ : $$f_n = 20 000 - 10 000 \times 0,95^n$$</p>
+                    <p><b>7.</b> Clara espère franchir un jour la barre des 30 000 abonnés. Déterminer la limite de la suite $(f_n)$ lorsque $n$ tend vers $+\infty$.</p>
+                    <p><b>8.</b> Conclure quant à l'espoir de Clara : atteindra-t-elle cet objectif avec la dynamique actuelle ?</p>
+
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo2" class="correction">
+                        <div class="corr-step"><b>1.</b> $f_1 = 10000 \times 0,95 + 1000 = 9500 + 1000 = 10500$.<br>$f_2 = 10500 \times 0,95 + 1000 = 9975 + 1000 = 10975$.</div>
+                        <div class="corr-step"><b>2.</b> Perdre 5% revient à multiplier par $1 - 0,05 = 0,95$. Ensuite, on ajoute les $1000$ nouveaux abonnés. Donc le mois suivant $f_{n+1}$ s'écrit bien : $f_{n+1} = 0,95f_n + 1000$.</div>
+                        <div class="corr-step"><b>3.</b> $g_0 = f_0 - 20000 = 10000 - 20000 = -10000$.</div>
+                        <div class="corr-step"><b>4.</b> $g_{n+1} = f_{n+1} - 20000 = (0,95f_n + 1000) - 20000$<br>$g_{n+1} = 0,95f_n - 19000$<br>On factorise par $0,95$ : $g_{n+1} = 0,95(f_n - \frac{19000}{0,95}) = 0,95(f_n - 20000)$.<br>Donc $g_{n+1} = 0,95 g_n$. La suite $(g_n)$ est géométrique de raison $q = 0,95$.</div>
+                        <div class="corr-step"><b>5.</b> Formule explicite : $g_n = g_0 \times q^n = -10000 \times 0,95^n$.</div>
+                        <div class="corr-step"><b>6.</b> Comme $g_n = f_n - 20000$, on a $f_n = g_n + 20000$.<br>En remplaçant $g_n$ : $f_n = -10000 \times 0,95^n + 20000 = 20000 - 10000 \times 0,95^n$.</div>
+                        <div class="corr-step"><b>7.</b> La raison $q = 0,95$ est strictement comprise entre $-1$ et $1$. Donc $\lim_{n \to +\infty} 0,95^n = 0$.<br>Ainsi, $\lim_{n \to +\infty} f_n = 20000 - 10000 \times 0 = 20000$.</div>
+                        <div class="corr-step"><b>8.</b> La limite théorique étant de 20 000 abonnés (plafond de verre visible sur le graphique), la suite est majorée par 20 000. Clara ne pourra jamais franchir la barre des 30 000 abonnés avec cet algorithme.</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo1'; switchSection('exo1');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo3'; switchSection('exo3');">Suivant : Probas <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo3" class="section-view">
+                <div class="title-badge">Aléatoire</div>
+                <div class="card exo">
+                    <h2>Exercice 3 : Probabilités Conditionnelles (4 pts)</h2>
+                    <p>Dans un magasin multimédia, 60% des clients achètent un smartphone (événement $S$) et 40% achètent un ordinateur (événement $O$).<br>Parmi ceux qui achètent un smartphone, 30% souscrivent à une assurance ($A$).<br>Parmi ceux qui achètent un ordinateur, 75% souscrivent à une assurance ($A$).</p>
+
+                    <div class="svg-box">
+                        <svg viewBox="0 0 400 250" width="100%" height="250px">
+                            <defs>
+                                <marker id="arrow2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#005AAA" />
+                                </marker>
+                            </defs>
+                            <path d="M 40 125 L 140 60" stroke="#005AAA" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+                            <path d="M 40 125 L 140 190" stroke="#005AAA" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+                            <path d="M 180 50 L 280 20" stroke="#8CC63F" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+                            <path d="M 180 50 L 280 80" stroke="#EC008C" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+                            <path d="M 180 200 L 280 170" stroke="#8CC63F" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+                            <path d="M 180 200 L 280 230" stroke="#EC008C" stroke-width="2.5" fill="none" marker-end="url(#arrow2)"/>
+                            
+                            <text x="80" y="80" font-family="Poppins" font-weight="bold" fill="#1E293B">0,6</text>
+                            <text x="80" y="175" font-family="Poppins" font-weight="bold" fill="#1E293B">0,4</text>
+                            
+                            <circle cx="160" cy="50" r="18" fill="#005AAA"/>
+                            <text x="160" y="55" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">S</text>
+                            
+                            <circle cx="160" cy="200" r="18" fill="#005AAA"/>
+                            <text x="160" y="205" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">O</text>
+
+                            <text x="220" y="25" font-family="Poppins" font-weight="bold" fill="#1E293B">0,3</text>
+                            <text x="220" y="85" font-family="Poppins" font-weight="bold" fill="#1E293B">...</text>
+                            
+                            <text x="220" y="175" font-family="Poppins" font-weight="bold" fill="#1E293B">0,75</text>
+                            <text x="220" y="235" font-family="Poppins" font-weight="bold" fill="#1E293B">...</text>
+
+                            <circle cx="300" cy="20" r="15" fill="#8CC63F"/>
+                            <text x="300" y="25" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">A</text>
+                            <circle cx="300" cy="80" r="15" fill="#EC008C"/>
+                            <text x="300" y="85" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">Ā</text>
+
+                            <circle cx="300" cy="170" r="15" fill="#8CC63F"/>
+                            <text x="300" y="175" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">A</text>
+                            <circle cx="300" cy="230" r="15" fill="#EC008C"/>
+                            <text x="300" y="235" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">Ā</text>
+                        </svg>
+                    </div>
+
+                    <p><b>1.</b> Reproduire l'arbre ci-dessus et compléter les probabilités manquantes sur les branches menant à l'événement $\overline{A}$.</p>
+                    <p><b>2.</b> Calculer la probabilité $P(S \cap A)$. Interpréter ce résultat.</p>
+                    <p><b>3.</b> Calculer la probabilité que le client ait souscrit une assurance ($P(A)$).</p>
+                    <p><b>4.</b> Un client a souscrit une assurance. Quelle est la probabilité qu'il ait acheté un ordinateur ? (Arrondir à $10^{-3}$).</p>
+
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo3" class="correction">
+                        <div class="corr-step"><b>1.</b> La somme des probabilités issues d'un même nœud vaut 1.<br>$P_S(\overline{A}) = 1 - 0,3 = 0,7$.<br>$P_O(\overline{A}) = 1 - 0,75 = 0,25$.</div>
+                        <div class="corr-step"><b>2.</b> $P(S \cap A) = P(S) \times P_S(A) = 0,6 \times 0,3 = 0,18$.<br>Interprétation : 18% de l'ensemble des clients achètent un smartphone ET souscrivent une assurance.</div>
+                        <div class="corr-step"><b>3.</b> Les événements $S$ et $O$ forment une partition de l'univers. D'après la formule des probabilités totales :<br>$P(A) = P(S \cap A) + P(O \cap A)$.<br>On calcule d'abord $P(O \cap A) = 0,4 \times 0,75 = 0,30$.<br>Donc $P(A) = 0,18 + 0,30 = 0,48$.</div>
+                        <div class="corr-step"><b>4.</b> On cherche la probabilité conditionnelle $P_A(O)$.<br>Formule de Bayes : $P_A(O) = \frac{P(O \cap A)}{P(A)}$.<br>$P_A(O) = \frac{0,30}{0,48} = 0,625$.<br>La probabilité est de 62,5%.</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo2'; switchSection('exo2');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="window.location.href='index.html'">Finir l'épreuve 🏆</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+<script>
+// ==========================================
+// BANQUE DE DONNÉES DU QCM (12 Questions)
+// 5 Pourcentages, 2 Equations, 2 Fractions, 1 Prix, 1 Dérivée, 1 Scalaire
+// ==========================================
+const qcmData = [
+    { q: "Calculer 40% de 250.", opts: ["100", "40", "250", "1000"], ans: 0, corr: "$0,40 \\times 250 = 100$." },
+    { q: "Augmenter une valeur de 20% revient à la multiplier par :", opts: ["$1,2$", "$0,2$", "$0,8$", "$1,02$"], ans: 0, corr: "Coefficient multiplicateur : $CM = 1 + \\frac{t}{100} = 1 + 0,20 = 1,2$." },
+    { q: "Diminuer un prix de 25% revient à le multiplier par :", opts: ["$0,75$", "$1,25$", "$0,25$", "$-0,25$"], ans: 0, corr: "Coefficient multiplicateur : $CM = 1 - \\frac{25}{100} = 0,75$." },
+    { q: "Quelle est la proportion de 30 par rapport à 150 ?", opts: ["20%", "30%", "15%", "25%"], ans: 0, corr: "$\\frac{30}{150} = \\frac{1}{5} = 0,2 = 20\\%$." },
+    { q: "Une action grimpe de 10% puis chute de 10%. Globalement, elle a :", opts: ["Baissé de 1%", "Stagné (0%)", "Augmenté de 1%", "Baissé de 10%"], ans: 0, corr: "Le coefficient global est $1,1 \\times 0,9 = 0,99$. Or $0,99 = 1 - 0,01$. C'est une baisse de 1%." },
+    { q: "Résoudre : $3x - 5 = x + 7$", opts: ["$x = 6$", "$x = 1$", "$x = -6$", "$x = 12$"], ans: 0, corr: "$3x - x = 7 + 5 \\iff 2x = 12 \\iff x = 6$." },
+    { q: "Combien de solutions admet $x^2 + x + 5 = 0$ ?", opts: ["0", "1", "2", "3"], ans: 0, corr: "$\\Delta = 1^2 - 4(1)(5) = 1 - 20 = -19$. Le discriminant est négatif, il n'y a aucune solution réelle." },
+    { q: "Calculer : $\\frac{2}{3} + \\frac{1}{4}$", opts: ["$\\frac{11}{12}$", "$\\frac{3}{7}$", "$\\frac{8}{12}$", "$\\frac{3}{12}$"], ans: 0, corr: "Dénominateur commun (12) : $\\frac{8}{12} + \\frac{3}{12} = \\frac{11}{12}$." },
+    { q: "Calculer : $\\frac{5}{6} \\times \\frac{3}{10}$", opts: ["$\\frac{1}{4}$", "$\\frac{15}{60}$", "$\\frac{8}{16}$", "$\\frac{50}{18}$"], ans: 0, corr: "On multiplie les numérateurs et dénominateurs : $\\frac{15}{60}$, ce qui se simplifie en $\\frac{1}{4}$." },
+    { q: "Un jeu coûte 120€. Il est soldé à -15%. Nouveau prix ?", opts: ["102€", "105€", "100€", "115€"], ans: 0, corr: "Remise : $120 \\times 0,15 = 18$€. Nouveau prix : $120 - 18 = 102$€. (Ou $120 \\times 0,85$)." },
+    { q: "Dérivée de $f(x) = x^3 - 2x^2 + 5$", opts: ["$3x^2 - 4x$", "$x^2 - 4x$", "$3x^2 - 2x + 5$", "$3x^2 - 4$"], ans: 0, corr: "Règle des puissances : $(x^n)' = nx^{n-1}$. La dérivée d'une constante (5) est nulle." },
+    { q: "Soient $\\vec{u}(2 ; -3)$ et $\\vec{v}(4 ; 1)$. Produit scalaire $\\vec{u} \\cdot \\vec{v}$ ?", opts: ["$5$", "$8$", "$-3$", "$11$"], ans: 0, corr: "$xx' + yy' = (2 \\times 4) + (-3 \\times 1) = 8 - 3 = 5$." }
+];
+
+// ==========================================
+// MOTEUR D'AFFICHAGE
+// ==========================================
+const qcmContainer = document.getElementById('qcm-container');
+let htmlQCM = '';
+qcmData.forEach((q, index) => {
+    htmlQCM += `
+        <div class="card" id="qcm-${index}">
+            <p style="font-weight:800; margin-bottom:15px; font-size:1.15rem;">Q${index+1}. ${q.q}</p>
+            <div class="qcm-grid">
+                ${q.opts.map((opt, i) => `<div class="qcm-opt" onclick="checkAnswer(${index}, ${i}, ${q.ans})">${opt}</div>`).join('')}
+            </div>
+            <div class="correction" id="corr-qcm-${index}">
+                <b>Correction :</b><br>${q.corr}
+            </div>
+        </div>
+    `;
+});
+qcmContainer.innerHTML = htmlQCM;
+
+function switchSection(id) {
+    document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('content-wrapper').scrollTo({ top: 0, behavior: 'smooth' });
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function checkAnswer(qIndex, selectedIdx, correctIdx) {
+    const card = document.getElementById(`qcm-${qIndex}`);
+    if(card.classList.contains('answered')) return;
+    card.classList.add('answered');
+
+    const options = card.querySelectorAll('.qcm-opt');
+    options.forEach((opt, idx) => {
+        if(idx === correctIdx) opt.classList.add('correct');
+        else if (idx === selectedIdx) opt.classList.add('wrong');
+        opt.style.pointerEvents = 'none';
+    });
+
+    document.getElementById(`corr-qcm-${qIndex}`).classList.add('show');
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function toggleCorr(id) {
+    const el = document.getElementById(id);
+    const btn = el.previousElementSibling;
+    if(el.classList.contains('show')) {
+        el.classList.remove('show');
+        btn.innerText = "Afficher le corrigé détaillé";
+    } else {
+        el.classList.add('show');
+        btn.innerText = "Cacher le corrigé";
+        if(window.MathJax) MathJax.typesetPromise();
+    }
+}
+</script>
+
+</body>
+</html>
