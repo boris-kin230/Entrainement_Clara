@@ -144,27 +144,27 @@
                 <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 Accueil
             </a>
-            <button class="btn-icon btn-pdf" onclick="alert('Génération du PDF LaTeX de l\'épreuve 3 (Niveau Expert)...')">
+            <button class="btn-icon btn-pdf" onclick="alert('Génération du PDF LaTeX de l\'épreuve 3...')">
                 <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                 PDF
             </button>
         </div>
         <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
             <option value="auto">1. Automatisme (12 QCM)</option>
-            <option value="exo1">2. Exercice 1 : Fonctions Exponentielles</option>
-            <option value="exo2">3. Exercice 2 : Suites (Le Projet de Clara)</option>
-            <option value="exo3">4. Exercice 3 : Probabilités (Studio Photo)</option>
-            <option value="exo4">5. Exercice 4 : Géométrie Analytique</option>
+            <option value="exo1">2. Exercice 1 : Fonctions</option>
+            <option value="exo2">3. Exercice 2 : Suites</option>
+            <option value="exo3">4. Exercice 3 : Probabilités</option>
+            <option value="exo4">5. Exercice 4 : Géométrie</option>
         </select>
     </header>
 
     <div id="content-wrapper">
         <main>
             <div id="auto" class="section-view active">
-                <div class="title-badge">Échauffement Expert</div>
+                <div class="title-badge">Entrainement</div>
                 <div class="card">
                     <h2>Automatisme - 12 Questions</h2>
-                    <p>Respect des quotas : 5 pourcentages, 2 équations, 2 fractions, 1 prix, 1 dérivée, 1 scalaire. Coche la bonne réponse.</p>
+                    <p>Coche une réponse.</p>
                 </div>
 
                 <div id="qcm-container"></div>
@@ -177,7 +177,7 @@
             <div id="exo1" class="section-view">
                 <div class="title-badge">Analyse</div>
                 <div class="card exo">
-                    <h2>Exercice 1 : Fonction Exponentielle (8 pts)</h2>
+                    <h2>Exercice 1 : Fonction </h2>
                     <p>Soit la fonction $f$ définie sur $\mathbb{R}$ par : $$f(x) = (x - 2)e^x$$ On note $\mathcal{C}_f$ sa courbe représentative.</p>
                     <hr style="border:0; border-top:2px solid #E2E8F0; margin: 20px 0;">
                     <p><b>1.</b> Calculer la valeur exacte de $f(0)$ et $f(2)$.</p>
@@ -189,7 +189,7 @@
                     <p><b>7.</b> Déterminer l'équation de la tangente $\mathcal{T}$ au point d'abscisse $x_0 = 0$.</p>
                     <p><b>8.</b> Résoudre l'inéquation $f(x) > 0$. Interpréter graphiquement.</p>
                     
-                    <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé détaillé</button>
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé</button>
                     
                     <div id="corr-exo1" class="correction">
                         <div class="corr-step"><b>1.</b> $f(0) = (0 - 2)e^0 = -2 \times 1 = -2$.<br>$f(2) = (2 - 2)e^2 = 0 \times e^2 = 0$.</div>
@@ -212,7 +212,7 @@
             <div id="exo2" class="section-view">
                 <div class="title-badge">Modélisation</div>
                 <div class="card exo">
-                    <h2>Exercice 2 : L'objectif de Clara (8 pts)</h2>
+                    <h2>Exercice 2 : L'objectif de Clara</h2>
                     <p>Clara souhaite s'acheter un appareil photo professionnel qui coûte 1 500 €. Elle ouvre un compte épargne spécial "Projet" sur lequel elle place initialement 500 €. La banque lui verse 2% d'intérêts à la fin de chaque mois. De plus, Clara s'engage à déposer 20 € supplémentaires chaque mois.</p>
                     <p>On modélise le solde du compte au mois $n$ par la suite $(u_n)$. Ainsi, $u_0 = 500$.</p>
 
@@ -244,7 +244,7 @@
                     <p><b>7.</b> Calculer le solde du compte au bout de 12 mois (arrondir à l'euro).</p>
                     <p><b>8.</b> À l'aide de la calculatrice, déterminer au bout de combien de mois Clara pourra acheter son appareil photo (soit $u_n \ge 1500$).</p>
 
-                    <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé détaillé</button>
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé</button>
                     
                     <div id="corr-exo2" class="correction">
                         <div class="corr-step"><b>1.</b> $u_1 = 500 + 500 \times 0,02 + 20 = 500 + 10 + 20 = 530$€.<br>$u_2 = 530 \times 1,02 + 20 = 540,60 + 20 = 560,60$€.</div>
@@ -267,7 +267,7 @@
             <div id="exo3" class="section-view">
                 <div class="title-badge">Aléatoire</div>
                 <div class="card exo">
-                    <h2>Exercice 3 : Le Studio Photo (8 pts)</h2>
+                    <h2>Exercice 3 : Le Studio Photo</h2>
                     <p>Clara propose deux types de prestations dans son studio : les "Portraits" (événement $P$) qui représentent 60% de ses commandes, et les "Paysages/Événements" (événement $\overline{P}$).</p>
                     <p>Elle retouche minutieusement ses photos. Pour un Portrait, elle effectue une retouche avancée (événement $E$) dans 80% des cas. Pour un Paysage, elle fait une retouche avancée dans seulement 30% des cas.</p>
 
@@ -321,7 +321,7 @@
                     <p><b>7.</b> Calculer l'espérance $E(X)$.</p>
                     <p><b>8.</b> Interpréter le résultat de l'espérance dans le contexte du studio photo.</p>
 
-                    <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé détaillé</button>
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé</button>
                     
                     <div id="corr-exo3" class="correction">
                         <div class="corr-step"><b>1.</b> La somme des probabilités des branches issues du nœud $\overline{P}$ vaut 1.<br>$P_{\overline{P}}(\overline{E}) = 1 - 0,3 = 0,7$.</div>
@@ -344,7 +344,7 @@
             <div id="exo4" class="section-view">
                 <div class="title-badge">Espace & Plan</div>
                 <div class="card exo">
-                    <h2>Exercice 4 : Géométrie du Plan (8 pts)</h2>
+                    <h2>Exercice 4 : Géométrie</h2>
                     <p>Dans un repère orthonormé $(O; \vec{i}, \vec{j})$, on donne les points : $A(-3 ; 1)$, $B(5 ; 3)$ et $C(1 ; 5)$.</p>
 
                     <div class="svg-box">
@@ -376,7 +376,7 @@
                     <p><b>7.</b> Donner l'équation cartésienne du cercle $\mathcal{C}$.</p>
                     <p><b>8.</b> Le point $C(1 ; 5)$ appartient-il au cercle $\mathcal{C}$ ? Justifier par le calcul.</p>
 
-                    <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé détaillé</button>
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé</button>
                     
                     <div id="corr-exo4" class="correction">
                         <div class="corr-step"><b>1.</b> $\vec{AB}(5 - (-3) ; 3 - 1) \implies \vec{AB}(8 ; 2)$.<br>$\vec{AC}(1 - (-3) ; 5 - 1) \implies \vec{AC}(4 ; 4)$.</div>
