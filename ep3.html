@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Épreuve 3 - Maths Spé 1ère</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. VARIABLES ET RESET IPHONE
+           ========================================================================== */
+        :root {
+            --nathan-green: #8CC63F; --nathan-blue: #005AAA; --nathan-pink: #EC008C; 
+            --nathan-cyan: #00AEEF; --nathan-yellow: #FFF200; --bg-app: #FCFDEE; 
+            --bg-card: #FFFFFF; --text-main: #1E293B; --text-light: #475569;
+            --radius: 16px; --shadow: 0 10px 25px rgba(0, 90, 170, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            width: 100vw; height: 100dvh; overflow: hidden; position: fixed;
+            background-color: var(--bg-app); color: var(--text-main); touch-action: none;
+        }
+
+        /* ==========================================================================
+           2. HEADER ET NAVIGATION STICKY
+           ========================================================================== */
+        header {
+            background: var(--nathan-blue); padding: env(safe-area-inset-top) 20px 15px 20px;
+            display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-bottom: 4px solid var(--nathan-pink);
+        }
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; }
+        
+        .btn-icon {
+            background: rgba(255,255,255,0.1); color: white; border: none; padding: 12px 18px;
+            border-radius: 12px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.2s;
+        }
+        .btn-icon:active { transform: scale(0.95); }
+        .btn-pdf { background: var(--nathan-cyan); }
+
+        .nav-select {
+            width: 100%; padding: 15px 20px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);
+            background: var(--nathan-blue); color: white; font-weight: 800; font-size: 1.05rem;
+            outline: none; appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 20px top 50%; background-size: 14px auto;
+        }
+
+        /* ==========================================================================
+           3. MOTEUR D'AFFICHAGE DES SECTIONS
+           ========================================================================== */
+        #content-wrapper {
+            height: calc(100dvh - 140px); overflow-y: auto; -webkit-overflow-scrolling: touch;
+            padding: 20px 20px 60px 20px;
+        }
+
+        main { max-width: 800px; margin: 0 auto; }
+        .section-view { display: none; animation: fadeIn 0.4s ease; }
+        .section-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .title-badge {
+            display: inline-block; background: var(--nathan-yellow); color: var(--nathan-blue);
+            padding: 8px 20px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; margin-bottom: 20px;
+        }
+
+        /* ==========================================================================
+           4. CARTES ET QCM
+           ========================================================================== */
+        .card {
+            background: var(--bg-card); border-radius: var(--radius); padding: 30px 20px;
+            margin-bottom: 25px; box-shadow: var(--shadow); border-top: 6px solid var(--nathan-pink);
+        }
+        .card.exo { border-top-color: var(--nathan-blue); }
+        .card h2 { color: var(--nathan-blue); margin-bottom: 20px; font-size: 1.4rem; font-weight: 800; }
+        .card p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px; }
+
+        .qcm-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+        @media(min-width: 600px) { .qcm-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .qcm-opt {
+            background: #F8FAFC; border: 3px solid #E2E8F0; border-radius: 12px; padding: 18px;
+            text-align: center; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
+        }
+        .qcm-opt:active { transform: scale(0.96); }
+        .qcm-opt.correct { border-color: var(--nathan-green); background: #F0FDF4; color: #166534; box-shadow: 0 0 15px rgba(140,198,63,0.3); }
+        .qcm-opt.wrong { border-color: var(--nathan-pink); background: #FDF2F8; color: #9D174D; }
+
+        /* ==========================================================================
+           5. CORRECTIONS & BOUTONS
+           ========================================================================== */
+        .correction {
+            background: #F8FAFC; border-left: 6px solid var(--nathan-cyan); padding: 20px;
+            border-radius: 0 12px 12px 0; margin-top: 25px; display: none; font-size: 1.05rem; line-height: 1.8;
+        }
+        .correction.show { display: block; animation: fadeIn 0.3s ease; }
+        .corr-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #E2E8F0; }
+        .corr-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .btn-corr {
+            width: 100%; background: #F1F5F9; color: var(--nathan-blue); border: 3px solid var(--nathan-blue);
+            padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.15rem; cursor: pointer; margin-top: 25px;
+            transition: 0.2s;
+        }
+        .btn-corr:active { background: #E2E8F0; transform: scale(0.98); }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; margin-top: 35px; }
+        .btn-nav {
+            flex: 1; padding: 18px; border-radius: 14px; border: none; font-weight: 800;
+            font-size: 1.05rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; color: white;
+        }
+        .btn-prev { background: #94A3B8; }
+        .btn-next { background: var(--nathan-cyan); box-shadow: 0 4px 15px rgba(0,174,239,0.3); }
+        
+        /* ==========================================================================
+           6. SVG & DESSINS INCROYABLES
+           ========================================================================== */
+        .svg-box {
+            width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 16px;
+            padding: 20px; margin: 25px 0; display: flex; justify-content: center; align-items: center;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <a href="index.html" class="btn-icon">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                Accueil
+            </a>
+            <button class="btn-icon btn-pdf" onclick="alert('Génération du PDF LaTeX de l\'épreuve 3 (Niveau Expert)...')">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                PDF
+            </button>
+        </div>
+        <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
+            <option value="auto">1. Automatisme (12 QCM)</option>
+            <option value="exo1">2. Exercice 1 : Fonctions Exponentielles</option>
+            <option value="exo2">3. Exercice 2 : Suites (Le Projet de Clara)</option>
+            <option value="exo3">4. Exercice 3 : Probabilités (Studio Photo)</option>
+            <option value="exo4">5. Exercice 4 : Géométrie Analytique</option>
+        </select>
+    </header>
+
+    <div id="content-wrapper">
+        <main>
+            <div id="auto" class="section-view active">
+                <div class="title-badge">Échauffement Expert</div>
+                <div class="card">
+                    <h2>Automatisme - 12 Questions</h2>
+                    <p>Respect des quotas : 5 pourcentages, 2 équations, 2 fractions, 1 prix, 1 dérivée, 1 scalaire. Coche la bonne réponse.</p>
+                </div>
+
+                <div id="qcm-container"></div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo1'; switchSection('exo1');">Suivant : Fonctions <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo1" class="section-view">
+                <div class="title-badge">Analyse</div>
+                <div class="card exo">
+                    <h2>Exercice 1 : Fonction Exponentielle (8 pts)</h2>
+                    <p>Soit la fonction $f$ définie sur $\mathbb{R}$ par : $$f(x) = (x - 2)e^x$$ On note $\mathcal{C}_f$ sa courbe représentative.</p>
+                    <hr style="border:0; border-top:2px solid #E2E8F0; margin: 20px 0;">
+                    <p><b>1.</b> Calculer la valeur exacte de $f(0)$ et $f(2)$.</p>
+                    <p><b>2.</b> Sachant que $(e^x)' = e^x$, démontrer que $f'(x) = (x - 1)e^x$.</p>
+                    <p><b>3.</b> Justifier que le signe de $f'(x)$ ne dépend que de $(x - 1)$.</p>
+                    <p><b>4.</b> Dresser le tableau de signe de $f'(x)$ sur $\mathbb{R}$.</p>
+                    <p><b>5.</b> En déduire le tableau de variations complet de $f$.</p>
+                    <p><b>6.</b> Quel est le minimum global de la fonction sur $\mathbb{R}$ ?</p>
+                    <p><b>7.</b> Déterminer l'équation de la tangente $\mathcal{T}$ au point d'abscisse $x_0 = 0$.</p>
+                    <p><b>8.</b> Résoudre l'inéquation $f(x) > 0$. Interpréter graphiquement.</p>
+                    
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo1" class="correction">
+                        <div class="corr-step"><b>1.</b> $f(0) = (0 - 2)e^0 = -2 \times 1 = -2$.<br>$f(2) = (2 - 2)e^2 = 0 \times e^2 = 0$.</div>
+                        <div class="corr-step"><b>2.</b> $f$ est de la forme $u \times v$ avec $u(x) = x-2 \implies u'(x)=1$ et $v(x)=e^x \implies v'(x)=e^x$.<br>$f'(x) = u'v + uv' = 1 \cdot e^x + (x - 2)e^x = e^x(1 + x - 2) = (x - 1)e^x$.</div>
+                        <div class="corr-step"><b>3.</b> Pour tout réel $x$, la fonction exponentielle $e^x > 0$. Ainsi, le signe du produit $(x-1)e^x$ dépend exclusivement du signe du facteur $(x-1)$.</div>
+                        <div class="corr-step"><b>4.</b> $x - 1 = 0 \iff x = 1$.<br>Donc $f'(x) < 0$ sur $]-\infty ; 1[$ et $f'(x) > 0$ sur $]1 ; +\infty[$.</div>
+                        <div class="corr-step"><b>5.</b> La fonction $f$ est strictement décroissante sur $]-\infty ; 1]$ et strictement croissante sur $[1 ; +\infty[$.</div>
+                        <div class="corr-step"><b>6.</b> Le minimum est atteint en $x = 1$. Sa valeur est $f(1) = (1 - 2)e^1 = -e$. (Environ -2,718).</div>
+                        <div class="corr-step"><b>7.</b> $\mathcal{T} : y = f'(0)(x-0) + f(0)$.<br>$f'(0) = (0 - 1)e^0 = -1$. On a vu que $f(0) = -2$.<br>Donc $y = -1(x) - 2 \implies y = -x - 2$.</div>
+                        <div class="corr-step"><b>8.</b> $f(x) > 0 \iff (x - 2)e^x > 0$. Comme $e^x > 0$, cela équivaut à $x - 2 > 0 \iff x > 2$.<br>Graphiquement, la courbe $\mathcal{C}_f$ est strictement au-dessus de l'axe des abscisses sur l'intervalle $]2 ; +\infty[$.</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='auto'; switchSection('auto');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo2'; switchSection('exo2');">Suivant : Suites <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo2" class="section-view">
+                <div class="title-badge">Modélisation</div>
+                <div class="card exo">
+                    <h2>Exercice 2 : L'objectif de Clara (8 pts)</h2>
+                    <p>Clara souhaite s'acheter un appareil photo professionnel qui coûte 1 500 €. Elle ouvre un compte épargne spécial "Projet" sur lequel elle place initialement 500 €. La banque lui verse 2% d'intérêts à la fin de chaque mois. De plus, Clara s'engage à déposer 20 € supplémentaires chaque mois.</p>
+                    <p>On modélise le solde du compte au mois $n$ par la suite $(u_n)$. Ainsi, $u_0 = 500$.</p>
+
+                    <div class="svg-box" style="background: #1E293B; border-radius: 20px; padding: 0;">
+                        <svg viewBox="0 0 350 220" width="100%" height="220px" style="border-radius: 20px;">
+                            <rect x="0" y="0" width="350" height="60" fill="#0F172A"/>
+                            <text x="20" y="35" font-family="Poppins" font-size="14" font-weight="bold" fill="#94A3B8">MON PROJET</text>
+                            
+                            <text x="20" y="90" font-family="Poppins" font-size="12" font-weight="bold" fill="#64748B">SOLDE ACTUEL</text>
+                            <text x="20" y="125" font-family="Poppins" font-size="32" font-weight="800" fill="#8CC63F">500,00 €</text>
+                            <rect x="180" y="100" width="100" height="25" rx="12.5" fill="rgba(0,174,239,0.2)"/>
+                            <text x="230" y="117" font-family="Poppins" font-size="11" font-weight="bold" fill="#00AEEF" text-anchor="middle">+2.00% / mois</text>
+
+                            <rect x="20" y="150" width="310" height="50" rx="10" fill="#334155"/>
+                            <text x="35" y="170" font-family="Poppins" font-size="12" font-weight="bold" fill="#F8FAFC">Objectif Appareil Photo</text>
+                            <text x="260" y="170" font-family="Poppins" font-size="12" font-weight="bold" fill="#94A3B8">Cible: 1 500 €</text>
+                            
+                            <rect x="35" y="180" width="280" height="8" rx="4" fill="#0F172A"/>
+                            <rect x="35" y="180" width="93" height="8" rx="4" fill="#EC008C"/> <text x="325" y="184" font-family="Poppins" font-size="10" font-weight="bold" fill="#EC008C" text-anchor="start">33%</text>
+                        </svg>
+                    </div>
+
+                    <p><b>1.</b> Calculer le solde au bout de 1 mois ($u_1$) et 2 mois ($u_2$).</p>
+                    <p><b>2.</b> Justifier que pour tout entier $n$, la relation de récurrence est $u_{n+1} = 1,02u_n + 20$.</p>
+                    <p><b>3.</b> On introduit la suite auxiliaire $(v_n)$ définie par $v_n = u_n + 1000$. Calculer $v_0$.</p>
+                    <p><b>4.</b> Démontrer que la suite $(v_n)$ est géométrique et préciser sa raison $q$.</p>
+                    <p><b>5.</b> Exprimer $v_n$ en fonction de $n$.</p>
+                    <p><b>6.</b> En déduire que pour tout entier naturel $n$ : $u_n = 1500 \times 1,02^n - 1000$.</p>
+                    <p><b>7.</b> Calculer le solde du compte au bout de 12 mois (arrondir à l'euro).</p>
+                    <p><b>8.</b> À l'aide de la calculatrice, déterminer au bout de combien de mois Clara pourra acheter son appareil photo (soit $u_n \ge 1500$).</p>
+
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo2" class="correction">
+                        <div class="corr-step"><b>1.</b> $u_1 = 500 + 500 \times 0,02 + 20 = 500 + 10 + 20 = 530$€.<br>$u_2 = 530 \times 1,02 + 20 = 540,60 + 20 = 560,60$€.</div>
+                        <div class="corr-step"><b>2.</b> Ajouter 2% d'intérêts revient à multiplier le solde par $1 + \frac{2}{100} = 1,02$. Ensuite, Clara dépose 20€. D'où $u_{n+1} = 1,02u_n + 20$.</div>
+                        <div class="corr-step"><b>3.</b> $v_0 = u_0 + 1000 = 500 + 1000 = 1500$.</div>
+                        <div class="corr-step"><b>4.</b> $v_{n+1} = u_{n+1} + 1000$<br>$v_{n+1} = (1,02u_n + 20) + 1000 = 1,02u_n + 1020$<br>On factorise par 1,02 : $v_{n+1} = 1,02(u_n + \frac{1020}{1,02}) = 1,02(u_n + 1000) = 1,02 v_n$.<br>La suite $(v_n)$ est géométrique de raison $q = 1,02$.</div>
+                        <div class="corr-step"><b>5.</b> Formule explicite : $v_n = v_0 \times q^n = 1500 \times 1,02^n$.</div>
+                        <div class="corr-step"><b>6.</b> Comme $v_n = u_n + 1000$, alors $u_n = v_n - 1000$.<br>Donc $u_n = 1500 \times 1,02^n - 1000$.</div>
+                        <div class="corr-step"><b>7.</b> Pour $n=12$ : $u_{12} = 1500 \times 1,02^{12} - 1000 \approx 1500 \times 1,2682 - 1000 \approx 1902,36 - 1000 \approx 902$€.</div>
+                        <div class="corr-step"><b>8.</b> On cherche $n$ tel que $u_n \ge 1500$.<br>$1500 \times 1,02^n - 1000 \ge 1500 \iff 1500 \times 1,02^n \ge 2500 \iff 1,02^n \ge \frac{2500}{1500} \iff 1,02^n \ge \frac{5}{3} \approx 1,666$.<br>À la calculatrice : $1,02^{25} \approx 1,64$ et $1,02^{26} \approx 1,67$.<br>Clara pourra s'acheter son appareil photo au bout de 26 mois (soit 2 ans et 2 mois).</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo1'; switchSection('exo1');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo3'; switchSection('exo3');">Suivant : Probas <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo3" class="section-view">
+                <div class="title-badge">Aléatoire</div>
+                <div class="card exo">
+                    <h2>Exercice 3 : Le Studio Photo (8 pts)</h2>
+                    <p>Clara propose deux types de prestations dans son studio : les "Portraits" (événement $P$) qui représentent 60% de ses commandes, et les "Paysages/Événements" (événement $\overline{P}$).</p>
+                    <p>Elle retouche minutieusement ses photos. Pour un Portrait, elle effectue une retouche avancée (événement $E$) dans 80% des cas. Pour un Paysage, elle fait une retouche avancée dans seulement 30% des cas.</p>
+
+                    <div class="svg-box">
+                        <svg viewBox="0 0 450 250" width="100%" height="250px">
+                            <defs>
+                                <marker id="arrow3" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+                                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#005AAA" />
+                                </marker>
+                            </defs>
+                            <path d="M 60 125 L 170 60" stroke="#005AAA" stroke-width="2.5" fill="none" marker-end="url(#arrow3)"/>
+                            <path d="M 60 125 L 170 190" stroke="#005AAA" stroke-width="2.5" fill="none" marker-end="url(#arrow3)"/>
+                            <path d="M 210 50 L 320 20" stroke="#00AEEF" stroke-width="2.5" fill="none" marker-end="url(#arrow3)"/>
+                            <path d="M 210 50 L 320 80" stroke="#EC008C" stroke-width="2.5" fill="none" marker-end="url(#arrow3)"/>
+                            <path d="M 210 200 L 320 170" stroke="#00AEEF" stroke-width="2.5" fill="none" marker-end="url(#arrow3)"/>
+                            <path d="M 210 200 L 320 230" stroke="#EC008C" stroke-width="2.5" fill="none" marker-end="url(#arrow3)"/>
+                            
+                            <text x="100" y="80" font-family="Poppins" font-weight="bold" fill="#1E293B">0,6</text>
+                            <text x="100" y="180" font-family="Poppins" font-weight="bold" fill="#1E293B">0,4</text>
+                            
+                            <circle cx="190" cy="50" r="18" fill="#005AAA"/>
+                            <text x="190" y="55" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">P</text>
+                            
+                            <circle cx="190" cy="200" r="18" fill="#005AAA"/>
+                            <text x="190" y="205" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">P</text>
+                            <line x1="183" y1="185" x2="197" y2="185" stroke="white" stroke-width="2"/> <text x="250" y="25" font-family="Poppins" font-weight="bold" fill="#1E293B">0,8</text>
+                            <text x="250" y="85" font-family="Poppins" font-weight="bold" fill="#1E293B">0,2</text>
+                            <text x="250" y="175" font-family="Poppins" font-weight="bold" fill="#1E293B">0,3</text>
+                            <text x="250" y="235" font-family="Poppins" font-weight="bold" fill="#1E293B">...</text>
+
+                            <circle cx="340" cy="20" r="15" fill="#00AEEF"/>
+                            <text x="340" y="25" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">E</text>
+                            <circle cx="340" cy="80" r="15" fill="#EC008C"/>
+                            <text x="340" y="85" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">E</text>
+                            <line x1="334" y1="68" x2="346" y2="68" stroke="white" stroke-width="2"/>
+
+                            <circle cx="340" cy="170" r="15" fill="#00AEEF"/>
+                            <text x="340" y="175" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">E</text>
+                            <circle cx="340" cy="230" r="15" fill="#EC008C"/>
+                            <text x="340" y="235" font-family="Poppins" font-weight="bold" fill="white" text-anchor="middle">E</text>
+                            <line x1="334" y1="218" x2="346" y2="218" stroke="white" stroke-width="2"/>
+                        </svg>
+                    </div>
+
+                    <p><b>1.</b> Reproduire l'arbre pondéré et déterminer la probabilité manquante $P_{\overline{P}}(\overline{E})$.</p>
+                    <p><b>2.</b> Traduire par une phrase l'événement $P \cap E$ et calculer sa probabilité.</p>
+                    <p><b>3.</b> Calculer la probabilité que Clara effectue une retouche avancée $P(E)$.</p>
+                    <p><b>4.</b> Clara est en train de faire une retouche avancée sur son logiciel. Quelle est la probabilité que ce soit une photo de Paysage ? (Arrondir à $10^{-2}$).</p>
+                    <p><b>5.</b> Les événements $P$ et $E$ sont-ils indépendants ? Justifier.</p>
+                    <p><b>6.</b> Clara facture une retouche simple 10€ et une retouche avancée 30€. On note $X$ la variable aléatoire du gain par retouche. Donner la loi de probabilité de $X$.</p>
+                    <p><b>7.</b> Calculer l'espérance $E(X)$.</p>
+                    <p><b>8.</b> Interpréter le résultat de l'espérance dans le contexte du studio photo.</p>
+
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo3" class="correction">
+                        <div class="corr-step"><b>1.</b> La somme des probabilités des branches issues du nœud $\overline{P}$ vaut 1.<br>$P_{\overline{P}}(\overline{E}) = 1 - 0,3 = 0,7$.</div>
+                        <div class="corr-step"><b>2.</b> $P \cap E$ signifie : "La photo est un portrait ET elle a subi une retouche avancée".<br>$P(P \cap E) = P(P) \times P_P(E) = 0,6 \times 0,8 = 0,48$.</div>
+                        <div class="corr-step"><b>3.</b> Les événements $P$ et $\overline{P}$ forment une partition. D'après les probabilités totales :<br>$P(E) = P(P \cap E) + P(\overline{P} \cap E) = 0,48 + (0,4 \times 0,3) = 0,48 + 0,12 = 0,60$.</div>
+                        <div class="corr-step"><b>4.</b> On cherche $P_E(\overline{P})$. Formule de Bayes :<br>$P_E(\overline{P}) = \frac{P(\overline{P} \cap E)}{P(E)} = \frac{0,12}{0,60} = 0,20$. Il y a 20% de chance.</div>
+                        <div class="corr-step"><b>5.</b> On compare $P(P \cap E)$ et $P(P) \times P(E)$.<br>$P(P \cap E) = 0,48$.<br>$P(P) \times P(E) = 0,6 \times 0,6 = 0,36$.<br>Comme $0,48 \neq 0,36$, les événements ne sont pas indépendants.</div>
+                        <div class="corr-step"><b>6.</b> $X$ peut prendre les valeurs $30$ (si retouche avancée $E$) et $10$ (si retouche simple $\overline{E}$).<br>$P(X = 30) = P(E) = 0,60$.<br>$P(X = 10) = P(\overline{E}) = 1 - 0,60 = 0,40$.</div>
+                        <div class="corr-step"><b>7.</b> $E(X) = 30 \times 0,60 + 10 \times 0,40 = 18 + 4 = 22$.</div>
+                        <div class="corr-step"><b>8.</b> En moyenne, sur un très grand nombre de commandes, Clara gagnera 22 € par prestation de retouche.</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo2'; switchSection('exo2');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo4'; switchSection('exo4');">Suivant : Géométrie <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="exo4" class="section-view">
+                <div class="title-badge">Espace & Plan</div>
+                <div class="card exo">
+                    <h2>Exercice 4 : Géométrie du Plan (8 pts)</h2>
+                    <p>Dans un repère orthonormé $(O; \vec{i}, \vec{j})$, on donne les points : $A(-3 ; 1)$, $B(5 ; 3)$ et $C(1 ; 5)$.</p>
+
+                    <div class="svg-box">
+                        <svg viewBox="-4 0 10 6" width="100%" height="200px" style="background:#fff; border-radius: 8px;">
+                            <pattern id="grid2" width="1" height="1" patternUnits="userSpaceOnUse">
+                                <path d="M 1 0 L 0 0 0 1" fill="none" stroke="#E2E8F0" stroke-width="0.05"/>
+                            </pattern>
+                            <rect x="-4" y="0" width="10" height="6" fill="url(#grid2)" />
+                            <line x1="-4" y1="5" x2="6" y2="5" stroke="#94A3B8" stroke-width="0.08"/> <line x1="0" y1="0" x2="0" y2="6" stroke="#94A3B8" stroke-width="0.08"/> <g transform="scale(1, -1) translate(0, -5)"> <polygon points="-3,1 5,3 1,5" fill="none" stroke="var(--nathan-cyan)" stroke-width="0.06"/>
+                                <circle cx="1" cy="2" r="4.123" fill="none" stroke="var(--nathan-pink)" stroke-dasharray="0.2,0.2" stroke-width="0.05"/>
+                                
+                                <circle cx="-3" cy="1" r="0.12" fill="var(--nathan-blue)"/>
+                                <circle cx="5" cy="3" r="0.12" fill="var(--nathan-blue)"/>
+                                <circle cx="1" cy="5" r="0.12" fill="var(--nathan-blue)"/>
+                            </g>
+                            
+                            <text x="-3.5" y="4.5" font-size="0.5" font-weight="bold" fill="var(--nathan-blue)">A</text>
+                            <text x="5.2" y="2.5" font-size="0.5" font-weight="bold" fill="var(--nathan-blue)">B</text>
+                            <text x="1.2" y="0.5" font-size="0.5" font-weight="bold" fill="var(--nathan-blue)">C</text>
+                        </svg>
+                    </div>
+
+                    <p><b>1.</b> Calculer les coordonnées des vecteurs $\vec{AB}$ et $\vec{AC}$.</p>
+                    <p><b>2.</b> Déterminer les distances exactes $AB$ et $AC$.</p>
+                    <p><b>3.</b> Calculer le produit scalaire $\vec{AB} \cdot \vec{AC}$.</p>
+                    <p><b>4.</b> En déduire que le triangle $ABC$ n'est pas rectangle en $A$.</p>
+                    <p><b>5.</b> Soit $\Omega$ le milieu de $[AB]$. Calculer ses coordonnées.</p>
+                    <p><b>6.</b> Le cercle $\mathcal{C}$ de diamètre $[AB]$ a pour centre $\Omega$. Calculer son rayon exact $R$.</p>
+                    <p><b>7.</b> Donner l'équation cartésienne du cercle $\mathcal{C}$.</p>
+                    <p><b>8.</b> Le point $C(1 ; 5)$ appartient-il au cercle $\mathcal{C}$ ? Justifier par le calcul.</p>
+
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé détaillé</button>
+                    
+                    <div id="corr-exo4" class="correction">
+                        <div class="corr-step"><b>1.</b> $\vec{AB}(5 - (-3) ; 3 - 1) \implies \vec{AB}(8 ; 2)$.<br>$\vec{AC}(1 - (-3) ; 5 - 1) \implies \vec{AC}(4 ; 4)$.</div>
+                        <div class="corr-step"><b>2.</b> $AB = \sqrt{8^2 + 2^2} = \sqrt{64 + 4} = \sqrt{68} = 2\sqrt{17}$.<br>$AC = \sqrt{4^2 + 4^2} = \sqrt{16 + 16} = \sqrt{32} = 4\sqrt{2}$.</div>
+                        <div class="corr-step"><b>3.</b> $\vec{AB} \cdot \vec{AC} = x \times x' + y \times y' = (8 \times 4) + (2 \times 4) = 32 + 8 = 40$.</div>
+                        <div class="corr-step"><b>4.</b> Pour que le triangle soit rectangle en $A$, il faudrait que $\vec{AB} \cdot \vec{AC} = 0$. Ici, $40 \neq 0$, donc l'angle en $A$ n'est pas droit.</div>
+                        <div class="corr-step"><b>5.</b> $\Omega\left(\frac{x_A+x_B}{2} ; \frac{y_A+y_B}{2}\right) = \Omega\left(\frac{-3+5}{2} ; \frac{1+3}{2}\right) = \Omega\left(\frac{2}{2} ; \frac{4}{2}\right) = \Omega(1 ; 2)$.</div>
+                        <div class="corr-step"><b>6.</b> Le rayon $R$ est la moitié du diamètre $AB$.<br>$R = \frac{AB}{2} = \frac{\sqrt{68}}{2} = \frac{2\sqrt{17}}{2} = \sqrt{17}$.</div>
+                        <div class="corr-step"><b>7.</b> L'équation d'un cercle de centre $\Omega(x_{\Omega}, y_{\Omega})$ et de rayon $R$ est : $(x - x_{\Omega})^2 + (y - y_{\Omega})^2 = R^2$.<br>Ici : $(x - 1)^2 + (y - 2)^2 = (\sqrt{17})^2$.<br>Soit $(x - 1)^2 + (y - 2)^2 = 17$.</div>
+                        <div class="corr-step"><b>8.</b> On remplace $x$ et $y$ par les coordonnées de $C(1 ; 5)$ dans l'équation :<br>$(1 - 1)^2 + (5 - 2)^2 = 0^2 + 3^2 = 0 + 9 = 9$.<br>Comme $9 \neq 17$, le point $C$ n'appartient pas au cercle $\mathcal{C}$. Le triangle $ABC$ n'est pas rectangle (ce qui confirme la question 4 d'après le théorème de la médiane !).</div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo3'; switchSection('exo3');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
+                    <button class="btn-nav btn-next" onclick="window.location.href='index.html'">Retour Accueil 🏠</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+<script>
+// ==========================================
+// DONNÉES QCM (12 Questions Expert)
+// 5 Pourcentages, 2 Equations, 2 Fractions, 1 Prix, 1 Dérivée, 1 Scalaire
+// ==========================================
+const qcmData = [
+    { q: "Calculer 15% de 300.", opts: ["45", "15", "30", "300"], ans: 0, corr: "$0,15 \\times 300 = 45$." },
+    { q: "Augmenter une valeur de 10% revient à la multiplier par :", opts: ["$1,1$", "$0,1$", "$1,01$", "$0,9$"], ans: 0, corr: "$CM = 1 + 0,10 = 1,1$." },
+    { q: "Une action perd 25% de sa valeur. Son CM est :", opts: ["$0,75$", "$1,25$", "$-0,25$", "$0,25$"], ans: 0, corr: "$CM = 1 - 0,25 = 0,75$." },
+    { q: "Combien font 40% de 60 ?", opts: ["24", "40", "12", "60"], ans: 0, corr: "$0,40 \\times 60 = 24$." },
+    { q: "75% de 200 vaut :", opts: ["150", "75", "100", "200"], ans: 0, corr: "75% c'est les 3/4. $\\frac{3}{4} \\times 200 = 150$." },
+    { q: "Résoudre : $5x - 3 = 2x + 9$", opts: ["$x = 4$", "$x = 2$", "$x = -4$", "$x = 12$"], ans: 0, corr: "$5x - 2x = 9 + 3 \\iff 3x = 12 \\iff x = 4$." },
+    { q: "Les racines de $x^2 - 3x - 4 = 0$ sont :", opts: ["-1 et 4", "1 et -4", "3 et 4", "Pas de racine"], ans: 0, corr: "$\\Delta = (-3)^2 - 4(1)(-4) = 9 + 16 = 25$. Racines : $x_1 = \\frac{3-5}{2} = -1$ et $x_2 = \\frac{3+5}{2} = 4$." },
+    { q: "Calculer : $\\frac{2}{5} + \\frac{1}{4}$", opts: ["$\\frac{13}{20}$", "$\\frac{3}{9}$", "$\\frac{8}{20}$", "$\\frac{3}{20}$"], ans: 0, corr: "Dénominateur commun (20) : $\\frac{8}{20} + \\frac{5}{20} = \\frac{13}{20}$." },
+    { q: "Calculer : $\\frac{3}{7} \\times \\frac{14}{9}$", opts: ["$\\frac{2}{3}$", "$\\frac{42}{63}$", "$\\frac{17}{16}$", "$\\frac{1}{3}$"], ans: 0, corr: "$\\frac{3 \\times 14}{7 \\times 9} = \\frac{3 \\times 2 \\times 7}{7 \\times 3 \\times 3} = \\frac{2}{3}$." },
+    { q: "Un meuble à 200€ est soldé à -30%. Quel est son prix ?", opts: ["140€", "170€", "60€", "160€"], ans: 0, corr: "Remise : $200 \\times 0,30 = 60$€. Prix final : $200 - 60 = 140$€." },
+    { q: "Dérivée de $f(x) = \\frac{2x+1}{x-1}$", opts: ["$-\\frac{3}{(x-1)^2}$", "$\\frac{2}{(x-1)^2}$", "$-\\frac{1}{(x-1)^2}$", "$\\frac{3}{(x-1)^2}$"], ans: 0, corr: "Formule $(u/v)' = \\frac{u'v - uv'}{v^2} = \\frac{2(x-1) - (2x+1)(1)}{(x-1)^2} = \\frac{2x - 2 - 2x - 1}{(x-1)^2} = -\\frac{3}{(x-1)^2}$." },
+    { q: "Soient $\\vec{u}(-2 ; 5)$ et $\\vec{v}(3 ; 1)$. $\\vec{u} \\cdot \\vec{v} = ?$", opts: ["$-1$", "$11$", "$1$", "$-11$"], ans: 0, corr: "$xx' + yy' = (-2 \\times 3) + (5 \\times 1) = -6 + 5 = -1$." }
+];
+
+// ==========================================
+// MOTEUR D'AFFICHAGE QCM
+// ==========================================
+const qcmContainer = document.getElementById('qcm-container');
+let htmlQCM = '';
+qcmData.forEach((q, index) => {
+    htmlQCM += `
+        <div class="card" id="qcm-${index}">
+            <p style="font-weight:800; margin-bottom:15px; font-size:1.15rem;">Q${index+1}. ${q.q}</p>
+            <div class="qcm-grid">
+                ${q.opts.map((opt, i) => `<div class="qcm-opt" onclick="checkAnswer(${index}, ${i}, ${q.ans})">${opt}</div>`).join('')}
+            </div>
+            <div class="correction" id="corr-qcm-${index}">
+                <b>Correction :</b><br>${q.corr}
+            </div>
+        </div>
+    `;
+});
+qcmContainer.innerHTML = htmlQCM;
+
+function switchSection(id) {
+    document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById('content-wrapper').scrollTo({ top: 0, behavior: 'smooth' });
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function checkAnswer(qIndex, selectedIdx, correctIdx) {
+    const card = document.getElementById(`qcm-${qIndex}`);
+    if(card.classList.contains('answered')) return;
+    card.classList.add('answered');
+
+    const options = card.querySelectorAll('.qcm-opt');
+    options.forEach((opt, idx) => {
+        if(idx === correctIdx) opt.classList.add('correct');
+        else if (idx === selectedIdx) opt.classList.add('wrong');
+        opt.style.pointerEvents = 'none';
+    });
+
+    document.getElementById(`corr-qcm-${qIndex}`).classList.add('show');
+    if(window.MathJax) MathJax.typesetPromise();
+}
+
+function toggleCorr(id) {
+    const el = document.getElementById(id);
+    const btn = el.previousElementSibling;
+    if(el.classList.contains('show')) {
+        el.classList.remove('show');
+        btn.innerText = "Afficher le corrigé détaillé";
+    } else {
+        el.classList.add('show');
+        btn.innerText = "Cacher le corrigé";
+        if(window.MathJax) MathJax.typesetPromise();
+    }
+}
+</script>
+
+</body>
+</html>
