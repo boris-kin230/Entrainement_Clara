@@ -199,7 +199,7 @@
         <div id="auto" class="section-view active">
             <div class="card card-auto">
                 <h2>Automatisme - 12 Questions</h2>
-                <p>Coche la bonne réponse. La correction détaillée rédigée en LaTeX s'affichera immédiatement.</p>
+                <p>Coche la bonne réponse.</p>
             </div>
             <div id="qcm-container"></div>
             <div class="nav-buttons">
@@ -209,7 +209,7 @@
 
         <div id="exo1" class="section-view">
             <div class="card card-exo1">
-                <h2>Exercice 1 : Analyse de Fonction (8 pts)</h2>
+                <h2>Exercice 1 : Fonctions</h2>
                 <p>On considère la fonction $f$ définie sur $\mathbb{R}$ par :</p>
                 <div class="math-block">$\displaystyle f(x) = -2x^3 + 3x^2 + 12x - 5$</div>
                 <p>On note $\mathcal{C}_f$ sa courbe représentative dans un repère orthogonal.</p>
@@ -224,7 +224,7 @@
                 <p><b>7.</b> Déterminer l'équation réduite de la tangente $\mathcal{T}$ au point d'abscisse $x_0 = 0$.</p>
                 <p><b>8.</b> Étudier la position relative de la courbe $\mathcal{C}_f$ par rapport à sa tangente $\mathcal{T}$.</p>
                 
-                <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé détaillé</button>
+                <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé</button>
                 
                 <div id="corr-exo1" class="correction">
                     <div class="corr-step"><b>1.</b> L'intersection avec l'axe des ordonnées correspond à $x = 0$.<br> $f(0) = -2(0)^3 + 3(0)^2 + 12(0) - 5 = -5$. Le point est $(0; -5)$.</div>
@@ -245,7 +245,7 @@
 
         <div id="exo2" class="section-view">
             <div class="card card-exo2">
-                <h2>Exercice 2 : Suites & Probabilités (8 pts)</h2>
+                <h2>Exercice 2 : Suites & Probabilités</h2>
                 <p>Pour financer son école de commerce, Clara a lancé une application de révisions. On s'intéresse à la fidélité de ses utilisateurs mois après mois.<br>Si un utilisateur est abonné le mois $n$, la probabilité qu'il reste abonné le mois $n+1$ est de $0,8$. S'il n'est pas abonné le mois $n$, la probabilité qu'il s'abonne le mois $n+1$ (suite à une publicité) est de $0,3$.<br>On note $A_n$ l'événement "l'utilisateur est abonné le mois $n$" et $p_n = P(A_n)$. Au lancement (mois 0), les testeurs sont tous abonnés, donc $p_0 = 1$.</p>
 
                 <div class="svg-container">
@@ -288,7 +288,7 @@
                 <p><b>7.</b> Étudier le sens de variation de la suite $(p_n)$.</p>
                 <p><b>8.</b> Calculer la limite de $p_n$ quand $n$ tend vers l'infini. Quelle conclusion Clara peut-elle en tirer sur la fidélisation à long terme ?</p>
 
-                <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé détaillé</button>
+                <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé</button>
                 
                 <div id="corr-exo2" class="correction">
                     <div class="corr-step"><b>1.</b> L'arbre possède deux branches primaires : $A_n$ (probabilité $p_n$) et $\overline{A_n}$ (probabilité $1 - p_n$). De $A_n$, on va vers $A_{n+1}$ (0,8) et $\overline{A_{n+1}}$ (0,2). De $\overline{A_n}$, on va vers $A_{n+1}$ (0,3) et $\overline{A_{n+1}}$ (0,7).</div>
@@ -309,7 +309,7 @@
 
         <div id="exo3" class="section-view">
             <div class="card card-exo3">
-                <h2>Exercice 3 : Géométrie Analytique (4 pts)</h2>
+                <h2>Exercice 3 : Géométrie</h2>
                 <p>Dans un repère orthonormé $(O; \vec{i}, \vec{j})$, on donne les points : $A(-2 ; 3)$, $B(4 ; 1)$ et $C(2 ; 5)$.</p>
 
                 <div class="svg-container">
