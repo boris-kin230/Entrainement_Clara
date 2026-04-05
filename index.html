@@ -2,412 +2,238 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Annales Maths Spé 1ère</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Annales Maths Spé 1ère - Accueil</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
-    <script>
-        MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
-                processEscapes: true
-            },
-            svg: { fontCache: 'global' }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
-        /* Couleurs inspirées de la couverture "Annales ABC BAC" */
+        /* --- VARIABLES COULEURS NATHAN --- */
         :root {
             --nathan-green: #8CC63F;
             --nathan-blue: #005AAA;
             --nathan-pink: #EC008C;
             --nathan-cyan: #00AEEF;
             --nathan-yellow: #FFF200;
-            --bg-app: #FCFDEE; /* Blanc mélangé à du jaune très clair */
+            --bg-app: #FCFDEE;
             --bg-card: #FFFFFF;
             --text-main: #2C3E50;
             --text-light: #5A6A7A;
-            --border-radius: 12px;
-            --shadow: 0 8px 20px rgba(0, 90, 170, 0.08);
+            --border-radius: 20px; /* Bords plus arrondis pour style iOS */
+            --shadow: 0 12px 35px rgba(0, 90, 170, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Poppins', sans-serif; 
+            -webkit-tap-highlight-color: transparent; 
+        }
 
         body {
             background-color: var(--bg-app);
             color: var(--text-main);
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        /* --- MENU LATÉRAL (SIDEBAR) --- */
-        #sidebar {
-            width: 280px;
-            background: var(--nathan-blue);
-            color: white;
+            /* Ajout d'un padding bottom pour les iPhones avec barre d'accueil */
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
             display: flex;
             flex-direction: column;
-            padding: 20px 0;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
-            z-index: 100;
-            transition: transform 0.3s ease;
+            min-height: 100vh;
         }
 
-        .logo-container { padding: 0 20px 20px 20px; border-bottom: 2px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-        .logo-container h1 { font-size: 1.8rem; font-weight: 800; color: var(--nathan-yellow); line-height: 1.2; }
-        .logo-container span { font-size: 0.9rem; color: #FFF; text-transform: uppercase; letter-spacing: 1px; }
-
-        .menu-btn {
-            background: transparent; border: none; color: white;
-            padding: 15px 25px; text-align: left; font-size: 1rem; font-weight: 600;
-            cursor: pointer; width: 100%; transition: 0.2s;
-            border-left: 5px solid transparent;
+        /* --- HEADER MOBILE STICKY --- */
+        header {
+            background: var(--nathan-blue);
+            color: white;
+            padding: 25px 20px 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--nathan-yellow);
         }
-        .menu-btn:hover { background: rgba(255,255,255,0.05); }
-        .menu-btn.active { background: rgba(255,255,255,0.1); border-left-color: var(--nathan-pink); color: var(--nathan-yellow); }
+
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
         
-        .epreuve-selector { padding: 20px; margin-top: auto; }
-        .epreuve-selector select {
-            width: 100%; padding: 10px; border-radius: 8px; border: none;
-            background: var(--nathan-green); color: white; font-weight: 800;
-            font-size: 1rem; cursor: pointer; outline: none;
+        .logo-subtitle {
+            font-size: 0.85rem;
+            color: var(--nathan-cyan);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         /* --- CONTENU PRINCIPAL --- */
-        #main-content {
+        main {
             flex: 1;
-            overflow-y: auto;
-            padding: 30px;
-            position: relative;
+            padding: 30px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .header-top {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px;
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .btn-precedent {
-            background: var(--nathan-cyan); color: white;
-            border: none; padding: 10px 20px; border-radius: 8px;
-            font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
-            box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3); transition: 0.2s;
-        }
-        .btn-precedent:active { transform: scale(0.95); }
-
-        .section-title {
-            background: var(--nathan-pink); color: white;
-            display: inline-block; padding: 5px 15px; border-radius: 20px;
-            font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-            margin-bottom: 15px;
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            color: var(--nathan-blue);
+            margin-bottom: 10px;
         }
 
-        /* --- CARTES ET EXERCICES --- */
-        .card {
+        .welcome-section p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* --- CARTES DES ÉPREUVES --- */
+        .epreuve-grid {
+            display: grid;
+            gap: 25px;
+        }
+
+        .epreuve-card {
             background: var(--bg-card);
             border-radius: var(--border-radius);
-            padding: 25px; margin-bottom: 25px;
+            padding: 30px 25px;
+            text-decoration: none;
+            color: var(--text-main);
+            display: block;
             box-shadow: var(--shadow);
-            border-top: 5px solid var(--nathan-green);
+            position: relative;
+            overflow: hidden;
+            border-left: 8px solid var(--nathan-green);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .card h2 { color: var(--nathan-blue); margin-bottom: 15px; font-size: 1.4rem; }
-        .card p { line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
 
-        /* --- QCM --- */
-        .qcm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .qcm-opt {
-            background: var(--bg-app); border: 2px solid #E2E8F0;
-            border-radius: 8px; padding: 15px; text-align: center;
-            font-weight: 600; cursor: pointer; transition: all 0.2s;
+        .epreuve-card:active {
+            transform: scale(0.97);
         }
-        .qcm-opt:hover { border-color: var(--nathan-cyan); }
-        .qcm-opt.correct { border-color: var(--nathan-green); background: #F0FDF4; color: #166534; }
-        .qcm-opt.wrong { border-color: var(--nathan-pink); background: #FDF2F8; color: #9D174D; }
+
+        .epreuve-badge {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: var(--nathan-yellow);
+            color: var(--nathan-blue);
+            font-weight: 800;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .epreuve-card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            color: var(--nathan-blue);
+            margin-top: 10px;
+        }
+
+        .epreuve-card p {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+
+        /* --- BOUTON D'ACTION DANS LA CARTE --- */
+        .btn-start {
+            background: var(--nathan-green);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Variantes de couleurs pour les cartes */
+        .card-2 { border-left-color: var(--nathan-cyan); }
+        .card-2 .btn-start { background: var(--nathan-cyan); }
         
-        .correction {
-            background: #F8FAFC; border-left: 4px solid var(--nathan-blue);
-            padding: 15px; border-radius: 0 8px 8px 0; margin-top: 15px;
-            display: none; font-size: 0.95rem; line-height: 1.6;
-        }
-        .correction.show { display: block; }
+        .card-3 { border-left-color: var(--nathan-pink); }
+        .card-3 .btn-start { background: var(--nathan-pink); }
 
-        /* --- BOUTONS ACTIONS --- */
-        .btn-action {
-            background: var(--nathan-green); color: white;
-            border: none; padding: 12px 25px; border-radius: 8px; font-size: 1rem;
-            font-weight: 600; cursor: pointer; box-shadow: 0 4px 10px rgba(140, 198, 63, 0.4);
-            transition: 0.2s; width: 100%; max-width: 300px; display: block; margin: 20px auto 0;
-        }
-        .btn-action:hover { filter: brightness(1.1); }
-        
-        /* --- SVG CONTAINERS --- */
-        .svg-container {
-            width: 100%; display: flex; justify-content: center; margin: 20px 0;
-            background: white; padding: 10px; border-radius: 8px; border: 1px solid #eee;
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
         }
 
-        /* --- RESPONSIVE MOBILE (iPhone/iPad) --- */
-        .mobile-header { display: none; background: var(--nathan-blue); color: white; padding: 15px; align-items: center; justify-content: space-between; }
-        .hamburger { background: none; border: none; color: var(--nathan-yellow); font-size: 1.5rem; cursor: pointer; }
-
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            #sidebar { position: fixed; height: 100%; transform: translateX(-100%); width: 260px; }
-            #sidebar.open { transform: translateX(0); }
-            .mobile-header { display: flex; }
-            #main-content { padding: 20px; padding-bottom: 80px; }
-            .qcm-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="mobile-header">
-        <div style="font-weight: 800; color: var(--nathan-yellow);">MATHS SPÉ 1ère</div>
-        <button class="hamburger" onclick="toggleMenu()">☰</button>
-    </div>
-
-    <aside id="sidebar">
-        <div class="logo-container">
-            <h1>Annales<br>Maths</h1>
-            <span>Spécialité 1ère</span>
+    <header>
+        <div>
+            <div class="logo-title">Annales Maths</div>
+            <div class="logo-subtitle">Spécialité 1ère</div>
         </div>
-        <button class="menu-btn active" id="btn-auto" onclick="loadSection('auto')">1. Automatisme</button>
-        <button class="menu-btn" id="btn-exo1" onclick="loadSection('exo1')">2. Fonctions</button>
-        <button class="menu-btn" id="btn-exo2" onclick="loadSection('exo2')">3. Suites & Probas</button>
-        <button class="menu-btn" id="btn-exo3" onclick="loadSection('exo3')">4. Géométrie</button>
+        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="var(--nathan-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
+        </svg>
+    </header>
 
-        <div class="epreuve-selector">
-            <select id="select-epreuve" onchange="changeEpreuve()">
-                <option value="1">Épreuve 1</option>
-                <option value="2">Épreuve 2</option>
-                <option value="3">Épreuve 3</option>
-            </select>
-        </div>
-    </aside>
-
-    <main id="main-content">
-        <div class="header-top">
-            <button class="btn-precedent" onclick="loadSection('auto')">
-                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/></svg>
-                Précédent
-            </button>
-            <div id="epreuve-title" style="font-weight: 800; color: var(--nathan-blue); font-size: 1.2rem;">Épreuve 1</div>
+    <main>
+        <div class="welcome-section">
+            <h1>Tableau de bord</h1>
+            <p>Sélectionne une épreuve pour commencer ton entraînement. Chaque session contient un automatisme et 3 problèmes complets.</p>
         </div>
 
-        <div id="content-area">
-            </div>
+        <div class="epreuve-grid">
+            
+            <a href="ep1.html" class="epreuve-card card-1">
+                <div class="epreuve-badge">Sujet 1</div>
+                <h2>Épreuve N°1</h2>
+                <p>Fonctions, suites géométriques et géométrie analytique. Idéal pour s'échauffer.</p>
+                <div class="btn-start">
+                    Commencer l'épreuve
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <a href="ep2.html" class="epreuve-card card-2">
+                <div class="epreuve-badge">Sujet 2</div>
+                <h2>Épreuve N°2</h2>
+                <p>Dérivation avancée, probabilités et produit scalaire. Le standard de l'examen.</p>
+                <div class="btn-start">
+                    Commencer l'épreuve
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <a href="ep3.html" class="epreuve-card card-3">
+                <div class="epreuve-badge">Sujet 3</div>
+                <h2>Épreuve N°3</h2>
+                <p>Le défi ultime. Synthèse de tous les chapitres pour viser l'excellence.</p>
+                <div class="btn-start">
+                    Commencer l'épreuve
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+        </div>
     </main>
 
-<script>
-// ==========================================
-// BANQUE DE DONNÉES DES ÉPREUVES (Difficulté identique)
-// ==========================================
-const db = {
-    1: {
-        auto: [
-            { q: "Calculer et simplifier : $\\frac{3}{4} - \\frac{1}{3}$", opts: ["$\\frac{2}{1}$", "$\\frac{5}{12}$", "$\\frac{13}{12}$", "$\\frac{2}{7}$"], ans: 1, corr: "On met au même dénominateur ($12$).<br>$\\frac{3 \\times 3}{12} - \\frac{1 \\times 4}{12} = \\frac{9}{12} - \\frac{4}{12} = \\frac{5}{12}$." },
-            { q: "Résoudre : $5x - 7 = 2x + 8$", opts: ["$x = 5$", "$x = -5$", "$x = 15$", "$x = 3$"], ans: 0, corr: "$5x - 2x = 8 + 7 \\iff 3x = 15 \\iff x = \\frac{15}{3} = 5$." },
-            { q: "Quelles sont les racines de $x^2 - 4x + 3 = 0$ ?", opts: ["-1 et -3", "1 et 3", "2 et 4", "Pas de racine"], ans: 1, corr: "$\\Delta = (-4)^2 - 4(1)(3) = 16 - 12 = 4$.<br>Racines : $\\frac{4 - 2}{2} = 1$ et $\\frac{4 + 2}{2} = 3$." },
-            { q: "Résoudre l'inéquation : $-3x + 12 \\ge 0$", opts: ["$x \\ge 4$", "$x \\le 4$", "$x \\ge -4$", "$x \\le -4$"], ans: 1, corr: "$-3x \\ge -12$. On divise par $-3$ (négatif), on change le sens : $x \\le 4$." },
-            { q: "Calculer la dérivée de $f(x) = x^3 - 5x^2 + 2x - 1$", opts: ["$3x^2 - 10x + 2$", "$3x^2 - 5x + 2$", "$x^2 - 10x$", "$3x^2 - 10x - 1$"], ans: 0, corr: "La dérivée de $x^n$ est $nx^{n-1}$.<br>$f'(x) = 3x^2 - 5(2x) + 2 = 3x^2 - 10x + 2$." },
-            { q: "Comparer $\\frac{1}{3}$ et $0,33$", opts: ["$\\frac{1}{3} < 0,33$", "$\\frac{1}{3} = 0,33$", "$\\frac{1}{3} > 0,33$", "Impossible"], ans: 2, corr: "$\\frac{1}{3} \\approx 0,3333...$ Donc $\\frac{1}{3}$ est strictement supérieur à $0,33$." },
-            { q: "Moyenne pondérée : Note 1 = 15 (coef 2). Note 2 = $x$ (coef 3). Moyenne visée = 12. Trouver $x$.", opts: ["$10$", "$11$", "$12$", "$9$"], ans: 0, corr: "$\\frac{15 \\times 2 + x \\times 3}{2 + 3} = 12 \\iff \\frac{30 + 3x}{5} = 12 \\iff 30 + 3x = 60 \\iff 3x = 30 \\iff x = 10$." },
-            { q: "Valeur exacte de $\\sin\\left(\\frac{\\pi}{6}\\right)$ ?", opts: ["$\\frac{\\sqrt{2}}{2}$", "$\\frac{\\sqrt{3}}{2}$", "$\\frac{1}{2}$", "$1$"], ans: 2, corr: "Valeur du cercle trigonométrique à connaître par cœur : $\\sin\\left(\\frac{\\pi}{6}\\right) = \\frac{1}{2}$." },
-            { q: "Soient $\\vec{u}(3 ; -2)$ et $\\vec{v}(4 ; 5)$. Calculer $\\vec{u} \\cdot \\vec{v}$.", opts: ["$12$", "$2$", "$22$", "$-2$"], ans: 1, corr: "Formule analytique du produit scalaire : $xx' + yy'$.<br>$(3 \\times 4) + (-2 \\times 5) = 12 - 10 = 2$." },
-            { q: "Signe de $2x^2 + 3x + 5$ sur $\\mathbb{R}$ ?", opts: ["Toujours positif", "Toujours négatif", "Change de signe", "Nul en 0"], ans: 0, corr: "$\\Delta = 3^2 - 4(2)(5) = 9 - 40 = -31 < 0$. Pas de racine. Le trinôme est du signe de $a=2$ (positif) partout." },
-            { q: "Simplifier l'expression $\\frac{x^2 - 9}{x - 3}$ (pour $x \\neq 3$)", opts: ["$x - 3$", "$x + 3$", "$x^2 - 3$", "$1$"], ans: 1, corr: "Identité remarquable : $x^2 - 9 = (x-3)(x+3)$.<br>Donc $\\frac{(x-3)(x+3)}{x-3} = x + 3$." },
-            { q: "Soit $u_n$ une suite arithmétique de raison $r=3$ et $u_0 = 2$. Que vaut $u_{10}$ ?", opts: ["$30$", "$32$", "$59049$", "$20$"], ans: 1, corr: "Formule : $u_n = u_0 + n \\times r$.<br>$u_{10} = 2 + 10 \\times 3 = 2 + 30 = 32$." }
-        ],
-        exo1: {
-            title: "Fonctions et dérivation",
-            text: "Soit la fonction $f$ définie sur $\\mathbb{R}$ par $$f(x) = -x^3 + 3x^2 + 9x - 2$$ On note $\\mathcal{C}_f$ sa courbe représentative.<br><br><b>1.</b> Calculer l'image de $-1$ et l'image de $0$ par $f$.<br><b>2.</b> Déterminer l'expression de la fonction dérivée $f'(x)$.<br><b>3.</b> Étudier le signe de $f'(x)$ sur $\\mathbb{R}$.<br><b>4.</b> Dresser le tableau de variations complet de $f$.<br><b>5.</b> Déterminer l'équation de la tangente $\\mathcal{T}$ au point d'abscisse $x_0 = 0$.",
-            corr: "<b>1. Images :</b><br>$f(-1) = -(-1)^3 + 3(-1)^2 + 9(-1) - 2 = 1 + 3 - 9 - 2 = -7$.<br>$f(0) = -2$.<br><br><b>2. Dérivée :</b><br>$f'(x) = -3x^2 + 6x + 9$.<br><br><b>3. Signe de $f'(x)$ :</b><br>Polynôme du second degré avec $a = -3, b = 6, c = 9$.<br>$\\Delta = 6^2 - 4(-3)(9) = 36 + 108 = 144$.<br>$\\sqrt{\\Delta} = 12$.<br>Racines : $x_1 = \\frac{-6 - 12}{-6} = 3$ et $x_2 = \\frac{-6 + 12}{-6} = -1$.<br>Le coefficient $a$ est négatif, donc $f'(x)$ est positive à l'intérieur des racines (sur $[-1 ; 3]$).<br><br><b>4. Tableau de variations :</b><br>La fonction $f$ est décroissante sur $]-\\infty ; -1]$, croissante sur $[-1 ; 3]$ et décroissante sur $[3 ; +\\infty[$.<br>Minimum local : $f(-1) = -7$. Maximum local : $f(3) = -(3)^3 + 3(3)^2 + 9(3) - 2 = -27 + 27 + 27 - 2 = 25$.<br><br><b>5. Tangente en $x_0 = 0$ :</b><br>L'équation est $y = f'(0)(x - 0) + f(0)$.<br>$f'(0) = 9$ et $f(0) = -2$.<br>Donc l'équation de $\\mathcal{T}$ est : $y = 9x - 2$."
-        },
-        exo2: {
-            title: "Suites et Probabilités - Le Projet de Clara",
-            text: "Clara gère une start-up écoresponsable. Chaque mois, elle démarche de nouveaux clients. Si un client signe un contrat le mois $n$, la probabilité qu'il renouvelle le mois suivant ($n+1$) est de $0,7$. S'il ne signe pas, la probabilité qu'il soit convaincu le mois suivant est de $0,2$.<br>Le premier mois, Clara a convaincu le client, donc $p_1 = 1$.<br>On note $p_n$ la probabilité de signer le mois $n$.<br><br><b>1.</b> Représenter la situation par un arbre pondéré pour les mois $n$ et $n+1$.<br><b>2.</b> Montrer que pour tout entier $n \\ge 1$, $p_{n+1} = 0,5p_n + 0,2$.<br><b>3.</b> On pose $u_n = p_n - 0,4$. Montrer que $(u_n)$ est une suite géométrique. Préciser sa raison et son premier terme.<br><b>4.</b> Exprimer $u_n$ puis $p_n$ en fonction de $n$.<br><b>5.</b> Clara réussira-t-elle à fidéliser ses clients sur le long terme ? (Calculer la limite de $p_n$).",
-            svg: `<svg viewBox="0 0 400 200" style="max-width: 100%; height: auto;"><path d="M 50 100 L 150 40" stroke="#005AAA" stroke-width="2" fill="none"/><path d="M 50 100 L 150 160" stroke="#005AAA" stroke-width="2" fill="none"/><text x="160" y="45" font-family="Poppins" font-weight="600">S (Signe) [0,7]</text><text x="160" y="165" font-family="Poppins" font-weight="600">S barre [0,3]</text><circle cx="50" cy="100" r="5" fill="#EC008C"/><text x="10" y="105" font-family="Poppins" font-weight="800">Mois n</text></svg>`,
-            corr: "<b>1. Arbre (voir schéma) :</b><br>Du noeud 'S' au mois $n$, on part vers 'S' (proba 0,7) ou 'S barre' (0,3). Du noeud 'S barre' au mois $n$, on part vers 'S' (proba 0,2) ou 'S barre' (0,8).<br><br><b>2. Probabilités totales :</b><br>$p_{n+1} = P(S_{n+1}) = P(S_n \\cap S_{n+1}) + P(\\overline{S_n} \\cap S_{n+1})$<br>$p_{n+1} = p_n \\times 0,7 + (1 - p_n) \\times 0,2 = 0,7p_n + 0,2 - 0,2p_n = 0,5p_n + 0,2$.<br><br><b>3. Suite $(u_n)$ :</b><br>$u_{n+1} = p_{n+1} - 0,4 = (0,5p_n + 0,2) - 0,4 = 0,5p_n - 0,2$.<br>On factorise par $0,5$ : $u_{n+1} = 0,5(p_n - 0,4) = 0,5 u_n$.<br>$(u_n)$ est donc une suite géométrique de raison $q = 0,5$.<br>Son premier terme est $u_1 = p_1 - 0,4 = 1 - 0,4 = 0,6$.<br><br><b>4. Expression explicite :</b><br>$u_n = u_1 \\times q^{n-1} = 0,6 \\times 0,5^{n-1}$.<br>Comme $p_n = u_n + 0,4$, on a : $$p_n = 0,6 \\times 0,5^{n-1} + 0,4$$<br><br><b>5. Limite :</b><br>La raison $q = 0,5$ est comprise entre $-1$ et $1$. Donc $\\lim_{n \\to +\\infty} 0,5^{n-1} = 0$.<br>Ainsi $\\lim p_n = 0,4$. À long terme, la probabilité de signature se stabilise à $40\\%$."
-        },
-        exo3: {
-            title: "Géométrie Plane et Produit Scalaire",
-            text: "Dans un repère orthonormé $(O; \\vec{i}, \\vec{j})$, on considère les points : $A(-2 ; 1)$, $B(4 ; 3)$ et $C(1 ; -2)$.<br><br><b>1.</b> Placer virtuellement les points. Calculer les coordonnées des vecteurs $\\vec{AB}$ et $\\vec{AC}$.<br><b>2.</b> Calculer le produit scalaire $\\vec{AB} \\cdot \\vec{AC}$.<br><b>3.</b> Calculer les distances $AB$ et $AC$.<br><b>4.</b> En déduire la mesure de l'angle $\\widehat{BAC}$ au degré près.<br><b>5.</b> Soit $I$ le milieu de $[BC]$. Déterminer une équation cartésienne de la médiatrice du segment $[BC]$.",
-            svg: `<svg viewBox="0 0 200 200" style="max-width: 100%; height: 200px; background: #fafafa; border: 1px solid #ccc;"><line x1="100" y1="0" x2="100" y2="200" stroke="#000"/><line x1="0" y1="100" x2="200" y2="100" stroke="#000"/><circle cx="60" cy="80" r="3" fill="red"/><text x="40" y="75">A(-2;1)</text><circle cx="180" cy="40" r="3" fill="blue"/><text x="140" y="35">B(4;3)</text><circle cx="120" cy="140" r="3" fill="green"/><text x="130" y="150">C(1;-2)</text></svg>`,
-            corr: "<b>1. Coordonnées des vecteurs :</b><br>$\\vec{AB}(x_B - x_A ; y_B - y_A) \\implies \\vec{AB}(4 - (-2) ; 3 - 1) \\implies \\vec{AB}(6 ; 2)$.<br>$\\vec{AC}(1 - (-2) ; -2 - 1) \\implies \\vec{AC}(3 ; -3)$.<br><br><b>2. Produit scalaire :</b><br>$\\vec{AB} \\cdot \\vec{AC} = (6 \\times 3) + (2 \\times -3) = 18 - 6 = 12$.<br><br><b>3. Distances :</b><br>$AB = \\sqrt{6^2 + 2^2} = \\sqrt{36 + 4} = \\sqrt{40} = 2\\sqrt{10}$.<br>$AC = \\sqrt{3^2 + (-3)^2} = \\sqrt{9 + 9} = \\sqrt{18} = 3\\sqrt{2}$.<br><br><b>4. Angle $\\widehat{BAC}$ :</b><br>On utilise la relation : $\\vec{AB} \\cdot \\vec{AC} = AB \\times AC \\times \\cos(\\widehat{BAC})$.<br>$12 = \\sqrt{40} \\times \\sqrt{18} \\times \\cos(\\widehat{BAC}) = \\sqrt{720} \\times \\cos(\\widehat{BAC}) = 12\\sqrt{5} \\times \\cos(\\widehat{BAC})$.<br>Donc $\\cos(\\widehat{BAC}) = \\frac{12}{12\\sqrt{5}} = \\frac{1}{\\sqrt{5}}$.<br>À la calculatrice : $\\arccos\\left(\\frac{1}{\\sqrt{5}}\\right) \\approx 63^{\\circ}$.<br><br><b>5. Médiatrice de $[BC]$ :</b><br>Elle passe par le milieu $I$ de $[BC]$ et a pour vecteur normal $\\vec{BC}$.<br>$I\\left(\\frac{4+1}{2} ; \\frac{3-2}{2}\\right) = I(2,5 ; 0,5)$.<br>Vecteur $\\vec{BC}(1-4 ; -2-3) = \\vec{BC}(-3 ; -5)$.<br>L'équation de la médiatrice est de la forme $-3x - 5y + c = 0$.<br>Elle passe par $I(2,5 ; 0,5)$ : $-3(2,5) - 5(0,5) + c = 0 \\iff -7,5 - 2,5 + c = 0 \\iff c = 10$.<br>L'équation est : $$-3x - 5y + 10 = 0$$"
-        }
-    },
-    2: {
-        auto: [
-            { q: "Calculer : $\\frac{5}{2} + \\frac{1}{6}$", opts: ["$\\frac{6}{8}$", "$\\frac{16}{6}$", "$\\frac{8}{3}$", "$\\frac{16}{12}$"], ans: 2, corr: "$15/6 + 1/6 = 16/6 = 8/3$." },
-            { q: "Résoudre : $3x + 4 = 7x - 8$", opts: ["$x = 3$", "$x = 4$", "$x = -3$", "$x = 2$"], ans: 0, corr: "$12 = 4x \\iff x = 3$." },
-            { q: "Racines de $x^2 - 5x + 4 = 0$ ?", opts: ["1 et 4", "-1 et -4", "2 et 2", "0 et 5"], ans: 0, corr: "$\\Delta = 25 - 16 = 9$. Racines: 1 et 4." },
-            { q: "Résoudre : $2x - 5 < x + 1$", opts: ["$x < 6$", "$x > 6$", "$x < -4$", "$x > -4$"], ans: 0, corr: "$2x - x < 1 + 5 \\iff x < 6$." },
-            { q: "Dérivée de $g(x) = 2x^3 - 4x^2 + 7$", opts: ["$6x^2 - 8x$", "$6x^2 - 8$", "$2x^2 - 4x$", "$6x^2 - 8x + 7$"], ans: 0, corr: "Dérivée classique polynomiale." },
-            { q: "Comparer $\\pi$ et $3,14$", opts: ["$\\pi < 3,14$", "$\\pi = 3,14$", "$\\pi > 3,14$", "Impossible"], ans: 2, corr: "$\\pi \\approx 3,14159...$ donc $> 3,14$." },
-            { q: "Moyenne: Note1=10 (coef 1), Note2=x (coef 2), Moyenne=14. x=?", opts: ["15", "16", "14", "12"], ans: 1, corr: "$(10 + 2x)/3 = 14 \\iff 10 + 2x = 42 \\iff x = 16$." },
-            { q: "$\\cos(\\frac{\\pi}{4}) = ?$", opts: ["$1/2$", "$\\sqrt{2}/2$", "$\\sqrt{3}/2$", "1"], ans: 1, corr: "Valeur remarquable." },
-            { q: "$\\vec{u}(-1 ; 3) \\cdot \\vec{v}(2 ; 4) = ?$", opts: ["10", "14", "-10", "5"], ans: 0, corr: "$(-1)(2) + (3)(4) = -2 + 12 = 10$." },
-            { q: "Signe de $-x^2 + 2x - 3$ ?", opts: ["Toujours +", "Toujours -", "Change", "Nul en 0"], ans: 1, corr: "$\\Delta < 0$ et $a = -1$. Toujours négatif." },
-            { q: "Simplifier $\\frac{x}{x+1} - \\frac{1}{x+1}$", opts: ["$\\frac{x-1}{x+1}$", "$1$", "$-1$", "$\\frac{1}{x+1}$"], ans: 0, corr: "Même dénominateur directement." },
-            { q: "Suite géométrique $u_0 = 3$, $q = 2$. $u_4 = ?$", opts: ["24", "48", "96", "12"], ans: 1, corr: "$u_4 = 3 \\times 2^4 = 3 \\times 16 = 48$." }
-        ],
-        exo1: {
-            title: "Fonctions Rationnelles",
-            text: "Soit $g(x) = \\frac{2x+3}{x-1}$ définie sur $\\mathbb{R} \\setminus \\{1\\}$.<br><b>1.</b> Calculer $g(0)$ et $g(2)$.<br><b>2.</b> Calculer $g'(x)$.<br><b>3.</b> En déduire les variations de $g$.",
-            corr: "<b>1.</b> $g(0) = -3$. $g(2) = 7$.<br><b>2.</b> Formule $(u/v)' = (u'v - uv')/v^2$.<br>$g'(x) = \\frac{2(x-1) - (2x+3)(1)}{(x-1)^2} = \\frac{-5}{(x-1)^2}$.<br><b>3.</b> Le dénominateur est un carré (positif), le numérateur est $-5$. La dérivée est strictement négative. La fonction est strictement décroissante sur ses intervalles de définition."
-        },
-        exo2: {
-            title: "Suites - Entraînement de Clara",
-            text: "Clara prépare un marathon. La semaine 1, elle court 10 km. Chaque semaine, elle augmente sa distance de 5%. On note $d_n$ la distance courue la semaine $n$.<br><b>1.</b> Calculer $d_2$.<br><b>2.</b> Exprimer $d_{n+1}$ en fonction de $d_n$.<br><b>3.</b> Quelle est la nature de la suite ? Exprimer $d_n$ en fonction de $n$.",
-            corr: "<b>1.</b> Augmenter de 5% c'est multiplier par $1,05$. $d_2 = 10 \\times 1,05 = 10,5$ km.<br><b>2.</b> $d_{n+1} = 1,05 \\times d_n$.<br><b>3.</b> Suite géométrique de raison $q = 1,05$ et $d_1 = 10$.<br>Donc $d_n = 10 \\times (1,05)^{n-1}$."
-        },
-        exo3: {
-            title: "Géométrie - Cercle et Tangente",
-            text: "Soit $A(1 ; 2)$ et $B(5 ; -1)$.<br><b>1.</b> Déterminer l'équation du cercle de diamètre $[AB]$.<br><b>2.</b> Le point $C(1 ; -1)$ appartient-il au cercle ?",
-            corr: "<b>1.</b> Milieu $\\Omega(3 ; 0,5)$. Rayon $R = AB/2$. $AB = \\sqrt{4^2 + (-3)^2} = 5$. $R = 2,5$.<br>Équation: $(x-3)^2 + (y-0,5)^2 = 2,5^2 = 6,25$.<br><b>2.</b> On teste $C(1 ; -1)$ : $(1-3)^2 + (-1-0,5)^2 = (-2)^2 + (-1,5)^2 = 4 + 2,25 = 6,25$. Oui, $C$ est sur le cercle !"
-        }
-    },
-    // Épreuve 3 (Structure prête à être remplie sur le même modèle)
-    3: {
-        auto: [
-            { q: "Question 1 Épreuve 3...", opts: ["A", "B", "C", "D"], ans: 0, corr: "Corr..." },
-            // ... Mettre 12 questions ici
-        ],
-        exo1: { title: "Exo 1 Épreuve 3", text: "Problème complexe de fonction...", corr: "Corr..." },
-        exo2: { title: "Exo 2 Épreuve 3", text: "Problème de suites avec Clara...", corr: "Corr..." },
-        exo3: { title: "Exo 3 Épreuve 3", text: "Géométrie analytique...", corr: "Corr..." }
-    }
-};
-
-let currentEpreuve = 1;
-
-// ==========================================
-// MOTEUR D'AFFICHAGE & LOGIQUE
-// ==========================================
-
-function changeEpreuve() {
-    currentEpreuve = document.getElementById('select-epreuve').value;
-    document.getElementById('epreuve-title').innerText = "Épreuve " + currentEpreuve;
-    loadSection('auto'); // Recharger sur l'automatisme de la nouvelle épreuve
-}
-
-function loadSection(sectionId) {
-    // 1. Mettre à jour le menu actif
-    document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`btn-${sectionId}`).classList.add('active');
-    
-    // Fermer le menu sur mobile après clic
-    document.getElementById('sidebar').classList.remove('open');
-
-    const contentArea = document.getElementById('content-area');
-    const ep = db[currentEpreuve];
-
-    // Sécurité si l'épreuve 3 n'est pas encore totalement remplie par l'utilisateur
-    if (!ep[sectionId] || (sectionId === 'auto' && ep.auto.length < 2)) {
-        contentArea.innerHTML = `<div class="card"><h2>Épreuve en cours de rédaction</h2><p>Le contenu de l'épreuve ${currentEpreuve} sera bientôt disponible.</p></div>`;
-        return;
-    }
-
-    if (sectionId === 'auto') {
-        let html = `<span class="section-title">QCM - 12 Questions</span>
-                    <div class="card"><h2>🧠 Automatisme</h2><p>Coche la bonne réponse, la correction détaillée s'affichera instantanément. Entraîne-toi à la rapidité.</p></div>`;
-        
-        ep.auto.forEach((q, index) => {
-            html += `
-                <div class="card" id="qcm-${index}">
-                    <p style="font-weight:600; font-size:1.1rem; margin-bottom:10px;">Q${index+1}. ${q.q}</p>
-                    <div class="qcm-grid">
-                        ${q.opts.map((opt, i) => `<div class="qcm-opt" onclick="checkAnswer(${index}, ${i}, ${q.ans})">${opt}</div>`).join('')}
-                    </div>
-                    <div class="correction" id="corr-qcm-${index}">
-                        <b>Correction :</b><br>${q.corr}
-                    </div>
-                </div>
-            `;
-        });
-        html += `<button class="btn-action" onclick="loadSection('exo1')">Passer à l'Exercice 1 ➔</button>`;
-        contentArea.innerHTML = html;
-    } else {
-        const exo = ep[sectionId];
-        let sectionTitle = sectionId === 'exo1' ? "Fonctions" : (sectionId === 'exo2' ? "Suites & Probas" : "Géométrie");
-        let html = `
-            <span class="section-title">Problème - ${sectionTitle}</span>
-            <div class="card">
-                <h2>${exo.title}</h2>
-                <p>${exo.text}</p>
-                ${exo.svg ? `<div class="svg-container">${exo.svg}</div>` : ''}
-                
-                <button class="btn-action" id="btn-corr-${sectionId}" onclick="toggleCorr('${sectionId}')" style="background: var(--nathan-blue); margin-top:30px;">
-                    Voir le corrigé détaillé
-                </button>
-                
-                <div class="correction" id="corr-${sectionId}" style="border-left-color: var(--nathan-pink); margin-top: 20px;">
-                    <b>Correction de l'exercice :</b><br><br>${exo.corr}
-                </div>
-            </div>
-            ${sectionId === 'exo3' ? 
-                `<button class="btn-action" onclick="loadSection('auto')">Terminer l'épreuve 🏆</button>` : 
-                `<button class="btn-action" onclick="loadSection('${sectionId === 'exo1' ? 'exo2' : 'exo3'}')">Exercice Suivant ➔</button>`}
-        `;
-        contentArea.innerHTML = html;
-    }
-
-    // Demander à MathJax de re-rendre le LaTeX dynamique
-    if(window.MathJax) {
-        MathJax.typesetPromise();
-    }
-    window.scrollTo(0, 0);
-}
-
-// QCM logique
-function checkAnswer(qIndex, selectedIdx, correctIdx) {
-    const card = document.getElementById(`qcm-${qIndex}`);
-    if(card.classList.contains('answered')) return; // Bloquer double clic
-    card.classList.add('answered');
-
-    const options = card.querySelectorAll('.qcm-opt');
-    options.forEach((opt, idx) => {
-        if(idx === correctIdx) {
-            opt.classList.add('correct');
-        } else if (idx === selectedIdx) {
-            opt.classList.add('wrong');
-        }
-        opt.style.pointerEvents = 'none'; // Désactiver les clics
-    });
-
-    document.getElementById(`corr-qcm-${qIndex}`).classList.add('show');
-    if(window.MathJax) MathJax.typesetPromise();
-}
-
-// Exercices logique (afficher corrigé)
-function toggleCorr(sectionId) {
-    const box = document.getElementById(`corr-${sectionId}`);
-    const btn = document.getElementById(`btn-corr-${sectionId}`);
-    if(box.classList.contains('show')) {
-        box.classList.remove('show');
-        btn.innerText = "Voir le corrigé détaillé";
-    } else {
-        box.classList.add('show');
-        btn.innerText = "Cacher le corrigé";
-    }
-    if(window.MathJax) MathJax.typesetPromise();
-}
-
-// Menu Mobile
-function toggleMenu() {
-    document.getElementById('sidebar').classList.toggle('open');
-}
-
-// Initialisation au lancement
-window.onload = () => {
-    loadSection('auto');
-};
-</script>
+    <footer>
+        Conçu spécialement pour un affichage optimal sur mobile et tablette.
+    </footer>
 
 </body>
 </html>
