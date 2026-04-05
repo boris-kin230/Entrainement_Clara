@@ -357,6 +357,10 @@
 
 <script>
 // ==========================================
+// BANQUE DE DONNÉES DU QCM (12 Questions)
+// 5 Pourcentages, 2 Equations, 2 Fractions, 1 Prix, 1 Dérivée, 1 Scalaire
+// ==========================================
+// ==========================================
 // BANQUE DE DONNÉES DU QCM (12 Questions - Épreuve 2)
 // ==========================================
 const qcmData = [
@@ -402,445 +406,52 @@ const qcmData = [
         ans: 0, 
         corr: "On met au même dénominateur (40) : $\\frac{3 \\times 5}{40} = \\frac{15}{40}$ et $\\frac{2 \\times 8}{40} = \\frac{16}{40}$.<br>Puisque $15 \\lt 16$, on a $\\frac{3}{8} \\lt \\frac{2}{5}$." 
     },
-   <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Épreuve 1 - Maths Spé 1ère</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <script>
-        MathJax = {
-            tex: { 
-                inlineMath: [['$', '$'], ['\\(', '\\)']], 
-                displayMath: [['$$', '$$'], ['\\[', '\\]']], 
-                processEscapes: true 
-            },
-            svg: { fontCache: 'global' },
-            startup: {
-                pageReady: () => {
-                    return MathJax.startup.defaultPageReady().then(() => {
-                        document.getElementById('loader').style.opacity = '0';
-                        setTimeout(() => document.getElementById('loader').style.display = 'none', 300);
-                    });
-                }
-            }
-        };
-    </script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
-
-    <style>
-        /* ==========================================================================
-           1. VARIABLES PREMIUM ET RESET
-           ========================================================================== */
-        :root {
-            --primary: #005AAA; --primary-light: #4D9EEB;
-            --accent-pink: #EC008C; --accent-cyan: #00AEEF;
-            --accent-green: #8CC63F; --accent-yellow: #FFF200;
-            --bg-color: #F8FAFC; --surface-white: rgba(255, 255, 255, 0.85);
-            --surface-solid: #FFFFFF; --text-dark: #0F172A; --text-gray: #475569;
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 40px -10px rgba(0, 90, 170, 0.12);
-            --radius-lg: 24px; --radius-xl: 32px;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-dark);
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-            overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;
-        }
-
-        /* Écran de chargement pour MathJax */
-        #loader {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-color);
-            z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: opacity 0.3s ease;
-        }
-        .spinner { border: 4px solid rgba(0, 90, 170, 0.2); border-top: 4px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 20px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* ==========================================================================
-           2. ARRIÈRE-PLAN ANIMÉ (ORBES)
-           ========================================================================== */
-        .bg-orbs {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; overflow: hidden; pointer-events: none;
-        }
-        .orb { position: absolute; border-radius: 50%; filter: blur(70px); animation: float 20s infinite ease-in-out alternate; opacity: 0.4; }
-        .orb-1 { width: 350px; height: 350px; background: rgba(140, 198, 63, 0.4); top: -50px; left: -100px; }
-        .orb-2 { width: 400px; height: 400px; background: rgba(0, 174, 239, 0.3); bottom: -100px; right: -50px; animation-delay: -5s; }
-
-        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(30px, 50px) scale(1.05); } }
-
-        /* ==========================================================================
-           3. HEADER STICKY (Style iOS)
-           ========================================================================== */
-        header {
-            position: sticky; top: 0; z-index: 1000;
-            background: var(--surface-white); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5); padding: 15px 20px;
-            box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 15px;
-        }
-
-        .header-top { display: flex; justify-content: space-between; align-items: center; }
-        
-        .btn-ui {
-            display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-radius: 14px;
-            font-weight: 700; font-size: 0.95rem; border: none; cursor: pointer; text-decoration: none; transition: 0.2s;
-        }
-        .btn-ui:active { transform: scale(0.95); }
-        .btn-back { background: #F1F5F9; color: var(--primary); }
-        .btn-pdf { background: linear-gradient(135deg, var(--accent-pink), #ff4d6d); color: white; box-shadow: 0 4px 15px rgba(236, 0, 140, 0.3); }
-
-        .nav-select {
-            width: 100%; padding: 16px 20px; border-radius: 16px; border: none;
-            background: var(--primary); color: white; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem;
-            outline: none; appearance: none; box-shadow: 0 8px 20px rgba(0, 90, 170, 0.2); cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23FFFFFF%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat; background-position: right 15px top 50%;
-        }
-
-        /* ==========================================================================
-           4. CONTENU PRINCIPAL & CARTES
-           ========================================================================== */
-        main { padding: 25px 20px 80px 20px; max-width: 850px; margin: 0 auto; width: 100%; flex: 1; }
-        .section-view { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .section-view.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card {
-            background: var(--surface-solid); border-radius: var(--radius-lg); padding: 30px 25px;
-            margin-bottom: 25px; box-shadow: var(--shadow-xl); position: relative; border: 1px solid rgba(0,0,0,0.03);
-        }
-        .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-        .card-auto::before { background: var(--accent-yellow); }
-        .card-exo1::before { background: var(--accent-green); }
-        .card-exo2::before { background: var(--accent-cyan); }
-        .card-exo3::before { background: var(--accent-pink); }
-
-        .title-badge { display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 800; font-size: 0.9rem; margin-bottom: 15px; text-transform: uppercase; }
-        .card-auto .title-badge { background: rgba(255, 242, 0, 0.2); color: #B2A600; }
-        .card-exo1 .title-badge { background: rgba(140, 198, 63, 0.2); color: #166534; }
-        .card-exo2 .title-badge { background: rgba(0, 174, 239, 0.2); color: #0369A1; }
-        .card-exo3 .title-badge { background: rgba(236, 0, 140, 0.2); color: #9D174D; }
-
-        .card h2 { font-family: 'Outfit', sans-serif; color: var(--primary); font-size: 1.6rem; font-weight: 800; margin-bottom: 20px; }
-        .card p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px; color: var(--text-dark); }
-        
-        .math-block { background: #F8FAFC; padding: 20px; border-radius: 16px; text-align: center; margin: 20px 0; border: 1px solid #E2E8F0; font-size: 1.2rem; }
-
-        /* --- QCM --- */
-        .qcm-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 25px; }
-        @media(min-width: 600px) { .qcm-grid { grid-template-columns: 1fr 1fr; } }
-        
-        .qcm-opt {
-            background: #F1F5F9; border: 2px solid transparent; border-radius: 16px; padding: 20px 15px;
-            text-align: center; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; justify-content: center; min-height: 80px;
-        }
-        .qcm-opt:active { transform: scale(0.96); }
-        .qcm-opt.correct { border-color: var(--accent-green); background: #F0FDF4; color: #166534; box-shadow: 0 8px 20px rgba(140,198,63,0.2); }
-        .qcm-opt.wrong { border-color: var(--accent-pink); background: #FDF2F8; color: #9D174D; }
-
-        /* --- CORRECTIONS --- */
-        .correction {
-            background: #F8FAFC; border-left: 6px solid var(--primary); padding: 25px;
-            border-radius: 0 16px 16px 0; margin-top: 30px; display: none; font-size: 1.05rem; line-height: 1.8;
-        }
-        .correction.show { display: block; animation: slideUp 0.3s ease; }
-        .corr-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed #CBD5E1; }
-        .corr-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-        .btn-corr {
-            width: 100%; background: var(--primary); color: white; border: none;
-            padding: 18px; border-radius: 16px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.2rem; cursor: pointer; margin-top: 25px;
-            box-shadow: 0 8px 20px rgba(0, 90, 170, 0.2); transition: 0.2s;
-        }
-        .btn-corr:active { transform: scale(0.98); }
-
-        /* --- NAVIGATION INTERNE --- */
-        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; margin-top: 40px; }
-        .btn-nav {
-            flex: 1; padding: 18px; border-radius: 16px; border: none; font-family: 'Outfit', sans-serif; font-weight: 800;
-            font-size: 1.1rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; color: white;
-            transition: 0.2s;
-        }
-        .btn-prev { background: #94A3B8; }
-        .btn-next { background: var(--accent-cyan); box-shadow: 0 8px 20px rgba(0,174,239,0.3); }
-        .btn-next:active, .btn-prev:active { transform: scale(0.95); }
-
-        /* --- SCHÉMAS SVG --- */
-        .svg-container {
-            width: 100%; background: #FFFFFF; border: 2px solid #E2E8F0; border-radius: 20px;
-            padding: 20px; margin: 25px 0; display: flex; justify-content: center; align-items: center;
-        }
-
-        /* ==========================================================================
-           5. ZONE CACHÉE POUR LE PDF (LATEX PUR)
-           ========================================================================== */
-        #pdf-export-zone {
-            display: none; width: 210mm; padding: 20mm; background: white; color: black;
-            font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;
-        }
-        .pdf-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 30px; }
-        .pdf-header h1 { font-size: 22pt; font-weight: bold; margin-bottom: 5px; }
-        .pdf-header h2 { font-size: 16pt; font-style: italic; }
-        .pdf-section { margin-bottom: 40px; page-break-inside: avoid; }
-        .pdf-section h3 { font-size: 16pt; margin-bottom: 15px; text-decoration: underline; color: black; }
-        .pdf-q { margin-bottom: 12px; }
-
-    </style>
-</head>
-<body>
-
-    <div id="loader">
-        <div class="spinner"></div>
-        <p style="font-weight: 600; color: var(--primary); font-family: 'Outfit', sans-serif;">Génération des mathématiques...</p>
-    </div>
-
-    <div class="bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
-
-    <header>
-        <div class="header-top">
-            <a href="index.html" class="btn-ui btn-back">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Accueil
-            </a>
-            <button class="btn-ui btn-pdf" onclick="generatePDF()">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Sujet PDF
-            </button>
-        </div>
-        <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
-            <option value="auto">1. Automatisme (QCM)</option>
-            <option value="exo1">2. Exercice 1 : Fonctions</option>
-            <option value="exo2">3. Exercice 2 : Suites & Probas</option>
-            <option value="exo3">4. Exercice 3 : Géométrie Plane</option>
-        </select>
-    </header>
-
-    <main>
-        <div id="auto" class="section-view active">
-            <div class="card card-auto">
-                <div class="title-badge">Échauffement</div>
-                <h2>Automatisme - 12 Questions</h2>
-                <p>Coche la bonne réponse. La correction détaillée rédigée en LaTeX s'affichera immédiatement.</p>
-            </div>
-            
-            <div id="qcm-container"></div>
-
-            <div class="nav-buttons">
-                <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo1'; switchSection('exo1');">Exercice 1 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
-            </div>
-        </div>
-
-        <div id="exo1" class="section-view">
-            <div class="card card-exo1">
-                <div class="title-badge">Analyse</div>
-                <h2>Exercice 1 : Étude de Fonction (8 pts)</h2>
-                <p>On considère la fonction $f$ définie sur $\mathbb{R}$ par :</p>
-                <div class="math-block">$\displaystyle f(x) = -2x^3 + 3x^2 + 12x - 5$</div>
-                <p>On note $\mathcal{C}_f$ sa courbe représentative dans un repère orthogonal.</p>
-                <hr style="border:0; border-top:1px solid #E2E8F0; margin: 25px 0;">
-                
-                <p><b>1.</b> Calculer l'ordonnée du point d'intersection de $\mathcal{C}_f$ avec l'axe des ordonnées.</p>
-                <p><b>2.</b> Calculer les images $f(-1)$ et $f(2)$.</p>
-                <p><b>3.</b> Déterminer l'expression de la fonction dérivée $f'(x)$.</p>
-                <p><b>4.</b> Montrer que pour tout réel $x$, on a : $\displaystyle f'(x) = -6(x-2)(x+1)$.</p>
-                <p><b>5.</b> Étudier le signe de $f'(x)$ sur $\mathbb{R}$.</p>
-                <p><b>6.</b> Dresser le tableau de variations complet de la fonction $f$.</p>
-                <p><b>7.</b> Déterminer l'équation réduite de la tangente $\mathcal{T}$ au point d'abscisse $x_0 = 0$.</p>
-                <p><b>8.</b> Étudier la position relative de la courbe $\mathcal{C}_f$ par rapport à sa tangente $\mathcal{T}$.</p>
-                
-                <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé détaillé</button>
-                
-                <div id="corr-exo1" class="correction">
-                    <div class="corr-step"><b>1.</b> L'intersection avec l'axe des ordonnées correspond à $x = 0$.<br> $\displaystyle f(0) = -2(0)^3 + 3(0)^2 + 12(0) - 5 = -5$. Le point est $(0; -5)$.</div>
-                    <div class="corr-step"><b>2.</b> $\displaystyle f(-1) = -2(-1) + 3(1) - 12 - 5 = 2 + 3 - 12 - 5 = -12$.<br> $\displaystyle f(2) = -2(8) + 3(4) + 12(2) - 5 = -16 + 12 + 24 - 5 = 15$.</div>
-                    <div class="corr-step"><b>3.</b> La dérivée d'un polynôme : $\displaystyle f'(x) = -2(3x^2) + 3(2x) + 12 = -6x^2 + 6x + 12$.</div>
-                    <div class="corr-step"><b>4.</b> Développons la forme proposée :<br> $\displaystyle -6(x-2)(x+1) = -6(x^2 + x - 2x - 2) = -6(x^2 - x - 2) = -6x^2 + 6x + 12$. On retrouve bien $f'(x)$.</div>
-                    <div class="corr-step"><b>5.</b> Signe d'un trinôme : les racines sont $x_1 = 2$ et $x_2 = -1$. Le coefficient $a = -6$ est négatif. Donc $f'(x)$ est positive (signe opposé de $a$) entre les racines $[-1 ; 2]$, et négative à l'extérieur.</div>
-                    <div class="corr-step"><b>6.</b> $f$ est décroissante sur $]-\infty ; -1]$, croissante sur $[-1 ; 2]$, et décroissante sur $[2 ; +\infty[$. Le minimum local est $-12$ et le maximum local est $15$.</div>
-                    <div class="corr-step"><b>7.</b> Équation de $\mathcal{T}$ : $\displaystyle y = f'(0)(x - 0) + f(0)$. Or $f'(0) = 12$ et $f(0) = -5$. Donc $\mathcal{T} : y = 12x - 5$.</div>
-                    <div class="corr-step"><b>8.</b> On étudie le signe de la différence $\displaystyle d(x) = f(x) - y$.<br>$\displaystyle d(x) = (-2x^3 + 3x^2 + 12x - 5) - (12x - 5) = -2x^3 + 3x^2 = x^2(-2x + 3)$.<br>Comme $x^2 \ge 0$, le signe de $d(x)$ dépend de $-2x + 3$.<br>$\displaystyle -2x + 3 \ge 0 \Longleftrightarrow x \le 1,5$.<br>Donc sur $]-\infty ; 1,5]$, $\mathcal{C}_f$ est au-dessus de $\mathcal{T}$. Sur $[1,5 ; +\infty[$, $\mathcal{C}_f$ est en-dessous.</div>
-                </div>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='auto'; switchSection('auto');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
-                <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo2'; switchSection('exo2');">Exercice 2 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
-            </div>
-        </div>
-
-        <div id="exo2" class="section-view">
-            <div class="card card-exo2">
-                <div class="title-badge">Modélisation</div>
-                <h2>Exercice 2 : L'application de Clara (8 pts)</h2>
-                <p>Clara a développé une application de fitness premium. On s'intéresse à la fidélité de ses utilisateurs mois après mois.<br>Si un utilisateur est abonné le mois $n$, la probabilité qu'il reste abonné le mois $n+1$ est de $0,8$. S'il n'est pas abonné le mois $n$, la probabilité qu'il s'abonne le mois $n+1$ (suite à une promotion) est de $0,3$.<br>On note $A_n$ l'événement "l'utilisateur est abonné le mois $n$" et $p_n = P(A_n)$. Le lancement se fait avec des testeurs tous abonnés, donc $p_0 = 1$.</p>
-
-                <div class="svg-container" style="background: transparent; border: none; padding: 0;">
-                    <svg viewBox="0 0 450 280" width="100%" height="100%" style="filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));">
-                        <defs>
-                            <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#00AEEF" /></marker>
-                            <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00AEEF" /><stop offset="100%" stop-color="#005AAA" /></linearGradient>
-                            <linearGradient id="grad-pink" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF758C" /><stop offset="100%" stop-color="#EC008C" /></linearGradient>
-                        </defs>
-                        
-                        <text x="80" y="25" font-family="Outfit" font-size="16" font-weight="bold" fill="#64748B" text-anchor="middle">Mois n</text>
-                        <text x="370" y="25" font-family="Outfit" font-size="16" font-weight="bold" fill="#64748B" text-anchor="middle">Mois n+1</text>
-                        
-                        <path d="M 105 110 C 180 50, 250 40, 335 40" stroke="#00AEEF" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-                        <path d="M 105 120 C 180 180, 250 190, 335 190" stroke="#00AEEF" stroke-width="3" fill="none" marker-end="url(#arrow-blue)"/>
-                        
-                        <rect x="195" y="45" width="50" height="26" rx="13" fill="white" stroke="#8CC63F" stroke-width="2"/>
-                        <text x="220" y="63" font-size="14" font-weight="bold" fill="#166534" text-anchor="middle">0,8</text>
-                        <rect x="195" y="155" width="50" height="26" rx="13" fill="white" stroke="#EC008C" stroke-width="2"/>
-                        <text x="220" y="173" font-size="14" font-weight="bold" fill="#9D174D" text-anchor="middle">0,2</text>
-
-                        <circle cx="80" cy="115" r="26" fill="url(#grad-blue)"/>
-                        <text x="80" y="121" font-family="Outfit" font-size="20" font-weight="bold" fill="white" text-anchor="middle">A<tspan dy="6" font-size="12">n</tspan></text>
-
-                        <circle cx="370" cy="40" r="26" fill="url(#grad-blue)"/>
-                        <text x="370" y="46" font-family="Outfit" font-size="20" font-weight="bold" fill="white" text-anchor="middle">A<tspan dy="6" font-size="12">n+1</tspan></text>
-
-                        <circle cx="370" cy="190" r="26" fill="url(#grad-pink)"/>
-                        <text x="370" y="196" font-family="Outfit" font-size="20" font-weight="bold" fill="white" text-anchor="middle">A<tspan dy="6" font-size="12">n+1</tspan></text>
-                        <line x1="360" y1="172" x2="380" y2="172" stroke="white" stroke-width="3"/>
-                    </svg>
-                </div>
-
-                <hr style="border:0; border-top:1px solid #E2E8F0; margin: 20px 0;">
-                <p><b>1.</b> Reproduire l'arbre pondéré de la situation pour le mois $n$ vers $n+1$ sur votre copie et le compléter intégralement.</p>
-                <p><b>2.</b> En utilisant la formule des probabilités totales, démontrer que pour tout entier $n$, on a : $\displaystyle p_{n+1} = 0,5p_n + 0,3$.</p>
-                <p><b>3.</b> Calculer $p_1$ et $p_2$. La suite $(p_n)$ est-elle arithmétique ? Est-elle géométrique ? Justifier.</p>
-                <p><b>4.</b> On pose $\displaystyle u_n = p_n - 0,6$. Calculer la valeur exacte de $u_0$.</p>
-                <p><b>5.</b> Démontrer que la suite $(u_n)$ est géométrique et préciser sa raison $q$.</p>
-                <p><b>6.</b> Exprimer $u_n$ en fonction de $n$, puis en déduire que $\displaystyle p_n = 0,4 \times 0,5^n + 0,6$.</p>
-                <p><b>7.</b> Étudier le sens de variation de la suite $(p_n)$.</p>
-                <p><b>8.</b> Calculer la limite de $p_n$ quand $n$ tend vers l'infini. Quelle conclusion Clara peut-elle en tirer sur la fidélisation à long terme ?</p>
-
-                <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé détaillé</button>
-                
-                <div id="corr-exo2" class="correction">
-                    <div class="corr-step"><b>1.</b> L'arbre possède deux branches primaires : $A_n$ (probabilité $p_n$) et $\overline{A_n}$ (probabilité $1 - p_n$). De $A_n$, on va vers $A_{n+1}$ (0,8) et $\overline{A_{n+1}}$ (0,2). De $\overline{A_n}$, on va vers $A_{n+1}$ (0,3) et $\overline{A_{n+1}}$ (0,7).</div>
-                    <div class="corr-step"><b>2.</b> Formule des probabilités totales :<br>$\displaystyle P(A_{n+1}) = P(A_n \cap A_{n+1}) + P(\overline{A_n} \cap A_{n+1})$<br>$\displaystyle p_{n+1} = p_n \times 0,8 + (1 - p_n) \times 0,3$<br>$\displaystyle p_{n+1} = 0,8p_n + 0,3 - 0,3p_n = 0,5p_n + 0,3$.</div>
-                    <div class="corr-step"><b>3.</b> $\displaystyle p_1 = 0,5(1) + 0,3 = 0,8$.<br>$\displaystyle p_2 = 0,5(0,8) + 0,3 = 0,7$.<br>$\displaystyle p_1 - p_0 = -0,2$ et $p_2 - p_1 = -0,1$. La différence n'est pas constante : pas arithmétique.<br>$\displaystyle \frac{p_1}{p_0} = 0,8$ et $\displaystyle \frac{p_2}{p_1} = 0,875$. Le quotient n'est pas constant : pas géométrique.</div>
-                    <div class="corr-step"><b>4.</b> $\displaystyle u_0 = p_0 - 0,6 = 1 - 0,6 = 0,4$.</div>
-                    <div class="corr-step"><b>5.</b> $\displaystyle u_{n+1} = p_{n+1} - 0,6 = (0,5p_n + 0,3) - 0,6 = 0,5p_n - 0,3$<br>On factorise par 0,5 : $\displaystyle u_{n+1} = 0,5(p_n - 0,6) = 0,5 u_n$.<br>$(u_n)$ est bien géométrique de raison $q = 0,5$.</div>
-                    <div class="corr-step"><b>6.</b> $\displaystyle u_n = u_0 \times q^n = 0,4 \times 0,5^n$.<br>Comme $u_n = p_n - 0,6$, on a $\displaystyle p_n = u_n + 0,6 = 0,4 \times 0,5^n + 0,6$.</div>
-                    <div class="corr-step"><b>7.</b> $\displaystyle p_{n+1} - p_n = (0,4 \times 0,5^{n+1} + 0,6) - (0,4 \times 0,5^n + 0,6) = 0,4 \times 0,5^n \times (0,5 - 1) = -0,2 \times 0,5^n$.<br>Cette quantité est strictement négative car $0,5^n \gt 0$. La suite $(p_n)$ est strictement décroissante.</div>
-                    <div class="corr-step"><b>8.</b> Comme $-1 \lt 0,5 \lt 1$, $\displaystyle \lim_{n \to +\infty} 0,5^n = 0$. Donc $\displaystyle \lim_{n \to +\infty} p_n = 0,6$.<br>À long terme, Clara stabilisera sa base d'utilisateurs avec 60% d'abonnés fidèles par mois.</div>
-                </div>
-            </div>
-
-            <div class="nav-buttons">
-                <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo1'; switchSection('exo1');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
-                <button class="btn-nav btn-next" onclick="document.getElementById('section-selector').value='exo3'; switchSection('exo3');">Exercice 3 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg></button>
-            </div>
-        </div>
-
-        <div id="exo3" class="section-view">
-            <div class="card card-exo3">
-                <div class="title-badge">Espace & Plan</div>
-                <h2>Exercice 3 : Géométrie Analytique (8 pts)</h2>
-                <p>Dans un repère orthonormé $(O; \vec{i}, \vec{j})$, on donne les points : $A(-2 ; 3)$, $B(4 ; 1)$ et $C(2 ; 5)$.</p>
-
-                <div class="svg-container">
-                    <svg viewBox="-4 -1 10 8" width="100%" height="280">
-                        <pattern id="grid" width="1" height="1" patternUnits="userSpaceOnUse"><path d="M 1 0 L 0 0 0 1" fill="none" stroke="#E2E8F0" stroke-width="0.05"/></pattern>
-                        <rect x="-4" y="-1" width="10" height="8" fill="url(#grid)" />
-                        <line x1="-4" y1="0" x2="6" y2="0" stroke="#94A3B8" stroke-width="0.1"/>
-                        <line x1="0" y1="-1" x2="0" y2="7" stroke="#94A3B8" stroke-width="0.1"/>
-                        
-                        <g transform="scale(1, -1) translate(0, -6)">
-                            <polygon points="-2,3 4,1 2,5" fill="rgba(236, 0, 140, 0.1)" stroke="var(--nathan-pink)" stroke-width="0.08" stroke-linejoin="round"/>
-                            <circle cx="-2" cy="3" r="0.15" fill="var(--nathan-blue)"/><text x="-2.5" y="-2.6" font-size="0.5" fill="var(--nathan-blue)" transform="scale(1, -1)">A</text>
-                            <circle cx="4" cy="1" r="0.15" fill="var(--nathan-blue)"/><text x="4.2" y="-0.6" font-size="0.5" fill="var(--nathan-blue)" transform="scale(1, -1)">B</text>
-                            <circle cx="2" cy="5" r="0.15" fill="var(--nathan-blue)"/><text x="2" y="-5.3" font-size="0.5" fill="var(--nathan-blue)" transform="scale(1, -1)">C</text>
-                        </g>
-                    </svg>
-                </div>
-
-                <hr style="border:0; border-top:1px solid #E2E8F0; margin: 25px 0;">
-                <p><b>1.</b> Calculer les coordonnées des vecteurs $\vec{AB}$ et $\vec{AC}$.</p>
-                <p><b>2.</b> Calculer les distances exactes $AB$ et $AC$.</p>
-                <p><b>3.</b> Calculer le produit scalaire $\vec{AB} \cdot \vec{AC}$ à l'aide des coordonnées.</p>
-                <p><b>4.</b> En déduire la mesure de l'angle $\widehat{BAC}$ au dixième de degré près.</p>
-                <p><b>5.</b> Soit $I$ le milieu du segment $[BC]$. Calculer ses coordonnées.</p>
-                <p><b>6.</b> La droite $(AI)$ est la médiane issue de $A$. Montrer qu'elle n'est pas perpendiculaire à $(BC)$.</p>
-                <p><b>7.</b> Déterminer une équation cartésienne de la droite $(BC)$.</p>
-                <p><b>8.</b> Déterminer une équation cartésienne de la hauteur issue de $A$ dans le triangle $ABC$.</p>
-
-                <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé détaillé</button>
-                
-                <div id="corr-exo3" class="correction">
-                    <div class="corr-step"><b>1.</b> $\displaystyle \vec{AB}(x_B - x_A ; y_B - y_A) \Longrightarrow \vec{AB}(4 - (-2) ; 1 - 3) \Longrightarrow \vec{AB}(6 ; -2)$.<br>$\displaystyle \vec{AC}(2 - (-2) ; 5 - 3) \Longrightarrow \vec{AC}(4 ; 2)$.</div>
-                    <div class="corr-step"><b>2.</b> $\displaystyle AB = \sqrt{6^2 + (-2)^2} = \sqrt{36 + 4} = \sqrt{40} = 2\sqrt{10}$.<br>$\displaystyle AC = \sqrt{4^2 + 2^2} = \sqrt{16 + 4} = \sqrt{20} = 2\sqrt{5}$.</div>
-                    <div class="corr-step"><b>3.</b> Produit scalaire analytique : $xx' + yy'$.<br>$\displaystyle \vec{AB} \cdot \vec{AC} = (6 \times 4) + (-2 \times 2) = 24 - 4 = 20$.</div>
-                    <div class="corr-step"><b>4.</b> On sait que $\displaystyle \vec{AB} \cdot \vec{AC} = AB \times AC \times \cos(\widehat{BAC})$.<br>$20 = \sqrt{40} \times \sqrt{20} \times \cos(\widehat{BAC}) = \sqrt{800} \times \cos(\widehat{BAC})$.<br>$\displaystyle \cos(\widehat{BAC}) = \frac{20}{\sqrt{800}} = \frac{20}{20\sqrt{2}} = \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2}$.<br>On reconnaît une valeur remarquable : $\widehat{BAC} = 45^{\circ}$.</div>
-                    <div class="corr-step"><b>5.</b> $\displaystyle I\left(\frac{x_B+x_C}{2} ; \frac{y_B+y_C}{2}\right) = I\left(\frac{4+2}{2} ; \frac{1+5}{2}\right) = I(3 ; 3)$.</div>
-                    <div class="corr-step"><b>6.</b> Vérifions l'orthogonalité via le produit scalaire $\vec{AI} \cdot \vec{BC}$.<br>$\displaystyle \vec{AI}(3 - (-2) ; 3 - 3) \Longrightarrow \vec{AI}(5 ; 0)$.<br>$\displaystyle \vec{BC}(2 - 4 ; 5 - 1) \Longrightarrow \vec{BC}(-2 ; 4)$.<br>$\displaystyle \vec{AI} \cdot \vec{BC} = (5 \times -2) + (0 \times 4) = -10 \neq 0$. Les droites ne sont pas perpendiculaires.</div>
-                    <div class="corr-step"><b>7.</b> La droite $(BC)$ a pour vecteur directeur $\vec{BC}(-2 ; 4)$.<br>Un point $M(x;y)$ appartient à $(BC)$ si $\vec{BM}(x-4 ; y-1)$ et $\vec{BC}$ sont colinéaires.<br>Déterminant : $\displaystyle (x-4)(4) - (y-1)(-2) = 0 \Longleftrightarrow 4x - 16 + 2y - 2 = 0 \Longleftrightarrow 4x + 2y - 18 = 0$.<br>En simplifiant par 2 : $2x + y - 9 = 0$.</div>
-                    <div class="corr-step"><b>8.</b> La hauteur issue de $A$ passe par $A(-2 ; 3)$ et a pour vecteur normal $\vec{BC}(-2 ; 4)$.<br>L'équation est de la forme $\displaystyle -2x + 4y + c = 0$.<br>Elle passe par $A$ : $\displaystyle -2(-2) + 4(3) + c = 0 \Longleftrightarrow 4 + 12 + c = 0 \Longleftrightarrow c = -16$.<br>Équation cartésienne : $-2x + 4y - 16 = 0$, soit en simplifiant : $-x + 2y - 8 = 0$.</div>
-                </div>
-            </div>
-            <div class="nav-buttons">
-                <button class="btn-nav btn-prev" onclick="document.getElementById('section-selector').value='exo2'; switchSection('exo2');"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg> Précédent</button>
-                <a href="index.html" class="btn-nav btn-next" style="text-decoration:none;">Terminer <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            </div>
-        </div>
-    </main>
-
-    <div id="pdf-export-zone">
-        <div class="pdf-header">
-            <h1>BACCALAURÉAT GÉNÉRAL</h1>
-            <h2>ÉPREUVE DE SPÉCIALITÉ - MATHÉMATIQUES</h2>
-            <p style="margin-top: 15px; font-weight: bold;">ÉPREUVE 1 - NIVEAU STANDARD</p>
-        </div>
-        <div id="pdf-content-wrapper">
-            </div>
-    </div>
-
-<script>
-// ==========================================
-// DONNÉES QCM (12 Questions)
-// ==========================================
-const qcmData = [
-    { q: "Calculer : $\\displaystyle (2x - 3)^2$", opts: ["$\\displaystyle 4x^2 - 9$", "$\\displaystyle 4x^2 - 12x + 9$", "$\\displaystyle 4x^2 - 6x + 9$", "$\\displaystyle 2x^2 - 12x + 9$"], ans: 1, corr: "On utilise l'identité remarquable $(a-b)^2 = a^2 - 2ab + b^2$.<br>$\\displaystyle (2x)^2 - 2(2x)(3) + 3^2 = 4x^2 - 12x + 9$." },
-    { q: "Résoudre : $\\displaystyle 5x - 4 = 2x + 11$", opts: ["$x = 5$", "$x = 3$", "$x = -5$", "$x = 15$"], ans: 0, corr: "$\\displaystyle 5x - 2x = 11 + 4 \\Longleftrightarrow 3x = 15 \\Longleftrightarrow x = 5$." },
-    { q: "Résoudre : $\\displaystyle -3x + 7 \\le 1$", opts: ["$x \\le 2$", "$x \\ge 2$", "$x \\le -2$", "$x \\ge -2$"], ans: 1, corr: "$\\displaystyle -3x \\le 1 - 7 \\Longleftrightarrow -3x \\le -6$. En divisant par $-3$ (négatif), on inverse le sens de l'inégalité : $\\displaystyle x \\ge 2$." },
-    { q: "Racines de $\\displaystyle x^2 - 5x + 6 = 0$ :", opts: ["$-2$ et $-3$", "$1$ et $6$", "$2$ et $3$", "Pas de racine"], ans: 2, corr: "$\\displaystyle \\Delta = (-5)^2 - 4(1)(6) = 25 - 24 = 1$.<br>Racines : $\\displaystyle x_1 = \\frac{5 - 1}{2} = 2$ et $\\displaystyle x_2 = \\frac{5 + 1}{2} = 3$." },
-    { q: "Résoudre : $\\displaystyle -x^2 + 9 \\gt 0$", opts: ["$x \\in ]-3 ; 3[$", "$x \\in ]-\\infty ; -3[ \\cup ]3 ; +\\infty[$", "$x \\in [-3 ; 3]$", "Pas de solution"], ans: 0, corr: "Les racines de $\\displaystyle -x^2 + 9 = 0$ sont $-3$ et $3$. Le coefficient $a = -1$ est négatif, le trinôme est donc strictement positif à l'intérieur des racines : $\\displaystyle x \\in ]-3 ; 3[$." },
-    { q: "Calculer : $\\displaystyle \\frac{3}{4} - \\frac{1}{6}$", opts: ["$\\displaystyle \\frac{2}{-2}$", "$\\displaystyle \\frac{7}{12}$", "$\\displaystyle \\frac{1}{2}$", "$\\displaystyle \\frac{5}{12}$"], ans: 1, corr: "Dénominateur commun : $12$.<br>$\\displaystyle \\frac{3 \\times 3}{12} - \\frac{1 \\times 2}{12} = \\frac{9 - 2}{12} = \\frac{7}{12}$." },
-    { q: "Comparer $\\displaystyle \\frac{5}{7}$ et $\\displaystyle \\frac{3}{4}$", opts: ["$\\displaystyle \\frac{5}{7} \\lt \\frac{3}{4}$", "$\\displaystyle \\frac{5}{7} = \\frac{3}{4}$", "$\\displaystyle \\frac{5}{7} \\gt \\frac{3}{4}$", "Incomparables"], ans: 0, corr: "On met au même dénominateur (28) : $\\displaystyle \\frac{5 \\times 4}{28} = \\frac{20}{28}$ et $\\displaystyle \\frac{3 \\times 7}{28} = \\frac{21}{28}$.<br>Puisque $20 \\lt 21$, on a $\\displaystyle \\frac{5}{7} \\lt \\frac{3}{4}$." },
-    { q: "Moyenne pondérée : Maths coef 3 (note 10), Physique coef 2 (note 11), SVT coef 1 (note $x$). Clara veut 12 de moyenne. Trouver $x$.", opts: ["$15$", "$18$", "$16$", "$20$"], ans: 3, corr: "$\\displaystyle \\frac{3(10) + 2(11) + 1(x)}{3+2+1} = 12 \\Longleftrightarrow \\frac{30 + 22 + x}{6} = 12 \\Longleftrightarrow 52 + x = 72 \\Longleftrightarrow x = 20$." },
-    { q: "Résoudre $\\displaystyle \\cos(x) = \\frac{\\sqrt{2}}{2}$ sur $]-\\pi ; \\pi]$", opts: ["$\\displaystyle \\frac{\\pi}{3}$ et $\\displaystyle -\\frac{\\pi}{3}$", "$\\displaystyle \\frac{\\pi}{4}$ et $\\displaystyle -\\frac{\\pi}{4}$", "$\\displaystyle \\frac{\\pi}{6}$ et $\\displaystyle -\\frac{\\pi}{6}$", "$\\displaystyle \\frac{\\pi}{2}$"], ans: 1, corr: "D'après le cercle trigonométrique, le cosinus vaut $\\displaystyle \\frac{\\sqrt{2}}{2}$ pour les angles $\\displaystyle \\frac{\\pi}{4}$ et $\\displaystyle -\\frac{\\pi}{4}$." },
-    { q: "Soient $\\displaystyle \\vec{u}(-2 ; 5)$ et $\\displaystyle \\vec{v}(4 ; 1)$. Calculer $\\displaystyle \\vec{u} \\cdot \\vec{v}$.", opts: ["$-3$", "$13$", "$-8$", "$-5$"], ans: 0, corr: "$\\displaystyle \\vec{u} \\cdot \\vec{v} = x_u x_v + y_u y_v = (-2 \\times 4) + (5 \\times 1) = -8 + 5 = -3$." },
-    { q: "Déterminer la dérivée de $\\displaystyle f(x) = 4x^3 - 5x^2 + 7x - 1$", opts: ["$\\displaystyle 12x^2 - 10x + 7$", "$\\displaystyle 4x^2 - 5x + 7$", "$\\displaystyle 12x^2 - 10x - 1$", "$\\displaystyle 3x^2 - 2x + 7$"], ans: 0, corr: "On applique les formules : $(x^n)' = nx^{n-1}$ et la dérivée d'une constante est nulle.<br>$\\displaystyle f'(x) = 4(3x^2) - 5(2x) + 7 = 12x^2 - 10x + 7$." },
-    { q: "Un article à 80€ augmente de 15%. Quel est son nouveau prix ?", opts: ["$95$€", "$88$€", "$92$€", "$120$€"], ans: 2, corr: "Le coefficient multiplicateur est $\\displaystyle 1 + \\frac{15}{100} = 1,15$.<br>$\\displaystyle 80 \\times 1,15 = 92$€." }
+    { 
+        q: "Maths coef 4 (note 11), Français coef 2 (note 10), Anglais coef 2 (note $x$). Clara veut 12 de moyenne. Trouver $x$.", 
+        opts: ["$16$", "$14$", "$15$", "$18$"], 
+        ans: 0, 
+        corr: "$\\frac{4(11) + 2(10) + 2(x)}{4+2+2} = 12 \\Longleftrightarrow \\frac{44 + 20 + 2x}{8} = 12 \\Longleftrightarrow 64 + 2x = 96 \\Longleftrightarrow 2x = 32 \\Longleftrightarrow x = 16$." 
+    },
+    { 
+        q: "Résoudre $\\cos(x) = -\\frac{1}{2}$ sur $]-\\pi ; \\pi]$", 
+        opts: ["$\\frac{2\\pi}{3}$ et $-\\frac{2\\pi}{3}$", "$\\frac{\\pi}{3}$ et $-\\frac{\\pi}{3}$", "$\\frac{5\\pi}{6}$ et $-\\frac{5\\pi}{6}$", "$\\frac{3\\pi}{4}$ et $-\\frac{3\\pi}{4}$"], 
+        ans: 0, 
+        corr: "D'après le cercle trigonométrique, le cosinus vaut $-\\frac{1}{2}$ pour les angles correspondant à $\\frac{2\\pi}{3}$ et $-\\frac{2\\pi}{3}$." 
+    },
+    { 
+        q: "Soient $\\vec{u}(-3 ; 4)$ et $\\vec{v}(2 ; 5)$. Calculer $\\vec{u} \\cdot \\vec{v}$.", 
+        opts: ["$14$", "$-14$", "$26$", "$-26$"], 
+        ans: 0, 
+        corr: "Formule analytique : $\\vec{u} \\cdot \\vec{v} = x_u x_v + y_u y_v = (-3 \\times 2) + (4 \\times 5) = -6 + 20 = 14$." 
+    },
+    { 
+        q: "Déterminer la dérivée de la fonction $g(x) = 2x^3 - 4x^2 + x - 5$", 
+        opts: ["$6x^2 - 8x + 1$", "$6x^2 - 8x$", "$2x^2 - 4x + 1$", "$5x^2 - 8x + 1$"], 
+        ans: 0, 
+        corr: "En appliquant les règles de dérivation usuelles : $g'(x) = 2(3x^2) - 4(2x) + 1 - 0 = 6x^2 - 8x + 1$." 
+    },
+    { 
+        q: "Simplifier l'expression $\\sqrt{50} - \\sqrt{8}$", 
+        opts: ["$3\\sqrt{2}$", "$4\\sqrt{2}$", "$\\sqrt{42}$", "$7\\sqrt{2}$"], 
+        ans: 0, 
+        corr: "On extrait les carrés parfaits : $\\sqrt{50} = \\sqrt{25 \\times 2} = 5\\sqrt{2}$ et $\\sqrt{8} = \\sqrt{4 \\times 2} = 2\\sqrt{2}$.<br>Donc $5\\sqrt{2} - 2\\sqrt{2} = 3\\sqrt{2}$." 
+    }
 ];
 
 // ==========================================
-// INJECTION ET LOGIQUE UI
+// MOTEUR D'AFFICHAGE
 // ==========================================
 const qcmContainer = document.getElementById('qcm-container');
 let htmlQCM = '';
 qcmData.forEach((q, index) => {
     htmlQCM += `
-        <div class="card" id="qcm-${index}" style="border-top: none; box-shadow: 0 4px 15px rgba(0,0,0,0.03);">
-            <p style="font-weight:700; margin-bottom:20px; font-size:1.15rem; color: var(--primary);">${index+1}. ${q.q}</p>
+        <div class="card" id="qcm-${index}">
+            <p style="font-weight:800; margin-bottom:15px; font-size:1.15rem;">Q${index+1}. ${q.q}</p>
             <div class="qcm-grid">
                 ${q.opts.map((opt, i) => `<div class="qcm-opt" onclick="checkAnswer(${index}, ${i}, ${q.ans})">${opt}</div>`).join('')}
             </div>
             <div class="correction" id="corr-qcm-${index}">
-                <b style="color:var(--primary);">Correction :</b><br>${q.corr}
+                <b>Correction :</b><br>${q.corr}
             </div>
         </div>
     `;
@@ -850,8 +461,8 @@ qcmContainer.innerHTML = htmlQCM;
 function switchSection(id) {
     document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    document.getElementById('section-selector').value = id;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.getElementById('content-wrapper').scrollTo({ top: 0, behavior: 'smooth' });
+    if(window.MathJax) MathJax.typesetPromise();
 }
 
 function checkAnswer(qIndex, selectedIdx, correctIdx) {
@@ -867,6 +478,7 @@ function checkAnswer(qIndex, selectedIdx, correctIdx) {
     });
 
     document.getElementById(`corr-qcm-${qIndex}`).classList.add('show');
+    if(window.MathJax) MathJax.typesetPromise();
 }
 
 function toggleCorr(id) {
@@ -878,61 +490,8 @@ function toggleCorr(id) {
     } else {
         el.classList.add('show');
         btn.innerText = "Cacher le corrigé";
+        if(window.MathJax) MathJax.typesetPromise();
     }
-}
-
-// ==========================================
-// EXPORT PDF RÉEL (AVEC LATEX)
-// ==========================================
-function generatePDF() {
-    // 1. Afficher l'écran de chargement
-    document.getElementById('loader').style.display = 'flex';
-    document.getElementById('loader').style.opacity = '1';
-    
-    const pdfZone = document.getElementById('pdf-export-zone');
-    const wrapper = document.getElementById('pdf-content-wrapper');
-    
-    // 2. Construire le HTML pur pour le PDF
-    let pdfHTML = `<div class="pdf-section"><h3>Exercice 1 : Automatisme (QCM)</h3><ol style="padding-left:20px;">`;
-    qcmData.forEach(q => {
-        pdfHTML += `<li class="pdf-q">${q.q}<br><br>A) ${q.opts[0]} &nbsp;&nbsp;&nbsp;&nbsp; B) ${q.opts[1]} &nbsp;&nbsp;&nbsp;&nbsp; C) ${q.opts[2]} &nbsp;&nbsp;&nbsp;&nbsp; D) ${q.opts[3]}<br><br></li>`;
-    });
-    pdfHTML += `</ol></div>`;
-
-    ['exo1', 'exo2', 'exo3'].forEach(id => {
-        const exoCard = document.querySelector(`#${id} .card`);
-        if (exoCard) {
-            let clone = exoCard.cloneNode(true);
-            // On nettoie les boutons de l'UI
-            let btn = clone.querySelector('.btn-corr');
-            let corr = clone.querySelector('.correction');
-            if (btn) btn.remove();
-            if (corr) corr.remove();
-            pdfHTML += `<div class="pdf-section">${clone.innerHTML}</div>`;
-        }
-    });
-
-    wrapper.innerHTML = pdfHTML;
-    pdfZone.style.display = 'block';
-
-    // 3. Forcer MathJax à re-rendre les formules dans la zone PDF cachée
-    MathJax.typesetPromise([wrapper]).then(() => {
-        const opt = {
-            margin:       15,
-            filename:     'Epreuve_1_Maths.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        // 4. Lancer html2pdf
-        html2pdf().set(opt).from(pdfZone).save().then(() => {
-            pdfZone.style.display = 'none';
-            wrapper.innerHTML = '';
-            document.getElementById('loader').style.opacity = '0';
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 300);
-        });
-    });
 }
 </script>
 
