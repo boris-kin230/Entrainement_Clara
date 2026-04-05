@@ -3,237 +3,372 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Annales Maths Spé 1ère - Accueil</title>
+    <title>Annales Maths 1ère - Espace de Clara</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
-        /* --- VARIABLES COULEURS NATHAN --- */
+        /* ==========================================================================
+           1. VARIABLES PREMIUM (Inspiration Nathan / Apple Education)
+           ========================================================================== */
         :root {
-            --nathan-green: #8CC63F;
-            --nathan-blue: #005AAA;
-            --nathan-pink: #EC008C;
-            --nathan-cyan: #00AEEF;
-            --nathan-yellow: #FFF200;
-            --bg-app: #FCFDEE;
-            --bg-card: #FFFFFF;
-            --text-main: #2C3E50;
-            --text-light: #5A6A7A;
-            --border-radius: 20px; /* Bords plus arrondis pour style iOS */
-            --shadow: 0 12px 35px rgba(0, 90, 170, 0.1);
+            --primary: #005AAA;
+            --primary-light: #4D9EEB;
+            --accent-pink: #EC008C;
+            --accent-cyan: #00AEEF;
+            --accent-green: #8CC63F;
+            --accent-yellow: #FFF200;
+            --bg-color: #F8FAFC;
+            --surface-white: rgba(255, 255, 255, 0.75);
+            --surface-solid: #FFFFFF;
+            --text-dark: #0F172A;
+            --text-gray: #64748B;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 40px -10px rgba(0, 90, 170, 0.15);
+            --shadow-glow: 0 0 25px rgba(0, 174, 239, 0.4);
+            --radius-lg: 24px;
+            --radius-xl: 32px;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Poppins', sans-serif; 
-            -webkit-tap-highlight-color: transparent; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg-app);
-            color: var(--text-main);
-            /* Ajout d'un padding bottom pour les iPhones avec barre d'accueil */
-            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
 
-        /* --- HEADER MOBILE STICKY --- */
+        /* ==========================================================================
+           2. ARRIÈRE-PLAN ANIMÉ (ORBES GLASSMORPHISM)
+           ========================================================================== */
+        .bg-orbs {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; pointer-events: none;
+            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+        }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(60px);
+            animation: float 20s infinite ease-in-out alternate; opacity: 0.6;
+        }
+        .orb-1 { width: 400px; height: 400px; background: rgba(0, 174, 239, 0.3); top: -100px; left: -100px; }
+        .orb-2 { width: 500px; height: 500px; background: rgba(236, 0, 140, 0.2); bottom: -150px; right: -100px; animation-delay: -5s; }
+        .orb-3 { width: 300px; height: 300px; background: rgba(140, 198, 63, 0.2); top: 40%; left: 50%; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(50px, 30px) scale(1.1); }
+            100% { transform: translate(-30px, 50px) scale(0.9); }
+        }
+
+        /* ==========================================================================
+           3. NAVBAR GLASSMORPHISM
+           ========================================================================== */
         header {
-            background: var(--nathan-blue);
-            color: white;
-            padding: 25px 20px 20px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-bottom: 4px solid var(--nathan-yellow);
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 20px 25px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow-sm);
         }
 
-        .logo-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            line-height: 1.1;
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand-icon {
+            width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+            border-radius: 14px; display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: 900; font-size: 1.5rem; font-family: 'Outfit', sans-serif;
+            box-shadow: var(--shadow-glow);
         }
+        .brand-text h1 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--text-dark); line-height: 1.1; }
+        .brand-text span { font-size: 0.8rem; font-weight: 600; color: var(--accent-pink); text-transform: uppercase; letter-spacing: 1.5px; }
+
+        .btn-pdf-header {
+            background: rgba(0, 90, 170, 0.05); color: var(--primary);
+            border: 2px solid rgba(0, 90, 170, 0.1); padding: 10px 18px; border-radius: 12px;
+            font-weight: 700; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-pdf-header:active { transform: scale(0.95); background: var(--primary); color: white; }
+
+        /* ==========================================================================
+           4. HERO SECTION (PAGE DE GARDE)
+           ========================================================================== */
+        main { flex: 1; max-width: 900px; margin: 0 auto; width: 100%; padding: 30px 20px; }
+
+        .hero {
+            background: var(--surface-white); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6); border-radius: var(--radius-xl);
+            padding: 40px 30px; text-align: center; margin-bottom: 40px; box-shadow: var(--shadow-xl);
+            position: relative; overflow: hidden;
+        }
+
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink), var(--accent-yellow));
+        }
+
+        .welcome-badge {
+            display: inline-block; background: rgba(140, 198, 63, 0.15); color: #166534;
+            padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 0.95rem; margin-bottom: 20px;
+            border: 1px solid rgba(140, 198, 63, 0.3);
+        }
+
+        .hero h2 { font-family: 'Outfit', sans-serif; font-size: 2.8rem; font-weight: 900; color: var(--primary); line-height: 1.1; margin-bottom: 15px; }
+        .hero h2 span { color: var(--text-dark); }
+        .hero p { font-size: 1.15rem; color: var(--text-gray); line-height: 1.6; max-width: 600px; margin: 0 auto; }
+
+        /* ==========================================================================
+           5. STATISTIQUES GLOBALES
+           ========================================================================== */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 40px; }
+        .stat-card {
+            background: var(--surface-solid); border-radius: 20px; padding: 20px; text-align: center;
+            box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.03);
+        }
+        .stat-val { font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--text-dark); margin-bottom: 5px; }
+        .stat-label { font-size: 0.85rem; font-weight: 600; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ==========================================================================
+           6. CARTES DES ÉPREUVES (LE CŒUR DE L'APP)
+           ========================================================================== */
+        .section-title { font-family: 'Outfit', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text-dark); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
         
-        .logo-subtitle {
-            font-size: 0.85rem;
-            color: var(--nathan-cyan);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        /* --- CONTENU PRINCIPAL --- */
-        main {
-            flex: 1;
-            padding: 30px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .welcome-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .welcome-section h1 {
-            font-size: 2.2rem;
-            color: var(--nathan-blue);
-            margin-bottom: 10px;
-        }
-
-        .welcome-section p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        /* --- CARTES DES ÉPREUVES --- */
-        .epreuve-grid {
-            display: grid;
-            gap: 25px;
-        }
+        .epreuves-container { display: flex; flex-direction: column; gap: 25px; margin-bottom: 50px; }
 
         .epreuve-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            padding: 30px 25px;
-            text-decoration: none;
-            color: var(--text-main);
-            display: block;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            border-left: 8px solid var(--nathan-green);
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: var(--surface-solid); border-radius: var(--radius-lg); padding: 30px;
+            box-shadow: var(--shadow-sm); border: 1px solid rgba(0,0,0,0.05); position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; display: block;
         }
+        .epreuve-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-xl); }
+        .epreuve-card:active { transform: scale(0.98); }
 
-        .epreuve-card:active {
-            transform: scale(0.97);
+        /* Barres de couleur sur le côté gauche */
+        .epreuve-card::before {
+            content: ''; position: absolute; top: 30px; bottom: 30px; left: 0; width: 6px;
+            border-radius: 0 6px 6px 0;
         }
+        .card-ep1::before { background: var(--accent-green); }
+        .card-ep2::before { background: var(--accent-cyan); }
+        .card-ep3::before { background: var(--accent-pink); }
 
-        .epreuve-badge {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: var(--nathan-yellow);
-            color: var(--nathan-blue);
-            font-weight: 800;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }
-
-        .epreuve-card h2 {
-            font-size: 1.6rem;
-            margin-bottom: 8px;
-            color: var(--nathan-blue);
-            margin-top: 10px;
-        }
-
-        .epreuve-card p {
-            font-size: 1rem;
-            color: var(--text-light);
-            margin-bottom: 20px;
-        }
-
-        /* --- BOUTON D'ACTION DANS LA CARTE --- */
-        .btn-start {
-            background: var(--nathan-green);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 12px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            width: 100%;
-        }
-
-        /* Variantes de couleurs pour les cartes */
-        .card-2 { border-left-color: var(--nathan-cyan); }
-        .card-2 .btn-start { background: var(--nathan-cyan); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .card-header h3 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--text-dark); }
         
-        .card-3 { border-left-color: var(--nathan-pink); }
-        .card-3 .btn-start { background: var(--nathan-pink); }
+        .badge { padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; }
+        .badge-1 { background: rgba(140, 198, 63, 0.15); color: #166534; }
+        .badge-2 { background: rgba(0, 174, 239, 0.15); color: #0369A1; }
+        .badge-3 { background: rgba(236, 0, 140, 0.15); color: #9D174D; }
 
-        /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            padding: 30px 20px;
-            color: var(--text-light);
-            font-size: 0.9rem;
+        .epreuve-desc { font-size: 1.05rem; color: var(--text-gray); line-height: 1.6; margin-bottom: 20px; }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
+        .tag { background: #F1F5F9; color: #475569; padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; }
+
+        .btn-start {
+            width: 100%; padding: 16px; border-radius: 14px; font-size: 1.1rem; font-weight: 700;
+            display: flex; justify-content: center; align-items: center; gap: 10px; color: white;
+            transition: 0.3s;
         }
+        .card-ep1 .btn-start { background: var(--accent-green); box-shadow: 0 4px 15px rgba(140, 198, 63, 0.3); }
+        .card-ep2 .btn-start { background: var(--accent-cyan); box-shadow: 0 4px 15px rgba(0, 174, 239, 0.3); }
+        .card-ep3 .btn-start { background: var(--accent-pink); box-shadow: 0 4px 15px rgba(236, 0, 140, 0.3); }
+
+        /* ==========================================================================
+           7. ZONE PDF INVISIBLE (POUR L'EXPORT)
+           ========================================================================== */
+        #pdf-export-zone {
+            display: none; /* Rendu visible uniquement lors de l'export */
+            background: white; padding: 40px; width: 210mm; min-height: 297mm;
+            color: black; font-family: 'Times New Roman', serif;
+        }
+        .pdf-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 20px; margin-bottom: 40px; }
+        .pdf-header h1 { font-size: 32px; text-transform: uppercase; margin-bottom: 10px; }
+        .pdf-header h2 { font-size: 24px; font-weight: normal; }
+        .pdf-content h3 { font-size: 22px; color: #005AAA; margin-top: 30px; margin-bottom: 15px; }
+        .pdf-content p { font-size: 16px; line-height: 1.6; margin-bottom: 10px; }
 
     </style>
 </head>
 <body>
 
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
     <header>
-        <div>
-            <div class="logo-title">Annales Maths</div>
-            <div class="logo-subtitle">Spécialité 1ère</div>
+        <div class="brand">
+            <div class="brand-icon">$\sum$</div>
+            <div class="brand-text">
+                <h1>Annales</h1>
+                <span>Spécialité Maths</span>
+            </div>
         </div>
-        <svg width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="var(--nathan-yellow)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
-        </svg>
+        <button class="btn-pdf-header" onclick="generatePDF()">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            PDF
+        </button>
     </header>
 
     <main>
-        <div class="welcome-section">
-            <h1>Tableau de bord</h1>
-            <p>Sélectionne une épreuve pour commencer ton entraînement. Chaque session contient un automatisme et 3 problèmes complets.</p>
+        <section class="hero">
+            <div class="welcome-badge">🚀 Prête pour l'excellence ?</div>
+            <h2>Entraînement Intensif<br><span>pour Clara</span></h2>
+            <p>Bienvenue dans ton espace de révision sur-mesure. Retrouve tes épreuves complètes avec QCM, problèmes et corrections rédigées.</p>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-val" style="color: var(--accent-cyan);">3</div>
+                <div class="stat-label">Sujets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" style="color: var(--accent-pink);">36</div>
+                <div class="stat-label">Questions QCM</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" style="color: var(--accent-green);">10</div>
+                <div class="stat-label">Problèmes</div>
+            </div>
         </div>
 
-        <div class="epreuve-grid">
+        <h2 class="section-title">
+            <svg width="28" height="28" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            Choisis ton épreuve
+        </h2>
+
+        <div class="epreuves-container">
             
-            <a href="ep1.html" class="epreuve-card card-1">
-                <div class="epreuve-badge">Sujet 1</div>
-                <h2>Épreuve N°1</h2>
-                <p>Fonctions, suites géométriques et géométrie analytique. Idéal pour s'échauffer.</p>
+            <a href="ep1.html" class="epreuve-card card-ep1">
+                <div class="card-header">
+                    <h3>Épreuve 1</h3>
+                    <span class="badge badge-1">Niveau Standard</span>
+                </div>
+                <p class="epreuve-desc">Idéal pour consolider les bases. Inclut l'étude complète d'une fonction polynomiale et un problème concret de probabilités sur une application.</p>
+                <div class="tags">
+                    <span class="tag">Fonctions Polynômes</span>
+                    <span class="tag">Suites & Probas</span>
+                    <span class="tag">Géométrie Analytique</span>
+                </div>
                 <div class="btn-start">
-                    Commencer l'épreuve
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    Démarrer l'épreuve
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </div>
             </a>
 
-            <a href="ep2.html" class="epreuve-card card-2">
-                <div class="epreuve-badge">Sujet 2</div>
-                <h2>Épreuve N°2</h2>
-                <p>Dérivation avancée, probabilités et produit scalaire. Le standard de l'examen.</p>
+            <a href="ep2.html" class="epreuve-card card-ep2">
+                <div class="card-header">
+                    <h3>Épreuve 2</h3>
+                    <span class="badge badge-2">Niveau Avancé</span>
+                </div>
+                <p class="epreuve-desc">Le cœur du programme. Maîtrise les fonctions rationnelles, l'évolution d'une suite financière et les arbres de probabilités conditionnelles.</p>
+                <div class="tags">
+                    <span class="tag">Fonctions Rationnelles</span>
+                    <span class="tag">Suites (Clara_Pix)</span>
+                    <span class="tag">Arbre de Probabilité</span>
+                </div>
                 <div class="btn-start">
-                    Commencer l'épreuve
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    Démarrer l'épreuve
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </div>
             </a>
 
-            <a href="ep3.html" class="epreuve-card card-3">
-                <div class="epreuve-badge">Sujet 3</div>
-                <h2>Épreuve N°3</h2>
-                <p>Le défi ultime. Synthèse de tous les chapitres pour viser l'excellence.</p>
+            <a href="ep3.html" class="epreuve-card card-ep3">
+                <div class="card-header">
+                    <h3>Épreuve 3</h3>
+                    <span class="badge badge-3">Niveau Expert</span>
+                </div>
+                <p class="epreuve-desc">Le défi ultime. Synthèse complète avec l'apparition de la fonction exponentielle, des problèmes croisés et des démonstrations exigeantes.</p>
+                <div class="tags">
+                    <span class="tag">Fonction Exponentielle</span>
+                    <span class="tag">Maths Financières</span>
+                    <span class="tag">Cercle & Tangente</span>
+                </div>
                 <div class="btn-start">
-                    Commencer l'épreuve
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    Démarrer l'épreuve
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </div>
             </a>
 
         </div>
     </main>
 
-    <footer>
-        Conçu spécialement pour un affichage optimal sur mobile et tablette.
-    </footer>
+    <div id="pdf-export-zone">
+        <div class="pdf-header">
+            <h1>LIVRET D'ENTRAÎNEMENT</h1>
+            <h2>Mathématiques - Spécialité Première</h2>
+            <br><p><strong>Élève :</strong> Clara</p>
+            <p><strong>Année Scolaire :</strong> 2023 - 2024</p>
+        </div>
+        
+        <div class="pdf-content">
+            <h3 style="text-align: center;">Programme de Révision Intensif</h3>
+            <hr><br>
+            
+            <h3>Épreuve 1 : Les Fondamentaux</h3>
+            <p><b>Automatisme :</b> QCM 12 questions (Calculs, Fractions, Dérivées, Trigonométrie, Produit scalaire).</p>
+            <p><b>Exercice 1 :</b> Étude de la fonction polynomiale $f(x) = -2x^3 + 3x^2 + 12x - 5$.</p>
+            <p><b>Exercice 2 :</b> Modélisation probabiliste (Le réseau social).</p>
+            <p><b>Exercice 3 :</b> Géométrie analytique et calcul d'angles.</p>
 
+            <h3>Épreuve 2 : Consolidation</h3>
+            <p><b>Automatisme :</b> QCM 12 questions (Comparaisons, Inéquations 2nd degré).</p>
+            <p><b>Exercice 1 :</b> Étude de la fonction rationnelle $f(x) = \frac{x^2+3}{x-1}$.</p>
+            <p><b>Exercice 2 :</b> Suite arithmético-géométrique (Application Clara_Pix).</p>
+            <p><b>Exercice 3 :</b> Probabilités (Formule de Bayes).</p>
+
+            <h3>Épreuve 3 : Niveau Expert</h3>
+            <p><b>Automatisme :</b> QCM 12 questions (Niveau supérieur).</p>
+            <p><b>Exercice 1 :</b> Étude de la fonction exponentielle $f(x) = (x-2)e^x$.</p>
+            <p><b>Exercice 2 :</b> Modélisation financière (Achat de l'appareil photo).</p>
+            <p><b>Exercice 3 :</b> Studio Photo (Probabilités avancées).</p>
+            <p><b>Exercice 4 :</b> Géométrie plane (Cercle circonscrit).</p>
+
+            <br><br><br><br><br>
+            <p style="text-align: center; font-style: italic;">"Les mathématiques ne sont pas une moindre immensité que la mer." - Victor Hugo</p>
+        </div>
+    </div>
+
+    <script>
+        function generatePDF() {
+            // Afficher temporairement la zone PDF
+            const element = document.getElementById('pdf-export-zone');
+            element.style.display = 'block';
+
+            // Options de html2pdf
+            const opt = {
+                margin:       15,
+                filename:     'Livret_Maths_Clara.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Lancer la création et le téléchargement
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Cacher la zone une fois le PDF généré
+                element.style.display = 'none';
+            });
+        }
+    </script>
 </body>
 </html>
