@@ -7,8 +7,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <script>
         MathJax = {
             tex: { 
@@ -154,21 +152,6 @@
             box-shadow: inset 0 4px 15px rgba(0,0,0,0.02);
         }
 
-        /* ==========================================================================
-           4. ZONE CACHÉE POUR LE PDF (LATEX PUR)
-           ========================================================================== */
-        #pdf-zone {
-            display: none; /* Câché sur l'UI, affiché uniquement pour html2pdf */
-            width: 210mm; padding: 20mm; background: white; color: black;
-            font-family: 'Times New Roman', Times, serif; font-size: 14pt; line-height: 1.6;
-        }
-        .pdf-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 30px; }
-        .pdf-header h1 { font-size: 24pt; font-weight: bold; margin-bottom: 5px; }
-        .pdf-header h2 { font-size: 16pt; font-style: italic; }
-        .pdf-section { margin-bottom: 40px; page-break-inside: avoid; }
-        .pdf-section h3 { font-size: 18pt; margin-bottom: 15px; text-decoration: underline; }
-        .pdf-q { margin-bottom: 10px; }
-
     </style>
 </head>
 <body>
@@ -183,9 +166,6 @@
             <a href="index.html" class="btn-ui btn-back">
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg> Accueil
             </a>
-            <button class="btn-ui btn-pdf" onclick="generatePDF()">
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Télécharger PDF
-            </button>
         </div>
         <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
             <option value="auto">1. Automatisme (QCM)</option>
@@ -363,17 +343,6 @@
         </div>
     </main>
 
-    <div id="pdf-export-zone" style="display:none; width: 210mm; padding: 20mm; background: white; color: black; font-family: 'Times New Roman', Times, serif; font-size: 13pt; line-height: 1.5;">
-        <div style="text-align: center; border-bottom: 2px solid black; padding-bottom: 15px; margin-bottom: 30px;">
-            <h1 style="font-size: 22pt; font-weight: bold; margin-bottom: 5px;">BACCALAURÉAT GÉNÉRAL</h1>
-            <h2 style="font-size: 16pt; font-style: italic;">ÉPREUVE DE SPÉCIALITÉ - MATHÉMATIQUES</h2>
-            <p style="margin-top: 10px; font-weight: bold;">ÉPREUVE 1</p>
-        </div>
-        
-        <div id="pdf-content-wrapper">
-            </div>
-    </div>
-
 <script>
 // ==========================================
 // DONNÉES QCM (12 Questions)
@@ -446,54 +415,6 @@ function toggleCorr(id) {
         el.classList.add('show');
         btn.innerText = "Cacher le corrigé";
     }
-}
-
-// ==========================================
-// EXPORT PDF RÉEL
-// ==========================================
-function generatePDF() {
-    const pdfZone = document.getElementById('pdf-export-zone');
-    const wrapper = document.getElementById('pdf-content-wrapper');
-    
-    // Construire le contenu statique du PDF (Questions sans l'UI)
-    let pdfHTML = `<h3 style="margin-top: 0;">Exercice 1 : Automatisme (QCM)</h3><ol>`;
-    qcmData.forEach(q => {
-        pdfHTML += `<li style="margin-bottom: 10px; page-break-inside: avoid;">${q.q}<br>A) ${q.opts[0]} &nbsp;&nbsp; B) ${q.opts[1]} &nbsp;&nbsp; C) ${q.opts[2]} &nbsp;&nbsp; D) ${q.opts[3]}</li>`;
-    });
-    pdfHTML += `</ol><br><br>`;
-
-    // Cloner les textes des exos
-    ['exo1', 'exo2', 'exo3'].forEach((id, idx) => {
-        const exoCard = document.querySelector(`#${id} .card`);
-        if (exoCard) {
-            let clone = exoCard.cloneNode(true);
-            // Supprimer le bouton corrigé et la div correction pour ne garder que le sujet
-            let btn = clone.querySelector('.btn-corr');
-            let corr = clone.querySelector('.correction');
-            if (btn) btn.remove();
-            if (corr) corr.remove();
-            pdfHTML += `<div style="page-break-inside: avoid; margin-bottom: 30px;">${clone.innerHTML}</div>`;
-        }
-    });
-
-    wrapper.innerHTML = pdfHTML;
-    pdfZone.style.display = 'block';
-
-    // Rendre le LaTeX dans la zone PDF avant l'export
-    MathJax.typesetPromise([wrapper]).then(() => {
-        const opt = {
-            margin:       15,
-            filename:     'Epreuve_1_Maths.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().set(opt).from(pdfZone).save().then(() => {
-            pdfZone.style.display = 'none';
-            wrapper.innerHTML = '';
-        });
-    });
 }
 </script>
 
