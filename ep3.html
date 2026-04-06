@@ -144,10 +144,6 @@
                 <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 Accueil
             </a>
-            <button class="btn-icon btn-pdf" onclick="alert('Génération du PDF LaTeX de l\'épreuve 3...')">
-                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                PDF
-            </button>
         </div>
         <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
             <option value="auto">1. Automatisme (12 QCM)</option>
@@ -530,7 +526,7 @@ function toggleCorr(id) {
     const btn = el.previousElementSibling;
     if(el.classList.contains('show')) {
         el.classList.remove('show');
-        btn.innerText = "Afficher le corrigé détaillé";
+        btn.innerText = "Afficher le corrigé";
     } else {
         el.classList.add('show');
         btn.innerText = "Cacher le corrigé";
