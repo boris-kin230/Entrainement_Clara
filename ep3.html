@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Épreuve 3 - Espace de Clara</title>
+    <title>Épreuve 3 - Maths Spé 1ère</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -178,7 +178,19 @@
             box-shadow: inset 0 4px 15px rgba(0,0,0,0.02);
         }
 
-      
+        /* ==========================================================================
+           5. ZONE CACHÉE POUR LE PDF (LATEX PUR)
+           ========================================================================== */
+        #pdf-export-zone {
+            display: none; width: 210mm; padding: 20mm; background: white; color: black;
+            font-family: 'Times New Roman', Times, serif; font-size: 12pt; line-height: 1.5;
+        }
+        .pdf-header { text-align: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 30px; }
+        .pdf-header h1 { font-size: 24pt; font-weight: bold; margin-bottom: 5px; }
+        .pdf-header h2 { font-size: 16pt; font-style: italic; }
+        .pdf-section { margin-bottom: 40px; page-break-inside: avoid; }
+        .pdf-section h3 { font-size: 16pt; margin-bottom: 15px; text-decoration: underline; color: black; }
+        .pdf-q { margin-bottom: 12px; }
 
     </style>
 </head>
@@ -198,13 +210,17 @@
         <div class="header-top">
             <a href="index.html" class="btn-ui btn-back">
                 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Accueil
+            </a>
+            <button class="btn-ui btn-pdf" onclick="generatePDF()">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Sujet PDF
+            </button>
         </div>
         <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
-            <option value="auto">1. Automatisme (QCM)</option>
-            <option value="exo1">2. Exercice 1 : Fonctions </option>
-            <option value="exo2">3. Exercice 2 : Suites </option>
+            <option value="auto">1. Automatisme (QCM Expert)</option>
+            <option value="exo1">2. Exercice 1 : Fonctions</option>
+            <option value="exo2">3. Exercice 2 : Suites</option>
             <option value="exo3">4. Exercice 3 : Probabilités</option>
-            <option value="exo4">5. Exercice 4 : Géométrie </option>
+            <option value="exo4">5. Exercice 4 : Géométrie Plane</option>
         </select>
     </header>
 
@@ -213,7 +229,7 @@
             <div class="card card-auto">
                 <div class="title-badge">Échauffement Expert</div>
                 <h2>Automatisme - 12 Questions</h2>
-                <p>Coche la bonne réponse. </p>
+                <p>Coche la bonne réponse. La correction détaillée rédigée en LaTeX s'affichera immédiatement.</p>
             </div>
             <div id="qcm-container"></div>
             <div class="nav-buttons">
@@ -224,7 +240,7 @@
         <div id="exo1" class="section-view">
             <div class="card card-exo1">
                 <div class="title-badge">Analyse</div>
-                <h2>Exercice 1 : Fonction </h2>
+                <h2>Exercice 1 : Fonction Exponentielle (8 pts)</h2>
                 <p>Soit la fonction $f$ définie sur $\mathbb{R}$ par :</p>
                 <div class="math-block">$\displaystyle f(x) = (x - 2)e^x$</div>
                 <p>On note $\mathcal{C}_f$ sa courbe représentative.</p>
@@ -239,7 +255,7 @@
                 <p><b>7.</b> Déterminer l'équation de la tangente $\mathcal{T}$ au point d'abscisse $x_0 = 0$.</p>
                 <p><b>8.</b> Résoudre l'inéquation $f(x) \gt 0$. Interpréter graphiquement.</p>
                 
-                <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé</button>
+                <button class="btn-corr" onclick="toggleCorr('corr-exo1')">Afficher le corrigé détaillé</button>
                 
                 <div id="corr-exo1" class="correction">
                     <div class="corr-step"><b>1.</b> $\displaystyle f(0) = (0 - 2)e^0 = -2 \times 1 = -2$.<br>$\displaystyle f(2) = (2 - 2)e^2 = 0 \times e^2 = 0$.</div>
@@ -261,7 +277,7 @@
         <div id="exo2" class="section-view">
             <div class="card card-exo2">
                 <div class="title-badge">Modélisation</div>
-                <h2>Exercice 2 : L'objectif de Clara</h2>
+                <h2>Exercice 2 : L'objectif de Clara (8 pts)</h2>
                 <p>Clara souhaite s'acheter un appareil photo professionnel qui coûte 1 500 €. Elle ouvre un compte épargne spécial "Projet" sur lequel elle place initialement 500 €. La banque lui verse 2% d'intérêts à la fin de chaque mois. De plus, elle s'engage à déposer 20 € supplémentaires chaque mois.</p>
                 <p>On modélise le solde du compte au mois $n$ par la suite $(u_n)$. Ainsi, $u_0 = 500$.</p>
 
@@ -295,7 +311,7 @@
                 <p><b>7.</b> Calculer le solde du compte au bout de 12 mois (arrondir à l'euro).</p>
                 <p><b>8.</b> Déterminer au bout de combien de mois Clara pourra acheter son appareil photo (soit $u_n \ge 1500$).</p>
 
-                <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé</button>
+                <button class="btn-corr" onclick="toggleCorr('corr-exo2')">Afficher le corrigé détaillé</button>
                 
                 <div id="corr-exo2" class="correction">
                     <div class="corr-step"><b>1.</b> $\displaystyle u_1 = 500 + 500 \times 0,02 + 20 = 500 + 10 + 20 = 530$€.<br>$\displaystyle u_2 = 530 \times 1,02 + 20 = 540,60 + 20 = 560,60$€.</div>
@@ -317,8 +333,8 @@
         <div id="exo3" class="section-view">
             <div class="card card-exo3">
                 <div class="title-badge">Aléatoire</div>
-                <h2>Exercice 3 : Le Studio Photo</h2>
-                <p>Clara propose deux types de prestations dans son studio : les "Portraits" (événement $P$) qui représentent 60% de ses commandes, et les "Paysages" (événement $\overline{P}$).</p>
+                <h2>Exercice 3 : Le Studio Photo (8 pts)</h2>
+                <p>Clara propose deux types de prestations dans son studio : les "Portraits" (événement $P$) qui représentent 60% de ses commandes, et les "Paysages/Événements" (événement $\overline{P}$).</p>
                 <p>Elle retouche minutieusement ses photos. Pour un Portrait, elle effectue une retouche avancée (événement $E$) dans 80% des cas. Pour un Paysage, elle fait une retouche avancée dans seulement 30% des cas.</p>
 
                 <div class="svg-container" style="background: transparent; border: none; padding: 0;">
@@ -377,7 +393,7 @@
                 <p><b>7.</b> Calculer l'espérance $E(X)$.</p>
                 <p><b>8.</b> Interpréter le résultat de l'espérance dans le contexte du studio photo.</p>
 
-                <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé</button>
+                <button class="btn-corr" onclick="toggleCorr('corr-exo3')">Afficher le corrigé détaillé</button>
                 
                 <div id="corr-exo3" class="correction">
                     <div class="corr-step"><b>1.</b> La somme des probabilités des branches issues du nœud $\overline{P}$ vaut 1.<br>$\displaystyle P_{\overline{P}}(\overline{E}) = 1 - 0,3 = 0,7$.</div>
@@ -399,11 +415,11 @@
         <div id="exo4" class="section-view">
             <div class="card card-exo4">
                 <div class="title-badge">Espace & Plan</div>
-                <h2>Exercice 4 : Géométrie</h2>
+                <h2>Exercice 4 : Géométrie Plane (8 pts)</h2>
                 <p>Dans un repère orthonormé $(O; \vec{i}, \vec{j})$, on donne les points : $A(-3 ; 1)$, $B(5 ; 3)$ et $C(1 ; 5)$.</p>
 
                 <div class="svg-container">
-                    <svg viewBox="-4 0 10 6" width="100%" height="250px" style="background:#fff; border-radius: 12px;">
+                    <svg viewBox="-4 0 10 6" width="100%" height="220">
                         <pattern id="grid2" width="1" height="1" patternUnits="userSpaceOnUse"><path d="M 1 0 L 0 0 0 1" fill="none" stroke="#E2E8F0" stroke-width="0.05"/></pattern>
                         <rect x="-4" y="0" width="10" height="6" fill="url(#grid2)" />
                         <line x1="-4" y1="5" x2="6" y2="5" stroke="#94A3B8" stroke-width="0.08"/>
@@ -412,7 +428,6 @@
                         <g transform="scale(1, -1) translate(0, -5)"> 
                             <polygon points="-3,1 5,3 1,5" fill="rgba(0, 90, 170, 0.1)" stroke="var(--primary)" stroke-width="0.06" stroke-linejoin="round"/>
                             <circle cx="1" cy="2" r="4.123" fill="none" stroke="var(--nathan-pink)" stroke-dasharray="0.2,0.2" stroke-width="0.06"/>
-                            
                             <circle cx="-3" cy="1" r="0.12" fill="var(--primary)"/>
                             <circle cx="5" cy="3" r="0.12" fill="var(--primary)"/>
                             <circle cx="1" cy="5" r="0.12" fill="var(--primary)"/>
@@ -434,7 +449,7 @@
                 <p><b>7.</b> Donner l'équation cartésienne du cercle $\mathcal{C}$.</p>
                 <p><b>8.</b> Le point $C(1 ; 5)$ appartient-il au cercle $\mathcal{C}$ ? Justifier par le calcul.</p>
 
-                <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé</button>
+                <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé détaillé</button>
                 
                 <div id="corr-exo4" class="correction">
                     <div class="corr-step"><b>1.</b> $\displaystyle \vec{AB}(5 - (-3) ; 3 - 1) \Longrightarrow \vec{AB}(8 ; 2)$.<br>$\displaystyle \vec{AC}(1 - (-3) ; 5 - 1) \Longrightarrow \vec{AC}(4 ; 4)$.</div>
@@ -455,6 +470,15 @@
 
     </main>
 
+    <div id="pdf-export-zone">
+        <div class="pdf-header">
+            <h1>BACCALAURÉAT GÉNÉRAL</h1>
+            <h2>ÉPREUVE DE SPÉCIALITÉ - MATHÉMATIQUES</h2>
+            <p style="margin-top: 15px; font-weight: bold;">ÉPREUVE 3 - NIVEAU EXPERT</p>
+        </div>
+        <div id="pdf-content-wrapper">
+            </div>
+    </div>
 
 <script>
 // ==========================================
@@ -589,7 +613,54 @@ function toggleCorr(id) {
     }
 }
 
+// ==========================================
+// EXPORT PDF RÉEL (AVEC LATEX)
+// ==========================================
+function generatePDF() {
+    document.getElementById('loader').style.display = 'flex';
+    document.getElementById('loader').style.opacity = '1';
+    
+    const pdfZone = document.getElementById('pdf-export-zone');
+    const wrapper = document.getElementById('pdf-content-wrapper');
+    
+    let pdfHTML = `<div class="pdf-section"><h3>Exercice 1 : Automatisme (QCM)</h3><ol style="padding-left:20px;">`;
+    qcmData.forEach(q => {
+        pdfHTML += `<li class="pdf-q">${q.q}<br><br>A) ${q.opts[0]} &nbsp;&nbsp;&nbsp;&nbsp; B) ${q.opts[1]} &nbsp;&nbsp;&nbsp;&nbsp; C) ${q.opts[2]} &nbsp;&nbsp;&nbsp;&nbsp; D) ${q.opts[3]}<br><br></li>`;
+    });
+    pdfHTML += `</ol></div>`;
 
+    ['exo1', 'exo2', 'exo3', 'exo4'].forEach(id => {
+        const exoCard = document.querySelector(`#${id} .card`);
+        if (exoCard) {
+            let clone = exoCard.cloneNode(true);
+            let btn = clone.querySelector('.btn-corr');
+            let corr = clone.querySelector('.correction');
+            if (btn) btn.remove();
+            if (corr) corr.remove();
+            pdfHTML += `<div class="pdf-section">${clone.innerHTML}</div>`;
+        }
+    });
+
+    wrapper.innerHTML = pdfHTML;
+    pdfZone.style.display = 'block';
+
+    MathJax.typesetPromise([wrapper]).then(() => {
+        const opt = {
+            margin:       15,
+            filename:     'Epreuve_3_Maths_Expert.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(pdfZone).save().then(() => {
+            pdfZone.style.display = 'none';
+            wrapper.innerHTML = '';
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 300);
+        });
+    });
+}
 </script>
 
 </body>
