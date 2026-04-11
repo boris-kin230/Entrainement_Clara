@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercices Suites numériques</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9fbfd;
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+            border-bottom: 2px solid #0056b3;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #004085;
+            margin-top: 30px;
+        }
+        .exercice, .corrige, .qcm-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .corrige {
+            border-left: 4px solid #28a745;
+            background-color: #f8fff9;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .question p {
+            font-weight: 600;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .options label {
+            background: #f1f3f5;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .options label:hover {
+            background: #e2e6ea;
+        }
+        .math {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Exercices Suites numériques</h1>
+
+    <div class="exercice">
+        <h2>Exercice 4 : (5 points)</h2>
+        <p>Soit (<span class="math">u<sub>n</sub></span>) la suite définie par <span class="math">u<sub>0</sub> = 4</span> et, pour tout <span class="math">n &isin; &#8469;</span>, <span class="math">u<sub>n+1</sub> = 1,2u<sub>n</sub> - 40</span>.</p>
+        <p>Soit (<span class="math">v<sub>n</sub></span>) la suite définie par <span class="math">v<sub>n</sub> = u<sub>n</sub> - 200</span>.</p>
+        <ol>
+            <li>Justifier que la suite (<span class="math">v<sub>n</sub></span>) est géométrique de raison <span class="math">1,2</span>.</li>
+            <li>Déterminer les variations de la suite (<span class="math">v<sub>n</sub></span>).</li>
+            <li>Donner l'expression de <span class="math">v<sub>n</sub></span> en fonction de <span class="math">n</span>.</li>
+            <li>En déduire l'expression de <span class="math">u<sub>n</sub></span> en fonction de <span class="math">n</span>.</li>
+        </ol>
+    </div>
+
+    <div class="corrige">
+        <h2>Corrigé de l'Exercice 4</h2>
+        <ol>
+            <li>
+                Pour tout entier naturel <span class="math">n</span> :<br>
+                <span class="math">v<sub>n+1</sub> = u<sub>n+1</sub> - 200</span><br>
+                <span class="math">v<sub>n+1</sub> = (1,2u<sub>n</sub> - 40) - 200</span><br>
+                <span class="math">v<sub>n+1</sub> = 1,2u<sub>n</sub> - 240</span><br>
+                On factorise par 1,2 :<br>
+                <span class="math">v<sub>n+1</sub> = 1,2(u<sub>n</sub> - 200)</span><br>
+                <span class="math">v<sub>n+1</sub> = 1,2v<sub>n</sub></span><br>
+                De plus, <span class="math">v<sub>0</sub> = u<sub>0</sub> - 200 = 4 - 200 = -196</span>.<br>
+                <strong>Conclusion :</strong> La suite (<span class="math">v<sub>n</sub></span>) est une suite géométrique de raison <span class="math">q = 1,2</span> et de premier terme <span class="math">v<sub>0</sub> = -196</span>.
+            </li>
+            <li>
+                Le premier terme est <span class="math">v<sub>0</sub> = -196 < 0</span> et la raison est <span class="math">q = 1,2 > 1</span>.<br>
+                Multiplier une quantité strictement négative par un nombre strictement supérieur à 1 la rend encore plus petite.<br>
+                <strong>Conclusion :</strong> La suite (<span class="math">v<sub>n</sub></span>) est strictement décroissante.
+            </li>
+            <li>
+                Comme (<span class="math">v<sub>n</sub></span>) est géométrique, son terme général est : <span class="math">v<sub>n</sub> = v<sub>0</sub> &times; q<sup>n</sup></span>.<br>
+                Donc : <strong><span class="math">v<sub>n</sub> = -196 &times; 1,2<sup>n</sup></span></strong>.
+            </li>
+            <li>
+                On sait que <span class="math">v<sub>n</sub> = u<sub>n</sub> - 200</span>, ce qui équivaut à <span class="math">u<sub>n</sub> = v<sub>n</sub> + 200</span>.<br>
+                En remplaçant <span class="math">v<sub>n</sub></span> par l'expression trouvée à la question précédente :<br>
+                <strong><span class="math">u<sub>n</sub> = -196 &times; 1,2<sup>n</sup> + 200</span></strong>.
+            </li>
+        </ol>
+    </div>
+
+    <div class="qcm-container">
+        <h2>QCM - Une seule réponse exacte par question</h2>
+        <form>
+            <div class="question">
+                <p>1. La suite définie par <span class="math">u<sub>n+1</sub> = u<sub>n</sub> - 4</span> avec <span class="math">u<sub>0</sub> = 10</span> est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> A. arithmétique de raison 4</label>
+                    <label><input type="radio" name="q1" value="B"> B. géométrique de raison 4</label>
+                    <label><input type="radio" name="q1" value="C"> C. arithmétique de raison -4</label>
+                    <label><input type="radio" name="q1" value="D"> D. géométrique de raison -4</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>2. Soit (<span class="math">v<sub>n</sub></span>) une suite géométrique avec <span class="math">v<sub>0</sub> = 5</span> et <span class="math">q = 3</span>. L'expression de <span class="math">v<sub>n</sub></span> est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> A. <span class="math">v<sub>n</sub> = 5 + 3n</span></label>
+                    <label><input type="radio" name="q2" value="B"> B. <span class="math">v<sub>n</sub> = 5 &times; 3<sup>n</sup></span></label>
+                    <label><input type="radio" name="q2" value="C"> C. <span class="math">v<sub>n</sub> = 3 &times; 5<sup>n</sup></span></label>
+                    <label><input type="radio" name="q2" value="D"> D. <span class="math">v<sub>n</sub> = 5<sup>n</sup> + 3</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>3. La formule de la somme <span class="math">S = 1 + 2 + 3 + ... + n</span> est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="A"> A. <span class="math">n(n+1) / 2</span></label>
+                    <label><input type="radio" name="q3" value="B"> B. <span class="math">n(n-1) / 2</span></label>
+                    <label><input type="radio" name="q3" value="C"> C. <span class="math">n(n+1)</span></label>
+                    <label><input type="radio" name="q3" value="D"> D. <span class="math">n<sup>2</sup> + 1</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>4. Soit (<span class="math">w<sub>n</sub></span>) la suite définie par <span class="math">w<sub>n</sub> = 7 - 2n</span>. Son sens de variation est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="A"> A. Strictement croissante</label>
+                    <label><input type="radio" name="q4" value="B"> B. Constante</label>
+                    <label><input type="radio" name="q4" value="C"> C. Non monotone</label>
+                    <label><input type="radio" name="q4" value="D"> D. Strictement décroissante</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>5. La limite de la suite <span class="math">t<sub>n</sub> = (0,4)<sup>n</sup></span> quand <span class="math">n</span> tend vers +&infin; est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="A"> A. +&infin;</label>
+                    <label><input type="radio" name="q5" value="B"> B. 0</label>
+                    <label><input type="radio" name="q5" value="C"> C. -&infin;</label>
+                    <label><input type="radio" name="q5" value="D"> D. 0,4</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>6. Soit <span class="math">u<sub>n</sub> = 2n<sup>2</sup> - n</span>. La valeur exacte de <span class="math">u<sub>3</sub></span> est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="A"> A. 11</label>
+                    <label><input type="radio" name="q6" value="B"> B. 15</label>
+                    <label><input type="radio" name="q6" value="C"> C. 17</label>
+                    <label><input type="radio" name="q6" value="D"> D. 21</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>7. Si (<span class="math">v<sub>n</sub></span>) est une suite géométrique de raison <span class="math">q = -3</span> et de premier terme <span class="math">v<sub>0</sub> = 1</span> :</p>
+                <div class="options">
+                    <label><input type="radio" name="q7" value="A"> A. Elle est strictement décroissante</label>
+                    <label><input type="radio" name="q7" value="B"> B. Tous ses termes sont négatifs</label>
+                    <label><input type="radio" name="q7" value="C"> C. Elle n'est pas monotone</label>
+                    <label><input type="radio" name="q7" value="D"> D. Elle est constante</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>8. La limite de la suite <span class="math">h<sub>n</sub> = -5n + 20</span> en +&infin; est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q8" value="A"> A. -&infin;</label>
+                    <label><input type="radio" name="q8" value="B"> B. +&infin;</label>
+                    <label><input type="radio" name="q8" value="C"> C. -5</label>
+                    <label><input type="radio" name="q8" value="D"> D. 20</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>9. Soit la suite définie par <span class="math">u<sub>0</sub> = 3</span> et <span class="math">u<sub>n+1</sub> = 2u<sub>n</sub> - 1</span>. Que vaut <span class="math">u<sub>2</sub></span> ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q9" value="A"> A. 5</label>
+                    <label><input type="radio" name="q9" value="B"> B. 8</label>
+                    <label><input type="radio" name="q9" value="C"> C. 9</label>
+                    <label><input type="radio" name="q9" value="D"> D. 11</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>10. Si pour tout entier <span class="math">n</span>, on a <span class="math">u<sub>n+1</sub> - u<sub>n</sub> = n<sup>2</sup> + 3</span>, alors la suite (<span class="math">u<sub>n</sub></span>) est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q10" value="A"> A. Strictement décroissante</label>
+                    <label><input type="radio" name="q10" value="B"> B. Strictement croissante</label>
+                    <label><input type="radio" name="q10" value="C"> C. Arithmétique</label>
+                    <label><input type="radio" name="q10" value="D"> D. Géométrique</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>11. Laquelle de ces suites est une suite arithmétique ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q11" value="A"> A. <span class="math">u<sub>n</sub> = 2<sup>n</sup></span></label>
+                    <label><input type="radio" name="q11" value="B"> B. <span class="math">u<sub>n</sub> = n<sup>2</sup></span></label>
+                    <label><input type="radio" name="q11" value="C"> C. <span class="math">u<sub>n</sub> = 3n - 5</span></label>
+                    <label><input type="radio" name="q11" value="D"> D. <span class="math">u<sub>n</sub> = 1/n</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>12. Soit (<span class="math">w<sub>n</sub></span>) une suite arithmétique de raison <span class="math">r = 2</span> et <span class="math">w<sub>0</sub> = 4</span>. Que vaut <span class="math">w<sub>10</sub></span> ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q12" value="A"> A. 20</label>
+                    <label><input type="radio" name="q12" value="B"> B. 24</label>
+                    <label><input type="radio" name="q12" value="C"> C. 14</label>
+                    <label><input type="radio" name="q12" value="D"> D. 4096</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>13. Les premiers termes d'une suite (<span class="math">z<sub>n</sub></span>) sont : <span class="math">z<sub>0</sub> = 4 ; z<sub>1</sub> = 2,4 ; z<sub>2</sub> = 1,44 ; z<sub>3</sub> = 0,864</span>. Quelle conjecture peut-on faire ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q13" value="A"> A. Elle est strictement croissante</label>
+                    <label><input type="radio" name="q13" value="B"> B. Elle semble converger vers 0</label>
+                    <label><input type="radio" name="q13" value="C"> C. Elle diverge vers +&infin;</label>
+                    <label><input type="radio" name="q13" value="D"> D. Elle est arithmétique</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>14. Soit (<span class="math">u<sub>n</sub></span>) une suite arithmétique de <span class="math">n+1</span> termes. La somme <span class="math">u<sub>0</sub> + u<sub>1</sub> + ... + u<sub>n</sub></span> est égale à :</p>
+                <div class="options">
+                    <label><input type="radio" name="q14" value="A"> A. <span class="math">(n+1) &times; (u<sub>0</sub> + u<sub>n</sub>) / 2</span></label>
+                    <label><input type="radio" name="q14" value="B"> B. <span class="math">n &times; (u<sub>0</sub> + u<sub>n</sub>) / 2</span></label>
+                    <label><input type="radio" name="q14" value="C"> C. <span class="math">u<sub>0</sub> &times; (1 - q<sup>n+1</sup>) / (1 - q)</span></label>
+                    <label><input type="radio" name="q14" value="D"> D. <span class="math">u<sub>0</sub> + n &times; r</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>15. Si <span class="math">q > 1</span>, quelle est la limite de la suite (<span class="math">q<sup>n</sup></span>) ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q15" value="A"> A. 0</label>
+                    <label><input type="radio" name="q15" value="B"> B. 1</label>
+                    <label><input type="radio" name="q15" value="C"> C. +&infin;</label>
+                    <label><input type="radio" name="q15" value="D"> D. N'existe pas</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>16. Quel est le sens de variation de la suite définie par <span class="math">u<sub>n</sub> = n<sup>3</sup> + 1</span> ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q16" value="A"> A. Constante</label>
+                    <label><input type="radio" name="q16" value="B"> B. Strictement décroissante</label>
+                    <label><input type="radio" name="q16" value="C"> C. Strictement croissante</label>
+                    <label><input type="radio" name="q16" value="D"> D. Alternée</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>17. Laquelle de ces suites est constante (pour <span class="math">n &isin; &#8469;</span>) ?</p>
+                <div class="options">
+                    <label><input type="radio" name="q17" value="A"> A. <span class="math">u<sub>n</sub> = (-1)<sup>n</sup></span></label>
+                    <label><input type="radio" name="q17" value="B"> B. <span class="math">u<sub>n</sub> = (-1)<sup>2n</sup></span></label>
+                    <label><input type="radio" name="q17" value="C"> C. <span class="math">u<sub>n</sub> = n - n<sup>2</sup></span></label>
+                    <label><input type="radio" name="q17" value="D"> D. <span class="math">u<sub>n</sub> = 1 / (n+1)</span></label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>18. Soit (<span class="math">u<sub>n</sub></span>) une suite arithmétique telle que <span class="math">u<sub>5</sub> = 10</span> et <span class="math">u<sub>10</sub> = 20</span>. Sa raison est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q18" value="A"> A. 1</label>
+                    <label><input type="radio" name="q18" value="B"> B. 2</label>
+                    <label><input type="radio" name="q18" value="C"> C. 5</label>
+                    <label><input type="radio" name="q18" value="D"> D. 10</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>19. La somme des 10 premiers termes de la suite définie par <span class="math">u<sub>n</sub> = 2</span> (pour tout <span class="math">n</span>) est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q19" value="A"> A. 2</label>
+                    <label><input type="radio" name="q19" value="B"> B. 10</label>
+                    <label><input type="radio" name="q19" value="C"> C. 20</label>
+                    <label><input type="radio" name="q19" value="D"> D. 40</label>
+                </div>
+            </div>
+
+            <div class="question">
+                <p>20. La limite de la suite définie pour <span class="math">n > 0</span> par <span class="math">u<sub>n</sub> = 1/n + 5</span> est :</p>
+                <div class="options">
+                    <label><input type="radio" name="q20" value="A"> A. 0</label>
+                    <label><input type="radio" name="q20" value="B"> B. 1</label>
+                    <label><input type="radio" name="q20" value="C"> C. 5</label>
+                    <label><input type="radio" name="q20" value="D"> D. +&infin;</label>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>
