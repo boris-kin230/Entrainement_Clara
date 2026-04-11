@@ -2,424 +2,111 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Épreuve 4 - Suites Numériques</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
-
-    <script>
-        MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
-            svg: { fontCache: 'global' }
-        };
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice 4 - Suites numériques</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
     <style>
-        /* ==========================================================================
-           VARIABLES ET RESET
-           ========================================================================== */
-        :root {
-            --nathan-green: #8CC63F; --nathan-blue: #005AAA; --nathan-pink: #EC008C; 
-            --nathan-cyan: #00AEEF; --nathan-yellow: #FFF200; --bg-app: #FCFDEE; 
-            --bg-card: #FFFFFF; --text-main: #1E293B; --text-light: #475569;
-            --purple: #8B5CF6; --gold: #F59E0B; --red: #E11D48; --teal: #0D9488;
-            --radius: 16px; --shadow: 0 10px 25px rgba(0, 90, 170, 0.08);
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            margin: 20px auto; 
+            max-width: 800px; 
+            color: #333;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
-
-        html, body {
-            width: 100vw; height: 100dvh; overflow: hidden; position: fixed;
-            background-color: var(--bg-app); color: var(--text-main); touch-action: none;
-        }
-
-        /* ==========================================================================
-           HEADER ET NAVIGATION
-           ========================================================================== */
-        header {
-            background: var(--nathan-blue); padding: env(safe-area-inset-top) 20px 15px 20px;
-            display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-bottom: 4px solid var(--nathan-yellow);
-        }
-
-        .header-top { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; }
-        
         .btn-icon {
-            background: rgba(255,255,255,0.1); color: white; border: none; padding: 12px 18px;
-            border-radius: 12px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #0056b3;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 16px;
         }
-        .btn-icon:active { transform: scale(0.95); }
-
-        .nav-select {
-            width: 100%; padding: 15px 20px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);
-            background: var(--nathan-blue); color: white; font-weight: 800; font-size: 1.05rem;
-            outline: none; appearance: none; cursor: pointer;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat; background-position: right 20px top 50%; background-size: 14px auto;
+        .btn-icon svg {
+            margin-right: 5px;
         }
-
-        /* ==========================================================================
-           MOTEUR D'AFFICHAGE ET CONTENU
-           ========================================================================== */
-        #content-wrapper {
-            height: calc(100dvh - 140px); overflow-y: auto; -webkit-overflow-scrolling: touch;
-            padding: 20px 20px 60px 20px; scroll-behavior: smooth;
+        .btn-icon:hover {
+            text-decoration: underline;
         }
-
-        main { max-width: 800px; margin: 0 auto; }
-        .section-view { display: none; animation: fadeIn 0.4s ease; }
-        .section-view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
-        .title-badge {
-            display: inline-block; background: var(--nathan-blue); color: white;
-            padding: 8px 20px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; margin-bottom: 20px;
+        .enonce { 
+            background-color: #f8f9fa; 
+            padding: 20px; 
+            border-left: 5px solid #0056b3; 
+            margin-bottom: 30px; 
         }
-
-        .card {
-            background: var(--bg-card); border-radius: var(--radius); padding: 30px 20px;
-            margin-bottom: 25px; box-shadow: var(--shadow); border-top: 6px solid var(--nathan-cyan);
+        .corrige { 
+            background-color: #f1f8f5; 
+            padding: 20px; 
+            border-left: 5px solid #198754; 
         }
-        .card h2 { color: var(--nathan-blue); margin-bottom: 20px; font-size: 1.4rem; font-weight: 800; }
-        .card p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px; }
-
-        /* ==========================================================================
-           TABLEAUX ET GRAPHIQUES
-           ========================================================================== */
-        .svg-grid-2x2 {
-            display: grid; grid-template-columns: 1fr; gap: 20px; margin: 25px 0;
+        h2 { 
+            margin-top: 0; 
         }
-        @media(min-width: 600px) { .svg-grid-2x2 { grid-template-columns: 1fr 1fr; } }
-
-        .svg-box {
-            width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 16px;
-            padding: 15px; display: flex; flex-direction: column; align-items: center;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+        ul, ol { 
+            margin-bottom: 15px; 
         }
-        .svg-title { font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main); }
-
-        .table-responsive { overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 0 0 2px #E2E8F0; }
-        .data-table { width: 100%; border-collapse: collapse; text-align: center; background: white; }
-        .data-table th { background: var(--nathan-blue); color: white; padding: 12px; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2); }
-        .data-table td { padding: 10px; border-bottom: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; font-size: 0.95rem; }
-        .data-table th:last-child, .data-table td:last-child { border-right: none; }
-        .data-table tr:nth-child(even) { background: #F8FAFC; }
-
-        /* ==========================================================================
-           QCM INTERACTIF
-           ========================================================================== */
-        .qcm-card { border-top-color: var(--nathan-yellow); }
-        .qcm-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
-        @media(min-width: 600px) { .qcm-grid { grid-template-columns: 1fr 1fr; } }
-        
-        .qcm-opt {
-            background: #F8FAFC; border: 3px solid #E2E8F0; border-radius: 12px; padding: 15px;
-            text-align: left; font-weight: 600; font-size: 1.05rem; cursor: pointer; transition: 0.2s;
-            display: flex; align-items: center; gap: 10px; color: var(--text-main);
+        p { 
+            margin-bottom: 10px; 
         }
-        .qcm-opt:hover:not(.disabled) { border-color: var(--nathan-cyan); background: white; }
-        .qcm-opt:active:not(.disabled) { transform: scale(0.96); }
-        
-        .qcm-opt.correct { border-color: var(--nathan-green); background: #F0FDF4; color: #166534; box-shadow: 0 0 15px rgba(140,198,63,0.3); }
-        .qcm-opt.wrong { border-color: var(--nathan-pink); background: #FDF2F8; color: #9D174D; }
-        .qcm-opt.disabled { pointer-events: none; opacity: 0.6; }
-        .qcm-opt.correct.disabled { opacity: 1; }
-
-        .qcm-expanation {
-            margin-top: 15px; padding: 15px; border-radius: 10px; background: #F1F5F9;
-            font-size: 0.95rem; font-weight: 500; display: none; border-left: 4px solid var(--nathan-blue);
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* ==========================================================================
-           CORRECTIONS & BOUTONS
-           ========================================================================== */
-        .correction {
-            background: #F8FAFC; border-left: 6px solid var(--nathan-cyan); padding: 20px;
-            border-radius: 0 12px 12px 0; margin-top: 25px; display: none; font-size: 1.05rem; line-height: 1.8;
-        }
-        .correction.show { display: block; animation: fadeIn 0.3s ease; }
-        .corr-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #E2E8F0; }
-        .corr-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-
-        .btn-corr {
-            width: 100%; background: #F1F5F9; color: var(--nathan-blue); border: 3px solid var(--nathan-blue);
-            padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.15rem; cursor: pointer; margin-top: 25px;
-            transition: 0.2s;
-        }
-        .btn-corr:active { background: #E2E8F0; transform: scale(0.98); }
-
-        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; margin-top: 35px; }
-        .btn-nav {
-            flex: 1; padding: 18px; border-radius: 14px; border: none; font-weight: 800;
-            font-size: 1.05rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; color: white;
-            transition: 0.2s;
-        }
-        .btn-nav:active { transform: scale(0.95); }
-        .btn-prev { background: #94A3B8; }
-        .btn-next { background: var(--nathan-cyan); box-shadow: 0 4px 15px rgba(0,174,239,0.3); }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-top">
-            <a href="index.html" class="btn-icon">
-                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg> Accueil
-            </a>
-        </div>
-        <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
-            <option value="exo4">1. Exercice 4 : Analyse de suites</option>
-            <option value="qcm">2. QCM Interactif (20 questions)</option>
-        </select>
-    </header>
+    <a href="index.html" class="btn-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg> Accueil
+    </a>
 
-    <div id="content-wrapper">
-        <main>
-            
-            <div id="exo4" class="section-view active">
-                <div class="title-badge">Exercice type Bac</div>
-                <div class="card">
-                    <h2>Exercice 4 : Analyse de suites</h2>
-                    <p>On considère quatre suites numériques $(u_n)$, $(v_n)$, $(w_n)$ et $(t_n)$ définies pour tout entier naturel $n$ par :</p>
-                    <div style="background: #F1F5F9; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 500; text-align: center;">
-                        <p>$u_n = 5 - \frac{12}{n+1}$ &nbsp;&nbsp;&nbsp;&nbsp; $v_n = -3 + 8 \times (0,6)^n$</p>
-                        <p>$w_n = 0,2n^2 - 2$ &nbsp;&nbsp;&nbsp;&nbsp; $t_n = 12 \times (0,8)^n$</p>
-                    </div>
-
-                    <div class="svg-grid-2x2">
-                        
-                        <div class="svg-box">
-                            <div class="svg-title">Graphique 1</div>
-                            <svg viewBox="-2 -2 14 16" width="100%" height="200px">
-                                <defs>
-                                    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
-                                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#1E293B" />
-                                    </marker>
-                                </defs>
-                                <g transform="translate(0, 13) scale(1, -1)">
-                                    <g stroke="#CBD5E1" stroke-width="0.1" stroke-dasharray="0.3">
-                                        <line x1="0" y1="0" x2="11" y2="0"/><line x1="0" y1="4" x2="11" y2="4"/>
-                                        <line x1="0" y1="8" x2="11" y2="8"/><line x1="0" y1="12" x2="11" y2="12"/>
-                                    </g>
-                                    <path d="M0,12 L1,9.6 L2,7.68 L3,6.14 L4,4.91 L5,3.93 L6,3.14 L7,2.51 L8,2.01 L9,1.61 L10,1.28" fill="none" stroke="var(--purple)" stroke-width="0.08" stroke-dasharray="0.2"/>
-                                    <line x1="-0.5" y1="0" x2="11.5" y2="0" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <line x1="0" y1="-0.5" x2="0" y2="13.5" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <circle cx="0" cy="12" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/><circle cx="1" cy="9.6" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="2" cy="7.68" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/><circle cx="3" cy="6.14" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="4" cy="4.91" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/><circle cx="5" cy="3.93" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="6" cy="3.14" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/><circle cx="7" cy="2.51" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="8" cy="2.01" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/><circle cx="9" cy="1.61" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="10" cy="1.28" r="0.25" fill="var(--purple)" stroke="white" stroke-width="0.05"/>
-                                </g>
-                                <text x="-1.5" y="1.3" font-size="0.8" fill="#475569">12</text>
-                                <text x="-1.2" y="5.3" font-size="0.8" fill="#475569">8</text>
-                                <text x="-1.2" y="9.3" font-size="0.8" fill="#475569">4</text>
-                                <text x="-1.2" y="13.5" font-size="0.8" fill="#475569">0</text>
-                                <text x="10" y="14.2" font-size="0.8" fill="#475569">10</text>
-                            </svg>
-                        </div>
-                        
-                        <div class="svg-box">
-                            <div class="svg-title">Graphique 2</div>
-                            <svg viewBox="-2 -2 14 18" width="100%" height="200px">
-                                <g transform="translate(0, 7) scale(1, -1)">
-                                    <g stroke="#CBD5E1" stroke-width="0.1" stroke-dasharray="0.3">
-                                        <line x1="0" y1="-8" x2="11" y2="-8"/><line x1="0" y1="-4" x2="11" y2="-4"/>
-                                        <line x1="0" y1="0" x2="11" y2="0"/><line x1="0" y1="4" x2="11" y2="4"/>
-                                    </g>
-                                    <path d="M0,-7 L1,-1 L2,1 L3,2 L4,2.6 L5,3 L6,3.28 L7,3.5 L8,3.66 L9,3.8 L10,3.9" fill="none" stroke="var(--gold)" stroke-width="0.08" stroke-dasharray="0.2"/>
-                                    <line x1="-0.5" y1="0" x2="11.5" y2="0" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <line x1="0" y1="-8.5" x2="0" y2="7.5" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <circle cx="0" cy="-7" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/><circle cx="1" cy="-1" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="2" cy="1" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/><circle cx="3" cy="2" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="4" cy="2.6" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/><circle cx="5" cy="3" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="6" cy="3.28" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/><circle cx="7" cy="3.5" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="8" cy="3.66" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/><circle cx="9" cy="3.8" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="10" cy="3.9" r="0.25" fill="var(--gold)" stroke="white" stroke-width="0.05"/>
-                                </g>
-                                <text x="-1.2" y="3.3" font-size="0.8" fill="#475569">4</text>
-                                <text x="-1.2" y="7.5" font-size="0.8" fill="#475569">0</text>
-                                <text x="-1.5" y="11.3" font-size="0.8" fill="#475569">-4</text>
-                                <text x="-1.5" y="15.3" font-size="0.8" fill="#475569">-8</text>
-                                <text x="10" y="8.5" font-size="0.8" fill="#475569">10</text>
-                            </svg>
-                        </div>
-
-                        <div class="svg-box">
-                            <div class="svg-title">Graphique 3</div>
-                            <svg viewBox="-2 -2 14 26" width="100%" height="200px">
-                                <g transform="translate(0, 21) scale(1, -1)">
-                                    <g stroke="#CBD5E1" stroke-width="0.1" stroke-dasharray="0.3">
-                                        <line x1="0" y1="0" x2="11" y2="0"/><line x1="0" y1="5" x2="11" y2="5"/>
-                                        <line x1="0" y1="10" x2="11" y2="10"/><line x1="0" y1="15" x2="11" y2="15"/>
-                                    </g>
-                                    <path d="M0,-2 L1,-1.8 L2,-1.2 L3,-0.2 L4,1.2 L5,3 L6,5.2 L7,7.8 L8,10.8 L9,14.2 L10,18" fill="none" stroke="var(--red)" stroke-width="0.08" stroke-dasharray="0.2"/>
-                                    <line x1="-0.5" y1="0" x2="11.5" y2="0" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <line x1="0" y1="-3" x2="0" y2="21" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <circle cx="0" cy="-2" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/><circle cx="1" cy="-1.8" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="2" cy="-1.2" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/><circle cx="3" cy="-0.2" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="4" cy="1.2" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/><circle cx="5" cy="3" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="6" cy="5.2" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/><circle cx="7" cy="7.8" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="8" cy="10.8" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/><circle cx="9" cy="14.2" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="10" cy="18" r="0.25" fill="var(--red)" stroke="white" stroke-width="0.05"/>
-                                </g>
-                                <text x="-1.6" y="6.3" font-size="0.8" fill="#475569">15</text>
-                                <text x="-1.6" y="11.3" font-size="0.8" fill="#475569">10</text>
-                                <text x="-1.2" y="16.3" font-size="0.8" fill="#475569">5</text>
-                                <text x="-1.2" y="21.5" font-size="0.8" fill="#475569">0</text>
-                                <text x="10" y="22.5" font-size="0.8" fill="#475569">10</text>
-                            </svg>
-                        </div>
-
-                        <div class="svg-box">
-                            <div class="svg-title">Graphique 4</div>
-                            <svg viewBox="-2 -2 14 12" width="100%" height="200px">
-                                <g transform="translate(0, 5) scale(1, -1)">
-                                    <g stroke="#CBD5E1" stroke-width="0.1" stroke-dasharray="0.3">
-                                        <line x1="0" y1="-4" x2="11" y2="-4"/><line x1="0" y1="-2" x2="11" y2="-2"/>
-                                        <line x1="0" y1="0" x2="11" y2="0"/><line x1="0" y1="2" x2="11" y2="2"/>
-                                        <line x1="0" y1="4" x2="11" y2="4"/>
-                                    </g>
-                                    <path d="M0,5 L1,1.8 L2,-0.12 L3,-1.27 L4,-1.96 L5,-2.38 L6,-2.63 L7,-2.78 L8,-2.87 L9,-2.92 L10,-2.95" fill="none" stroke="var(--teal)" stroke-width="0.08" stroke-dasharray="0.2"/>
-                                    <line x1="-0.5" y1="0" x2="11.5" y2="0" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <line x1="0" y1="-4.5" x2="0" y2="6" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
-                                    <circle cx="0" cy="5" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/><circle cx="1" cy="1.8" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="2" cy="-0.12" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/><circle cx="3" cy="-1.27" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="4" cy="-1.96" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/><circle cx="5" cy="-2.38" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="6" cy="-2.63" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/><circle cx="7" cy="-2.78" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="8" cy="-2.87" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/><circle cx="9" cy="-2.92" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/>
-                                    <circle cx="10" cy="-2.95" r="0.25" fill="var(--teal)" stroke="white" stroke-width="0.05"/>
-                                </g>
-                                <text x="-1.2" y="1.3" font-size="0.8" fill="#475569">4</text>
-                                <text x="-1.2" y="5.3" font-size="0.8" fill="#475569">0</text>
-                                <text x="-1.6" y="9.3" font-size="0.8" fill="#475569">-4</text>
-                                <text x="10" y="6.3" font-size="0.8" fill="#475569">10</text>
-                            </svg>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th colspan="2">Tableau A</th>
-                                    <th colspan="2">Tableau B</th>
-                                    <th colspan="2">Tableau C</th>
-                                    <th colspan="2">Tableau D</th>
-                                </tr>
-                                <tr style="background: #E2E8F0; color: #1E293B;">
-                                    <td>$n$</td><td>$y_n$</td>
-                                    <td>$n$</td><td>$y_n$</td>
-                                    <td>$n$</td><td>$y_n$</td>
-                                    <td>$n$</td><td>$y_n$</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>0</td><td>12,00</td><td>0</td><td>-7,00</td><td>0</td><td>5,00</td><td>0</td><td>-2,00</td></tr>
-                                <tr><td>1</td><td>9,60</td><td>1</td><td>-1,00</td><td>1</td><td>1,80</td><td>1</td><td>-1,80</td></tr>
-                                <tr><td>2</td><td>7,68</td><td>2</td><td>1,00</td><td>2</td><td>-0,12</td><td>2</td><td>-1,20</td></tr>
-                                <tr><td>3</td><td>6,14</td><td>3</td><td>2,00</td><td>3</td><td>-1,27</td><td>3</td><td>-0,20</td></tr>
-                                <tr><td>50</td><td>0,00</td><td>50</td><td>4,76</td><td>50</td><td>-3,00</td><td>50</td><td>498,00</td></tr>
-                                <tr><td>100</td><td>0,00</td><td>100</td><td>4,88</td><td>100</td><td>-3,00</td><td>100</td><td>1998,00</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <p><b>1.</b> Associez chaque suite énumérée à son graphique (1 à 4).</p>
-                    <p><b>2.</b> Reliez chaque tableau (A, B, C, D) à la courbe correspondante.</p>
-                    <p><b>3.</b> Pour chacune des quatre suites, conjecturez sa convergence et sa limite éventuelle.</p>
-                    <p><b>4.</b> Laquelle de ces quatre suites est géométrique ? Donnez sa raison et son premier terme.</p>
-
-                    <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé détaillé</button>
-
-                    <div id="corr-exo4" class="correction">
-                        
-                        <div class="corr-step" style="text-align: center; border: none; padding-bottom: 5px;">
-                            <p style="font-weight: 600; margin-bottom: 15px; color: var(--nathan-blue); text-align: left;">Corrigé manuscrit :</p>
-                            <img src="IMG_20260411_140611 (4).heic" alt="Corrigé de l'exercice en image" style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 15px;">
-                        </div>
-
-                        <div class="corr-step">
-                            <b>1. Association Suites / Graphiques :</b><br>
-                            - <b>Graphique 1</b> : La suite est positive et décroissante vers 0. C'est $t_n = 12 \times (0,8)^n$.<br>
-                            - <b>Graphique 2</b> : La suite démarre dans les négatifs et croît vers 5. C'est $u_n = 5 - \frac{12}{n+1}$.<br>
-                            - <b>Graphique 3</b> : La suite croît très rapidement (allure parabolique). C'est $w_n = 0,2n^2 - 2$.<br>
-                            - <b>Graphique 4</b> : La suite décroît et s'aplatit vers les négatifs (-3). C'est $v_n = -3 + 8 \times (0,6)^n$.
-                        </div>
-                        <div class="corr-step">
-                            <b>2. Association Tableaux / Courbes :</b><br>
-                            - <b>Tableau A</b> : Commence à 12. C'est la suite $t_n$ (Graphique 1).<br>
-                            - <b>Tableau B</b> : Commence à -7. C'est la suite $u_n$ (Graphique 2).<br>
-                            - <b>Tableau C</b> : Commence à 5. C'est la suite $v_n$ (Graphique 4).<br>
-                            - <b>Tableau D</b> : Commence à -2 et grandit fort. C'est la suite $w_n$ (Graphique 3).
-                        </div>
-                        <div class="corr-step">
-                            <b>3. Limites (Conjectures d'après les tableaux) :</b><br>
-                            - $(t_n)$ semble converger vers <b>0</b>.<br>
-                            - $(u_n)$ semble converger vers <b>5</b>.<br>
-                            - $(v_n)$ semble converger vers <b>-3</b>.<br>
-                            - $(w_n)$ semble diverger vers <b>$+\infty$</b>.
-                        </div>
-                        <div class="corr-step">
-                            <b>4. Suite géométrique :</b><br>
-                            La suite <b>$(t_n)$</b> s'écrit sous la forme $t_n = t_0 \times q^n$.<br>
-                            C'est une suite géométrique de premier terme <b>$t_0 = 12$</b> et de raison <b>$q = 0,8$</b>.
-                        </div>
-                    </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn-nav btn-next" onclick="switchSection('qcm')">Passer au QCM <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
-                </div>
-            </div>
-
-            <div id="qcm" class="section-view">
-                <div class="title-badge" style="background: var(--nathan-yellow); color: var(--nathan-blue);">Testez-vous !</div>
-                
-                <div class="card qcm-card">
-                    <h2>QCM - Suites Numériques</h2>
-                    <p>Sélectionnez la bonne réponse pour chaque question.</p>
-
-                    <div id="qcm-list">
-                        </div>
-                </div>
-
-                <div class="nav-buttons">
-                    <button class="btn-nav btn-prev" onclick="switchSection('exo4')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Retour à l'exercice</button>
-                </div>
-            </div>
-
-        </main>
+    <div class="enonce">
+        <h2>Exercice 4 : (5 points)</h2>
+        <p>Soit \( (u_n) \) la suite définie par \( u_0 = 4 \) et, pour tout \( n \in \mathbb{N} \), \( u_{n+1} = 1,2u_n - 40 \).</p>
+        <p>Soit \( (v_n) \) la suite définie par \( v_n = u_n - 200 \).</p>
+        <ol>
+            <li>Justifier que la suite \( (v_n) \) est géométrique de raison 1,2.</li>
+            <li>Déterminer les variations de la suite \( (v_n) \).</li>
+            <li>Donner l'expression de \( v_n \) en fonction de \( n \).</li>
+            <li>En déduire l'expression de \( u_n \) en fonction de \( n \).</li>
+        </ol>
     </div>
 
-    <script>
-        // Fonction de navigation entre les sections
-        function switchSection(sectionId) {
-            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
-            document.getElementById('section-selector').value = sectionId;
-            document.getElementById('content-wrapper').scrollTo(0, 0);
-        }
+    <div class="corrige">
+        <h2>Corrigé</h2>
+        
+        <p><strong>1. Justifier que la suite \( (v_n) \) est géométrique de raison 1,2.</strong></p>
+        <p>Pour tout entier naturel \( n \) :</p>
+        <p>\( v_{n+1} = u_{n+1} - 200 \)</p>
+        <p>On remplace \( u_{n+1} \) par son expression :</p>
+        <p>\( v_{n+1} = (1,2u_n - 40) - 200 \)</p>
+        <p>\( v_{n+1} = 1,2u_n - 240 \)</p>
+        <p>On factorise par 1,2 :</p>
+        <p>\( v_{n+1} = 1,2(u_n - 200) \)</p>
+        <p>Comme \( v_n = u_n - 200 \), on obtient :</p>
+        <p>\( v_{n+1} = 1,2 \times v_n \)</p>
+        <p>De plus, son premier terme est :</p>
+        <p>\( v_0 = u_0 - 200 = 4 - 200 = -196 \)</p>
+        <p><strong>Conclusion :</strong> La suite \( (v_n) \) est une suite géométrique de raison \( q = 1,2 \) et de premier terme \( v_0 = -196 \).</p>
 
-        // Fonction pour afficher/masquer un corrigé classique
-        function toggleCorr(corrId) {
-            const corrEl = document.getElementById(corrId);
-            corrEl.classList.toggle('show');
-        }
+        <p><strong>2. Déterminer les variations de la suite \( (v_n) \).</strong></p>
+        <p>La suite \( (v_n) \) est une suite géométrique de premier terme \( v_0 = -196 \) et de raison \( q = 1,2 \).</p>
+        <ul>
+            <li>Le premier terme est strictement négatif (\( v_0 < 0 \)).</li>
+            <li>La raison est strictement supérieure à 1 (\( q > 1 \)).</li>
+        </ul>
+        <p>Par conséquent, la suite \( (v_n) \) est <strong>strictement décroissante</strong>.</p>
 
-        // BASE DE DONNÉES DU QCM (Questions réduites pour l'exemple)
-        const qcmData = [
-            {
-                q: "La suite définie par $u_{n+1} = u_n - 4$ avec $u_0 = 10$ est :",
-                opts: ["Arithmétique de raison 4", "Géométrique de raison 4", "Arithmétique de raison -4", "Géométrique de raison -4"],
-                correct: 2,
-                exp: "La forme $u_{n+1} = u_n + r$ caractérise une suite arithmétique. Ici $r = -4$."
-            }
-            // Tu pourras rajouter le reste de ton tableau JS pour le QCM ici
-        ];
-    </script>
+        <p><strong>3. Donner l'expression de \( v_n \) en fonction de \( n \).</strong></p>
+        <p>Comme \( (v_n) \) est une suite géométrique, on utilise la formule explicite \( v_n = v_0 \times q^n \).</p>
+        <p>Pour tout \( n \in \mathbb{N} \) :</p>
+        <p>\( v_n = -196 \times 1,2^n \)</p>
+
+        <p><strong>4. En déduire l'expression de \( u_n \) en fonction de \( n \).</strong></p>
+        <p>D'après l'énoncé, on sait que :</p>
+        <p>\( v_n = u_n - 200 \)</p>
+        <p>On isole \( u_n \) :</p>
+        <p>\( u_n = v_n + 200 \)</p>
+        <p>En remplaçant \( v_n \) par l'expression trouvée à la question 3, on obtient :</p>
+        <p>\( u_n = -196 \times 1,2^n + 200 \)</p>
+    </div>
+
 </body>
 </html>
