@@ -145,7 +145,7 @@
     <div id="content-wrapper">
         <main>
             
-            <div id="exo1" class="section-view active">
+      <div id="exo1" class="section-view active">
                 <div class="title-badge">Probabilités & Suites : 8 points</div>
                 <div class="card exo">
                     <h2>Exercice 1 : Le jeu vidéo de Léa</h2>
@@ -196,6 +196,36 @@
                     <p><b>3.</b> Calculer $g_2$.</p>
                     <p><b>4.</b> Soit $n$ un entier naturel non nul.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;<b>a)</b> Recopier et compléter l'arbre des probabilités modélisant la situation pour les $n$-ième et $(n+1)$-ième parties.</p>
+                    
+                    <div class="svg-box" style="margin: 15px 0;">
+                        <svg viewBox="0 0 450 220" width="100%" height="220px">
+                            <path d="M 50 110 L 150 50" stroke="#1E293B" stroke-width="2" fill="none"/>
+                            <path d="M 50 110 L 150 170" stroke="#1E293B" stroke-width="2" fill="none"/>
+                            
+                            <path d="M 200 50 L 300 20" stroke="#1E293B" stroke-width="2" fill="none"/>
+                            <path d="M 200 50 L 300 80" stroke="#1E293B" stroke-width="2" fill="none"/>
+                            
+                            <path d="M 200 170 L 300 140" stroke="#1E293B" stroke-width="2" fill="none"/>
+                            <path d="M 200 170 L 300 200" stroke="#1E293B" stroke-width="2" fill="none"/>
+                            
+                            <text x="175" y="55" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">G<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                            <text x="175" y="175" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">D<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                            
+                            <text x="325" y="25" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">G<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                            <text x="325" y="85" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">D<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                            <text x="325" y="145" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">G<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                            <text x="325" y="205" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">D<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                            
+                            <text x="90" y="70" font-family="Poppins" font-weight="600" font-size="14" fill="#EC008C">g<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                            <text x="90" y="160" font-family="Poppins" font-weight="600" font-size="14" fill="#EC008C">...</text>
+                            
+                            <text x="240" y="25" font-family="Poppins" font-weight="600" font-size="14" fill="#EC008C">...</text>
+                            <text x="240" y="90" font-family="Poppins" font-weight="600" font-size="14" fill="#EC008C">...</text>
+                            <text x="240" y="145" font-family="Poppins" font-weight="600" font-size="14" fill="#EC008C">...</text>
+                            <text x="240" y="210" font-family="Poppins" font-weight="600" font-size="14" fill="#EC008C">...</text>
+                        </svg>
+                    </div>
+
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;<b>b)</b> Justifier que pour tout entier naturel $n$ non nul, $$g_{n+1} = 0,5g_n + 0,2$$</p>
                     <p><b>5.</b> Pour tout entier naturel $n$ non nul, on pose $v_n = g_n - 0,4$.</p>
                     <p>&nbsp;&nbsp;&nbsp;&nbsp;<b>a)</b> Montrer que la suite $(v_n)$ est géométrique. On précisera son premier terme et sa raison.</p>
@@ -240,7 +270,32 @@
                         $g_2 = P(G_1) \times P_{G_1}(G_2) + P(D_1) \times P_{D_1}(G_2)$<br>
                         $g_2 = 0,5 \times 0,7 + 0,5 \times 0,2 = 0,35 + 0,10 = 0,45$.</div>
 
-                        <div class="corr-step"><b>4. a)</b> L'arbre pour l'étape $n$ à $n+1$ est identique dans sa structure, avec $P(G_n) = g_n$ et $P(D_n) = 1 - g_n$. Les probabilités conditionnelles restent 0,7 et 0,3 (haut) puis 0,2 et 0,8 (bas).</div>
+                        <div class="corr-step"><b>4. a)</b> L'arbre pour l'étape $n$ à $n+1$ est identique dans sa structure, avec $P(G_n) = g_n$ et $P(D_n) = 1 - g_n$. Les probabilités conditionnelles restent 0,7 et 0,3 (haut) puis 0,2 et 0,8 (bas).
+                            <div class="svg-box" style="margin: 15px 0; padding: 10px;">
+                                <svg viewBox="0 0 450 220" width="100%" height="200px">
+                                    <path d="M 50 110 L 150 50" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                                    <path d="M 50 110 L 150 170" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                                    <path d="M 200 50 L 300 20" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                                    <path d="M 200 50 L 300 80" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                                    <path d="M 200 170 L 300 140" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                                    <path d="M 200 170 L 300 200" stroke="#94A3B8" stroke-width="2" fill="none"/>
+                                    
+                                    <text x="175" y="55" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">G<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                                    <text x="175" y="175" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">D<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                                    <text x="325" y="25" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">G<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                                    <text x="325" y="85" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">D<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                                    <text x="325" y="145" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">G<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                                    <text x="325" y="205" font-family="Poppins" font-weight="bold" font-size="16" fill="#005AAA" text-anchor="middle">D<tspan baseline-shift="sub" font-size="0.75em">n+1</tspan></text>
+                                    
+                                    <text x="90" y="70" font-family="Poppins" font-weight="600" font-size="14" fill="#8CC63F">g<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                                    <text x="90" y="160" font-family="Poppins" font-weight="600" font-size="14" fill="#8CC63F">1 - g<tspan baseline-shift="sub" font-size="0.75em">n</tspan></text>
+                                    <text x="240" y="25" font-family="Poppins" font-weight="600" font-size="14" fill="#8CC63F">0,7</text>
+                                    <text x="240" y="90" font-family="Poppins" font-weight="600" font-size="14" fill="#8CC63F">0,3</text>
+                                    <text x="240" y="145" font-family="Poppins" font-weight="600" font-size="14" fill="#8CC63F">0,2</text>
+                                    <text x="240" y="210" font-family="Poppins" font-weight="600" font-size="14" fill="#8CC63F">0,8</text>
+                                </svg>
+                            </div>
+                        </div>
 
                         <div class="corr-step"><b>4. b)</b> D'après la formule des probabilités totales appliquées au rang $n$ :<br>
                         $g_{n+1} = P(G_{n+1}) = P(G_n \cap G_{n+1}) + P(D_n \cap G_{n+1})$<br>
@@ -282,7 +337,6 @@
                     <button class="btn-nav btn-next" onclick="switchSection('exo2')">Suivant : Exercice 2 <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
                 </div>
             </div>
-
             <div id="exo2" class="section-view">
                 <div class="title-badge" style="background: var(--nathan-cyan); color: white;">Géométrie : 6 points</div>
                 <div class="card exo" style="border-top-color: var(--nathan-cyan);">
