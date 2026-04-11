@@ -2,320 +2,563 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercices Suites numériques</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Épreuve 4 - Suites Numériques</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']], processEscapes: true },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f9fbfd;
+        /* ==========================================================================
+           VARIABLES ET RESET
+           ========================================================================== */
+        :root {
+            --nathan-green: #8CC63F; --nathan-blue: #005AAA; --nathan-pink: #EC008C; 
+            --nathan-cyan: #00AEEF; --nathan-yellow: #FFF200; --bg-app: #FCFDEE; 
+            --bg-card: #FFFFFF; --text-main: #1E293B; --text-light: #475569;
+            --purple: #8B5CF6; --gold: #F59E0B; --red: #E11D48; --teal: #0D9488;
+            --radius: 16px; --shadow: 0 10px 25px rgba(0, 90, 170, 0.08);
         }
-        h1 {
-            color: #0056b3;
-            text-align: center;
-            border-bottom: 2px solid #0056b3;
-            padding-bottom: 10px;
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        html, body {
+            width: 100vw; height: 100dvh; overflow: hidden; position: fixed;
+            background-color: var(--bg-app); color: var(--text-main); touch-action: none;
         }
-        h2 {
-            color: #004085;
-            margin-top: 30px;
+
+        /* ==========================================================================
+           HEADER ET NAVIGATION
+           ========================================================================== */
+        header {
+            background: var(--nathan-blue); padding: env(safe-area-inset-top) 20px 15px 20px;
+            display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-bottom: 4px solid var(--nathan-yellow);
         }
-        .exercice, .corrige, .qcm-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+
+        .header-top { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; }
+        
+        .btn-icon {
+            background: rgba(255,255,255,0.1); color: white; border: none; padding: 12px 18px;
+            border-radius: 12px; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; text-decoration: none; transition: 0.2s;
         }
-        .corrige {
-            border-left: 4px solid #28a745;
-            background-color: #f8fff9;
+        .btn-icon:active { transform: scale(0.95); }
+
+        .nav-select {
+            width: 100%; padding: 15px 20px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.2);
+            background: var(--nathan-blue); color: white; font-weight: 800; font-size: 1.05rem;
+            outline: none; appearance: none; cursor: pointer;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 20px top 50%; background-size: 14px auto;
         }
-        .question {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+
+        /* ==========================================================================
+           MOTEUR D'AFFICHAGE ET CONTENU
+           ========================================================================== */
+        #content-wrapper {
+            height: calc(100dvh - 140px); overflow-y: auto; -webkit-overflow-scrolling: touch;
+            padding: 20px 20px 60px 20px; scroll-behavior: smooth;
         }
-        .question p {
-            font-weight: 600;
+
+        main { max-width: 800px; margin: 0 auto; }
+        .section-view { display: none; animation: fadeIn 0.4s ease; }
+        .section-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .title-badge {
+            display: inline-block; background: var(--nathan-blue); color: white;
+            padding: 8px 20px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; margin-bottom: 20px;
         }
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
+
+        .card {
+            background: var(--bg-card); border-radius: var(--radius); padding: 30px 20px;
+            margin-bottom: 25px; box-shadow: var(--shadow); border-top: 6px solid var(--nathan-cyan);
         }
-        .options label {
-            background: #f1f3f5;
-            padding: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
+        .card h2 { color: var(--nathan-blue); margin-bottom: 20px; font-size: 1.4rem; font-weight: 800; }
+        .card p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px; }
+
+        /* ==========================================================================
+           TABLEAUX ET GRAPHIQUES
+           ========================================================================== */
+        .svg-grid-2x2 {
+            display: grid; grid-template-columns: 1fr; gap: 20px; margin: 25px 0;
         }
-        .options label:hover {
-            background: #e2e6ea;
+        @media(min-width: 600px) { .svg-grid-2x2 { grid-template-columns: 1fr 1fr; } }
+
+        .svg-box {
+            width: 100%; background: #F8FAFC; border: 2px solid #E2E8F0; border-radius: 16px;
+            padding: 15px; display: flex; flex-direction: column; align-items: center;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
         }
-        .math {
-            font-family: 'Cambria Math', 'Times New Roman', serif;
-            font-style: italic;
+        .svg-title { font-weight: 800; font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main); }
+
+        .table-responsive { overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 0 0 2px #E2E8F0; }
+        .data-table { width: 100%; border-collapse: collapse; text-align: center; background: white; }
+        .data-table th { background: var(--nathan-blue); color: white; padding: 12px; font-weight: 600; border-right: 1px solid rgba(255,255,255,0.2); }
+        .data-table td { padding: 10px; border-bottom: 1px solid #E2E8F0; border-right: 1px solid #E2E8F0; font-size: 0.95rem; }
+        .data-table th:last-child, .data-table td:last-child { border-right: none; }
+        .data-table tr:nth-child(even) { background: #F8FAFC; }
+
+        /* ==========================================================================
+           QCM INTERACTIF
+           ========================================================================== */
+        .qcm-card { border-top-color: var(--nathan-yellow); }
+        .qcm-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 15px; }
+        @media(min-width: 600px) { .qcm-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .qcm-opt {
+            background: #F8FAFC; border: 3px solid #E2E8F0; border-radius: 12px; padding: 15px;
+            text-align: left; font-weight: 600; font-size: 1.05rem; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 10px; color: var(--text-main);
         }
+        .qcm-opt:hover:not(.disabled) { border-color: var(--nathan-cyan); background: white; }
+        .qcm-opt:active:not(.disabled) { transform: scale(0.96); }
+        
+        .qcm-opt.correct { border-color: var(--nathan-green); background: #F0FDF4; color: #166534; box-shadow: 0 0 15px rgba(140,198,63,0.3); }
+        .qcm-opt.wrong { border-color: var(--nathan-pink); background: #FDF2F8; color: #9D174D; }
+        .qcm-opt.disabled { pointer-events: none; opacity: 0.6; }
+        .qcm-opt.correct.disabled { opacity: 1; }
+
+        .qcm-expanation {
+            margin-top: 15px; padding: 15px; border-radius: 10px; background: #F1F5F9;
+            font-size: 0.95rem; font-weight: 500; display: none; border-left: 4px solid var(--nathan-blue);
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* ==========================================================================
+           CORRECTIONS & BOUTONS
+           ========================================================================== */
+        .correction {
+            background: #F8FAFC; border-left: 6px solid var(--nathan-cyan); padding: 20px;
+            border-radius: 0 12px 12px 0; margin-top: 25px; display: none; font-size: 1.05rem; line-height: 1.8;
+        }
+        .correction.show { display: block; animation: fadeIn 0.3s ease; }
+        .corr-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #E2E8F0; }
+        .corr-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .btn-corr {
+            width: 100%; background: #F1F5F9; color: var(--nathan-blue); border: 3px solid var(--nathan-blue);
+            padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.15rem; cursor: pointer; margin-top: 25px;
+            transition: 0.2s;
+        }
+        .btn-corr:active { background: #E2E8F0; transform: scale(0.98); }
+
+        .nav-buttons { display: flex; justify-content: space-between; gap: 15px; margin-top: 35px; }
+        .btn-nav {
+            flex: 1; padding: 18px; border-radius: 14px; border: none; font-weight: 800;
+            font-size: 1.05rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; color: white;
+            transition: 0.2s;
+        }
+        .btn-nav:active { transform: scale(0.95); }
+        .btn-prev { background: #94A3B8; }
+        .btn-next { background: var(--nathan-cyan); box-shadow: 0 4px 15px rgba(0,174,239,0.3); }
     </style>
 </head>
 <body>
 
-    <h1>Exercices Suites numériques</h1>
+    <header>
+        <div class="header-top">
+            <a href="#" class="btn-icon">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                Accueil
+            </a>
+        </div>
+        <select class="nav-select" id="section-selector" onchange="switchSection(this.value)">
+            <option value="exo4">1. Exercice 4 : Analyse de suites</option>
+            <option value="qcm">2. QCM Interactif (20 questions)</option>
+        </select>
+    </header>
 
-    <div class="exercice">
-        <h2>Exercice 4 : (5 points)</h2>
-        <p>Soit (<span class="math">u<sub>n</sub></span>) la suite définie par <span class="math">u<sub>0</sub> = 4</span> et, pour tout <span class="math">n &isin; &#8469;</span>, <span class="math">u<sub>n+1</sub> = 1,2u<sub>n</sub> - 40</span>.</p>
-        <p>Soit (<span class="math">v<sub>n</sub></span>) la suite définie par <span class="math">v<sub>n</sub> = u<sub>n</sub> - 200</span>.</p>
-        <ol>
-            <li>Justifier que la suite (<span class="math">v<sub>n</sub></span>) est géométrique de raison <span class="math">1,2</span>.</li>
-            <li>Déterminer les variations de la suite (<span class="math">v<sub>n</sub></span>).</li>
-            <li>Donner l'expression de <span class="math">v<sub>n</sub></span> en fonction de <span class="math">n</span>.</li>
-            <li>En déduire l'expression de <span class="math">u<sub>n</sub></span> en fonction de <span class="math">n</span>.</li>
-        </ol>
+    <div id="content-wrapper">
+        <main>
+            
+            <div id="exo4" class="section-view active">
+                <div class="title-badge">Exercice type Bac</div>
+                <div class="card">
+                    <h2>Exercice 4 : Analyse de suites</h2>
+                    <p>On considère quatre suites numériques $(u_n)$, $(v_n)$, $(w_n)$ et $(t_n)$ définies pour tout entier naturel $n$ par :</p>
+                    <div style="background: #F1F5F9; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-weight: 500; text-align: center;">
+                        <p>$u_n = 5 - \frac{12}{n+1}$ &nbsp;&nbsp;&nbsp;&nbsp; $v_n = -3 + 8 \times (0,6)^n$</p>
+                        <p>$w_n = 0,2n^2 - 2$ &nbsp;&nbsp;&nbsp;&nbsp; $t_n = 12 \times (0,8)^n$</p>
+                    </div>
+
+                    <div class="svg-grid-2x2">
+                        <div class="svg-box">
+                            <div class="svg-title">Graphique 1</div>
+                            <svg viewBox="-1 -2 12 16" width="100%" height="200px">
+                                <g stroke="#E2E8F0" stroke-width="0.1" stroke-dasharray="0.2">
+                                    <line x1="-0.5" y1="0" x2="10.5" y2="0"/><line x1="-0.5" y1="2" x2="10.5" y2="2"/><line x1="-0.5" y1="4" x2="10.5" y2="4"/>
+                                    <line x1="-0.5" y1="6" x2="10.5" y2="6"/><line x1="-0.5" y1="8" x2="10.5" y2="8"/><line x1="-0.5" y1="10" x2="10.5" y2="10"/>
+                                    <line x1="-0.5" y1="12" x2="10.5" y2="12"/><line x1="-0.5" y1="14" x2="10.5" y2="14"/>
+                                    <line x1="0" y1="-1" x2="0" y2="15"/><line x1="2" y1="-1" x2="2" y2="15"/><line x1="4" y1="-1" x2="4" y2="15"/>
+                                    <line x1="6" y1="-1" x2="6" y2="15"/><line x1="8" y1="-1" x2="8" y2="15"/><line x1="10" y1="-1" x2="10" y2="15"/>
+                                </g>
+                                <line x1="-0.5" y1="0" x2="11" y2="0" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
+                                <line x1="0" y1="-1" x2="0" y2="15" stroke="#1E293B" stroke-width="0.15" marker-end="url(#arrow)"/>
+                                <text x="-0.8" y="12.3" font-size="1" font-family="sans-serif">12</text>
+                                <text x="10" y="-0.5" font-size="1" font-family="sans-serif">10</text>
+                                <circle cx="0" cy="12" r="0.2" fill="var(--purple)"/><circle cx="1" cy="9.6" r="0.2" fill="var(--purple)"/>
+                                <circle cx="2" cy="7.68" r="0.2" fill="var(--purple)"/><circle cx="3" cy="6.14" r="0.2" fill="var(--purple)"/>
+                                <circle cx="4" cy="4.91" r="0.2" fill="var(--purple)"/><circle cx="5" cy="3.93" r="0.2" fill="var(--purple)"/>
+                                <circle cx="6" cy="3.14" r="0.2" fill="var(--purple)"/><circle cx="7" cy="2.51" r="0.2" fill="var(--purple)"/>
+                                <circle cx="8" cy="2.01" r="0.2" fill="var(--purple)"/><circle cx="9" cy="1.61" r="0.2" fill="var(--purple)"/>
+                                <circle cx="10" cy="1.28" r="0.2" fill="var(--purple)"/>
+                            </svg>
+                        </div>
+                        
+                        <div class="svg-box">
+                            <div class="svg-title">Graphique 2</div>
+                            <svg viewBox="-1 -9 12 16" width="100%" height="200px">
+                                <g stroke="#E2E8F0" stroke-width="0.1" stroke-dasharray="0.2">
+                                    <line x1="-0.5" y1="-8" x2="10.5" y2="-8"/><line x1="-0.5" y1="-6" x2="10.5" y2="-6"/><line x1="-0.5" y1="-4" x2="10.5" y2="-4"/>
+                                    <line x1="-0.5" y1="-2" x2="10.5" y2="-2"/><line x1="-0.5" y1="0" x2="10.5" y2="0"/><line x1="-0.5" y1="2" x2="10.5" y2="2"/>
+                                    <line x1="-0.5" y1="4" x2="10.5" y2="4"/><line x1="-0.5" y1="6" x2="10.5" y2="6"/>
+                                </g>
+                                <line x1="-0.5" y1="0" x2="11" y2="0" stroke="#1E293B" stroke-width="0.15"/>
+                                <line x1="0" y1="-9" x2="0" y2="7" stroke="#1E293B" stroke-width="0.15"/>
+                                <text x="-0.8" y="4.3" font-size="1">4</text><text x="-0.8" y="-7.7" font-size="1">-8</text>
+                                <circle cx="0" cy="-7" r="0.2" fill="var(--gold)"/><circle cx="1" cy="-1" r="0.2" fill="var(--gold)"/>
+                                <circle cx="2" cy="1" r="0.2" fill="var(--gold)"/><circle cx="3" cy="2" r="0.2" fill="var(--gold)"/>
+                                <circle cx="4" cy="2.6" r="0.2" fill="var(--gold)"/><circle cx="5" cy="3" r="0.2" fill="var(--gold)"/>
+                                <circle cx="6" cy="3.28" r="0.2" fill="var(--gold)"/><circle cx="7" cy="3.5" r="0.2" fill="var(--gold)"/>
+                                <circle cx="8" cy="3.66" r="0.2" fill="var(--gold)"/><circle cx="9" cy="3.8" r="0.2" fill="var(--gold)"/>
+                                <circle cx="10" cy="3.9" r="0.2" fill="var(--gold)"/>
+                            </svg>
+                        </div>
+
+                        <div class="svg-box">
+                            <div class="svg-title">Graphique 3</div>
+                            <svg viewBox="-1 -5 12 26" width="100%" height="200px">
+                                <g stroke="#E2E8F0" stroke-width="0.2" stroke-dasharray="0.4">
+                                    <line x1="-0.5" y1="-4" x2="10.5" y2="-4"/><line x1="-0.5" y1="0" x2="10.5" y2="0"/><line x1="-0.5" y1="4" x2="10.5" y2="4"/>
+                                    <line x1="-0.5" y1="8" x2="10.5" y2="8"/><line x1="-0.5" y1="12" x2="10.5" y2="12"/><line x1="-0.5" y1="16" x2="10.5" y2="16"/>
+                                </g>
+                                <line x1="-0.5" y1="0" x2="11" y2="0" stroke="#1E293B" stroke-width="0.2"/>
+                                <line x1="0" y1="-5" x2="0" y2="21" stroke="#1E293B" stroke-width="0.2"/>
+                                <text x="-0.8" y="16.5" font-size="1.5">16</text><text x="-0.8" y="-3.5" font-size="1.5">-4</text>
+                                <circle cx="0" cy="-2" r="0.3" fill="var(--red)"/><circle cx="1" cy="-1.8" r="0.3" fill="var(--red)"/>
+                                <circle cx="2" cy="-1.2" r="0.3" fill="var(--red)"/><circle cx="3" cy="-0.2" r="0.3" fill="var(--red)"/>
+                                <circle cx="4" cy="1.2" r="0.3" fill="var(--red)"/><circle cx="5" cy="3" r="0.3" fill="var(--red)"/>
+                                <circle cx="6" cy="5.2" r="0.3" fill="var(--red)"/><circle cx="7" cy="7.8" r="0.3" fill="var(--red)"/>
+                                <circle cx="8" cy="10.8" r="0.3" fill="var(--red)"/><circle cx="9" cy="14.2" r="0.3" fill="var(--red)"/>
+                                <circle cx="10" cy="18" r="0.3" fill="var(--red)"/>
+                            </svg>
+                        </div>
+
+                        <div class="svg-box">
+                            <div class="svg-title">Graphique 4</div>
+                            <svg viewBox="-1 -5 12 8" width="100%" height="200px">
+                                <g stroke="#E2E8F0" stroke-width="0.1" stroke-dasharray="0.2">
+                                    <line x1="-0.5" y1="-4" x2="10.5" y2="-4"/><line x1="-0.5" y1="-2" x2="10.5" y2="-2"/><line x1="-0.5" y1="0" x2="10.5" y2="0"/>
+                                    <line x1="-0.5" y1="2" x2="10.5" y2="2"/><line x1="-0.5" y1="4" x2="10.5" y2="4"/><line x1="-0.5" y1="6" x2="10.5" y2="6"/>
+                                </g>
+                                <line x1="-0.5" y1="0" x2="11" y2="0" stroke="#1E293B" stroke-width="0.15"/>
+                                <line x1="0" y1="-5" x2="0" y2="7" stroke="#1E293B" stroke-width="0.15"/>
+                                <text x="-0.8" y="4.3" font-size="0.8">4</text><text x="-0.8" y="-3.7" font-size="0.8">-4</text>
+                                <circle cx="0" cy="5" r="0.2" fill="var(--teal)"/><circle cx="1" cy="1.8" r="0.2" fill="var(--teal)"/>
+                                <circle cx="2" cy="-0.12" r="0.2" fill="var(--teal)"/><circle cx="3" cy="-1.27" r="0.2" fill="var(--teal)"/>
+                                <circle cx="4" cy="-1.96" r="0.2" fill="var(--teal)"/><circle cx="5" cy="-2.38" r="0.2" fill="var(--teal)"/>
+                                <circle cx="6" cy="-2.63" r="0.2" fill="var(--teal)"/><circle cx="7" cy="-2.78" r="0.2" fill="var(--teal)"/>
+                                <circle cx="8" cy="-2.87" r="0.2" fill="var(--teal)"/><circle cx="9" cy="-2.92" r="0.2" fill="var(--teal)"/>
+                                <circle cx="10" cy="-2.95" r="0.2" fill="var(--teal)"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">Tableau A</th>
+                                    <th colspan="2">Tableau B</th>
+                                    <th colspan="2">Tableau C</th>
+                                    <th colspan="2">Tableau D</th>
+                                </tr>
+                                <tr style="background: #E2E8F0; color: #1E293B;">
+                                    <td>$n$</td><td>$y_n$</td>
+                                    <td>$n$</td><td>$y_n$</td>
+                                    <td>$n$</td><td>$y_n$</td>
+                                    <td>$n$</td><td>$y_n$</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>0</td><td>12,00</td><td>0</td><td>-7,00</td><td>0</td><td>5,00</td><td>0</td><td>-2,00</td></tr>
+                                <tr><td>1</td><td>9,60</td><td>1</td><td>-1,00</td><td>1</td><td>1,80</td><td>1</td><td>-1,80</td></tr>
+                                <tr><td>2</td><td>7,68</td><td>2</td><td>1,00</td><td>2</td><td>-0,12</td><td>2</td><td>-1,20</td></tr>
+                                <tr><td>3</td><td>6,14</td><td>3</td><td>2,00</td><td>3</td><td>-1,27</td><td>3</td><td>-0,20</td></tr>
+                                <tr><td>50</td><td>0,00</td><td>50</td><td>4,76</td><td>50</td><td>-3,00</td><td>50</td><td>498,00</td></tr>
+                                <tr><td>100</td><td>0,00</td><td>100</td><td>4,88</td><td>100</td><td>-3,00</td><td>100</td><td>1998,00</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p><b>1.</b> Associez chaque suite énumérée à son graphique (1 à 4).</p>
+                    <p><b>2.</b> Reliez chaque tableau (A, B, C, D) à la courbe correspondante.</p>
+                    <p><b>3.</b> Pour chacune des quatre suites, conjecturez sa convergence et sa limite éventuelle.</p>
+                    <p><b>4.</b> Laquelle de ces quatre suites est géométrique ? Donnez sa raison et son premier terme.</p>
+
+                    <button class="btn-corr" onclick="toggleCorr('corr-exo4')">Afficher le corrigé détaillé</button>
+
+                    <div id="corr-exo4" class="correction">
+                        <div class="corr-step">
+                            <b>1. Association Suites / Graphiques :</b><br>
+                            - <b>Graphique 1</b> : La suite est positive et décroissante vers 0. C'est $t_n = 12 \times (0,8)^n$.<br>
+                            - <b>Graphique 2</b> : La suite démarre dans les négatifs et croît vers 5. C'est $u_n = 5 - \frac{12}{n+1}$.<br>
+                            - <b>Graphique 3</b> : La suite croît très rapidement (allure parabolique). C'est $w_n = 0,2n^2 - 2$.<br>
+                            - <b>Graphique 4</b> : La suite décroît et s'aplatit vers les négatifs (-3). C'est $v_n = -3 + 8 \times (0,6)^n$.
+                        </div>
+                        <div class="corr-step">
+                            <b>2. Association Tableaux / Courbes :</b><br>
+                            - <b>Tableau A</b> : Commence à 12. C'est la suite $t_n$ (Graphique 1).<br>
+                            - <b>Tableau B</b> : Commence à -7. C'est la suite $u_n$ (Graphique 2).<br>
+                            - <b>Tableau C</b> : Commence à 5. C'est la suite $v_n$ (Graphique 4).<br>
+                            - <b>Tableau D</b> : Commence à -2 et grandit fort. C'est la suite $w_n$ (Graphique 3).
+                        </div>
+                        <div class="corr-step">
+                            <b>3. Limites (Conjectures d'après les tableaux) :</b><br>
+                            - $(t_n)$ semble converger vers <b>0</b>.<br>
+                            - $(u_n)$ semble converger vers <b>5</b>.<br>
+                            - $(v_n)$ semble converger vers <b>-3</b>.<br>
+                            - $(w_n)$ semble diverger vers <b>$+\infty$</b>.
+                        </div>
+                        <div class="corr-step">
+                            <b>4. Suite géométrique :</b><br>
+                            La suite <b>$(t_n)$</b> s'écrit sous la forme $t_n = t_0 \times q^n$.<br>
+                            C'est une suite géométrique de premier terme <b>$t_0 = 12$</b> et de raison <b>$q = 0,8$</b>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-next" onclick="switchSection('qcm')">Passer au QCM <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+                </div>
+            </div>
+
+            <div id="qcm" class="section-view">
+                <div class="title-badge" style="background: var(--nathan-yellow); color: var(--nathan-blue);">Testez-vous !</div>
+                
+                <div class="card qcm-card">
+                    <h2>QCM - Suites Numériques</h2>
+                    <p>Sélectionnez la bonne réponse pour chaque question.</p>
+
+                    <div id="qcm-list">
+                        </div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-nav btn-prev" onclick="switchSection('exo4')"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg> Retour à l'exercice</button>
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    <div class="corrige">
-        <h2>Corrigé de l'Exercice 4</h2>
-        <ol>
-            <li>
-                Pour tout entier naturel <span class="math">n</span> :<br>
-                <span class="math">v<sub>n+1</sub> = u<sub>n+1</sub> - 200</span><br>
-                <span class="math">v<sub>n+1</sub> = (1,2u<sub>n</sub> - 40) - 200</span><br>
-                <span class="math">v<sub>n+1</sub> = 1,2u<sub>n</sub> - 240</span><br>
-                On factorise par 1,2 :<br>
-                <span class="math">v<sub>n+1</sub> = 1,2(u<sub>n</sub> - 200)</span><br>
-                <span class="math">v<sub>n+1</sub> = 1,2v<sub>n</sub></span><br>
-                De plus, <span class="math">v<sub>0</sub> = u<sub>0</sub> - 200 = 4 - 200 = -196</span>.<br>
-                <strong>Conclusion :</strong> La suite (<span class="math">v<sub>n</sub></span>) est une suite géométrique de raison <span class="math">q = 1,2</span> et de premier terme <span class="math">v<sub>0</sub> = -196</span>.
-            </li>
-            <li>
-                Le premier terme est <span class="math">v<sub>0</sub> = -196 < 0</span> et la raison est <span class="math">q = 1,2 > 1</span>.<br>
-                Multiplier une quantité strictement négative par un nombre strictement supérieur à 1 la rend encore plus petite.<br>
-                <strong>Conclusion :</strong> La suite (<span class="math">v<sub>n</sub></span>) est strictement décroissante.
-            </li>
-            <li>
-                Comme (<span class="math">v<sub>n</sub></span>) est géométrique, son terme général est : <span class="math">v<sub>n</sub> = v<sub>0</sub> &times; q<sup>n</sup></span>.<br>
-                Donc : <strong><span class="math">v<sub>n</sub> = -196 &times; 1,2<sup>n</sup></span></strong>.
-            </li>
-            <li>
-                On sait que <span class="math">v<sub>n</sub> = u<sub>n</sub> - 200</span>, ce qui équivaut à <span class="math">u<sub>n</sub> = v<sub>n</sub> + 200</span>.<br>
-                En remplaçant <span class="math">v<sub>n</sub></span> par l'expression trouvée à la question précédente :<br>
-                <strong><span class="math">u<sub>n</sub> = -196 &times; 1,2<sup>n</sup> + 200</span></strong>.
-            </li>
-        </ol>
-    </div>
+    <script>
+        // Fonction de navigation entre les sections
+        function switchSection(sectionId) {
+            document.querySelectorAll('.section-view').forEach(el => el.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.getElementById('section-selector').value = sectionId;
+            document.getElementById('content-wrapper').scrollTo(0, 0);
+        }
 
-    <div class="qcm-container">
-        <h2>QCM - Une seule réponse exacte par question</h2>
-        <form>
-            <div class="question">
-                <p>1. La suite définie par <span class="math">u<sub>n+1</sub> = u<sub>n</sub> - 4</span> avec <span class="math">u<sub>0</sub> = 10</span> est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="A"> A. arithmétique de raison 4</label>
-                    <label><input type="radio" name="q1" value="B"> B. géométrique de raison 4</label>
-                    <label><input type="radio" name="q1" value="C"> C. arithmétique de raison -4</label>
-                    <label><input type="radio" name="q1" value="D"> D. géométrique de raison -4</label>
-                </div>
-            </div>
+        // Fonction pour afficher/masquer un corrigé classique
+        function toggleCorr(corrId) {
+            const corrEl = document.getElementById(corrId);
+            corrEl.classList.toggle('show');
+        }
 
-            <div class="question">
-                <p>2. Soit (<span class="math">v<sub>n</sub></span>) une suite géométrique avec <span class="math">v<sub>0</sub> = 5</span> et <span class="math">q = 3</span>. L'expression de <span class="math">v<sub>n</sub></span> est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="A"> A. <span class="math">v<sub>n</sub> = 5 + 3n</span></label>
-                    <label><input type="radio" name="q2" value="B"> B. <span class="math">v<sub>n</sub> = 5 &times; 3<sup>n</sup></span></label>
-                    <label><input type="radio" name="q2" value="C"> C. <span class="math">v<sub>n</sub> = 3 &times; 5<sup>n</sup></span></label>
-                    <label><input type="radio" name="q2" value="D"> D. <span class="math">v<sub>n</sub> = 5<sup>n</sup> + 3</span></label>
-                </div>
-            </div>
+        // BASE DE DONNÉES DU QCM (20 questions)
+        const qcmData = [
+            {
+                q: "La suite définie par $u_{n+1} = u_n - 4$ avec $u_0 = 10$ est :",
+                opts: ["Arithmétique de raison 4", "Géométrique de raison 4", "Arithmétique de raison -4", "Géométrique de raison -4"],
+                correct: 2,
+                exp: "La forme $u_{n+1} = u_n + r$ caractérise une suite arithmétique. Ici $r = -4$."
+            },
+            {
+                q: "Soit $(v_n)$ une suite géométrique avec $v_0 = 5$ et $q = 3$. L'expression de $v_n$ est :",
+                opts: ["$v_n = 5 + 3n$", "$v_n = 5 \\times 3^n$", "$v_n = 3 \\times 5^n$", "$v_n = 5^n + 3$"],
+                correct: 1,
+                exp: "Le terme général d'une suite géométrique est $v_n = v_0 \\times q^n$."
+            },
+            {
+                q: "La formule de la somme $S = 1 + 2 + 3 + ... + n$ est :",
+                opts: ["$\\frac{n(n+1)}{2}$", "$\\frac{n(n-1)}{2}$", "$n(n+1)$", "$n^2 + 1$"],
+                correct: 0,
+                exp: "C'est une formule de cours fondamentale (Somme des termes d'une suite arithmétique)."
+            },
+            {
+                q: "Soit $(w_n)$ la suite définie par $w_n = 7 - 2n$. Son sens de variation est :",
+                opts: ["Strictement croissante", "Constante", "Non monotone", "Strictement décroissante"],
+                correct: 3,
+                exp: "$w_{n+1} - w_n = -2 < 0$. La suite est donc strictement décroissante."
+            },
+            {
+                q: "La limite de la suite $t_n = (0,4)^n$ quand $n$ tend vers $+\\infty$ est :",
+                opts: ["$+\\infty$", "$0$", "$-\\infty$", "$0,4$"],
+                correct: 1,
+                exp: "C'est une suite géométrique de raison $q = 0,4$. Comme $-1 < q < 1$, sa limite est $0$."
+            },
+            {
+                q: "Soit $u_n = 2n^2 - n$. La valeur exacte de $u_3$ est :",
+                opts: ["$11$", "$15$", "$17$", "$21$"],
+                correct: 1,
+                exp: "On remplace $n$ par 3 : $u_3 = 2(3)^2 - 3 = 2(9) - 3 = 18 - 3 = 15$."
+            },
+            {
+                q: "Si $(v_n)$ est une suite géométrique de raison $q = -3$ et $v_0 = 1$ :",
+                opts: ["Elle est strictement décroissante", "Tous ses termes sont négatifs", "Elle n'est pas monotone (alternée)", "Elle est constante"],
+                correct: 2,
+                exp: "Une raison négative change le signe à chaque terme ($1, -3, 9, -27...$). La suite alterne et n'est pas monotone."
+            },
+            {
+                q: "La limite de la suite $h_n = -5n + 20$ en $+\\infty$ est :",
+                opts: ["$-\\infty$", "$+\\infty$", "$-5$", "$20$"],
+                correct: 0,
+                exp: "Le terme dominant est $-5n$, qui tend vers $-\\infty$ quand $n$ grandit."
+            },
+            {
+                q: "Soit la suite définie par $u_0 = 3$ et $u_{n+1} = 2u_n - 1$. Que vaut $u_2$ ?",
+                opts: ["$5$", "$8$", "$9$", "$11$"],
+                correct: 2,
+                exp: "On calcule en chaîne : $u_1 = 2(3) - 1 = 5$, puis $u_2 = 2(5) - 1 = 9$."
+            },
+            {
+                q: "Si pour tout entier $n$, on a $u_{n+1} - u_n = n^2 + 3$, alors la suite $(u_n)$ est :",
+                opts: ["Strictement décroissante", "Strictement croissante", "Arithmétique", "Géométrique"],
+                correct: 1,
+                exp: "Puisque $n^2 + 3 > 0$, la différence $u_{n+1} - u_n$ est positive, donc la suite est strictement croissante."
+            },
+            {
+                q: "Laquelle de ces suites est une suite arithmétique ?",
+                opts: ["$u_n = 2^n$", "$u_n = n^2$", "$u_n = 3n - 5$", "$u_n = \\frac{1}{n}$"],
+                correct: 2,
+                exp: "Une suite arithmétique a une expression explicite de la forme affine $u_n = a \\times n + b$."
+            },
+            {
+                q: "Soit $(w_n)$ arithmétique de raison $r = 2$ et $w_0 = 4$. Que vaut $w_{10}$ ?",
+                opts: ["$20$", "$24$", "$14$", "$4096$"],
+                correct: 1,
+                exp: "Formule explicite : $w_n = w_0 + n \\times r$. Donc $w_{10} = 4 + 10 \\times 2 = 24$."
+            },
+            {
+                q: "Les premiers termes d'une suite $(z_n)$ sont représentés sur ce graphique. Quelle conjecture peut-on faire ?<br><br><svg viewBox=\"-1 -1 6 5\" width=\"100%\" style=\"max-width:250px; background:#F8FAFC; border-radius:8px; padding:10px;\"><g stroke=\"#CBD5E1\" stroke-width=\"0.05\"><line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/><line x1=\"0\" y1=\"1\" x2=\"5\" y2=\"1\"/><line x1=\"0\" y1=\"2\" x2=\"5\" y2=\"2\"/><line x1=\"0\" y1=\"3\" x2=\"5\" y2=\"3\"/><line x1=\"0\" y1=\"4\" x2=\"5\" y2=\"4\"/></g><line x1=\"0\" y1=\"0\" x2=\"5.5\" y2=\"0\" stroke=\"#1E293B\" stroke-width=\"0.08\"/><line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"4.5\" stroke=\"#1E293B\" stroke-width=\"0.08\"/><circle cx=\"0\" cy=\"4\" r=\"0.15\" fill=\"#005AAA\"/><circle cx=\"1\" cy=\"2.4\" r=\"0.15\" fill=\"#005AAA\"/><circle cx=\"2\" cy=\"1.44\" r=\"0.15\" fill=\"#005AAA\"/><circle cx=\"3\" cy=\"0.86\" r=\"0.15\" fill=\"#005AAA\"/><circle cx=\"4\" cy=\"0.52\" r=\"0.15\" fill=\"#005AAA\"/><circle cx=\"5\" cy=\"0.31\" r=\"0.15\" fill=\"#005AAA\"/></svg>",
+                opts: ["Elle est strictement croissante", "Elle semble converger vers 0", "Elle diverge vers $+\\infty$", "Elle est arithmétique"],
+                correct: 1,
+                exp: "Les points descendent et s'aplatissent vers l'axe des abscisses (0)."
+            },
+            {
+                q: "Soit $(u_n)$ une suite arithmétique de $n+1$ termes. La somme $u_0 + u_1 + ... + u_n$ est égale à :",
+                opts: ["$\\frac{(n+1)(u_0 + u_n)}{2}$", "$\\frac{n(u_0 + u_n)}{2}$", "$u_0 \\frac{1 - q^{n+1}}{1 - q}$", "$u_0 + n \\times r$"],
+                correct: 0,
+                exp: "C'est la formule : (Nombre de termes) $\\times$ (Premier + Dernier) / 2."
+            },
+            {
+                q: "Si $q > 1$, quelle est la limite de la suite $(q^n)$ ?",
+                opts: ["$0$", "$1$", "$+\\infty$", "N'existe pas"],
+                correct: 2,
+                exp: "Une suite géométrique de raison strictement supérieure à 1 diverge toujours vers $+\\infty$."
+            },
+            {
+                q: "Quel est le sens de variation de la suite définie par $u_n = n^3 + 1$ ?",
+                opts: ["Constante", "Strictement décroissante", "Strictement croissante", "Alternée"],
+                correct: 2,
+                exp: "La fonction $f(x) = x^3 + 1$ est strictement croissante sur $\\mathbb{R}^+$, donc la suite l'est aussi."
+            },
+            {
+                q: "Laquelle de ces suites est constante (pour $n \\in \\mathbb{N}$) ?",
+                opts: ["$u_n = (-1)^n$", "$u_n = (-1)^{2n}$", "$u_n = n - n^2$", "$u_n = \\frac{1}{n+1}$"],
+                correct: 1,
+                exp: "$2n$ est toujours un nombre pair. Or $(-1)$ élevé à une puissance paire vaut toujours $1$."
+            },
+            {
+                q: "Soit $(u_n)$ une suite arithmétique telle que $u_5 = 10$ et $u_{10} = 20$. L'écart entre ces deux termes est représenté ci-dessous. Sa raison $r$ est :<br><br><svg viewBox=\"0 0 120 60\" width=\"100%\" style=\"max-width:200px;\"><path d=\"M 10 50 L 30 50 L 30 40 L 50 40 L 50 30 L 70 30 L 70 20 L 90 20 L 90 10 L 110 10\" fill=\"none\" stroke=\"#EC008C\" stroke-width=\"2\"/><circle cx=\"10\" cy=\"50\" r=\"3\" fill=\"#005AAA\"/><circle cx=\"110\" cy=\"10\" r=\"3\" fill=\"#005AAA\"/><text x=\"10\" y=\"58\" font-size=\"8\">u_5=10</text><text x=\"100\" y=\"8\" font-size=\"8\">u_10=20</text></svg>",
+                opts: ["$1$", "$2$", "$5$", "$10$"],
+                correct: 1,
+                exp: "Il y a 5 'marches' (sauts) pour aller de $u_5$ à $u_{10}$. La différence est de 10. Donc $5r = 10 \\implies r = 2$."
+            },
+            {
+                q: "La somme des 10 premiers termes de la suite définie par $u_n = 2$ (pour tout $n$) est :",
+                opts: ["$2$", "$10$", "$20$", "$40$"],
+                correct: 2,
+                exp: "Les 10 premiers termes valent tous 2. La somme est donc $2 + 2 + ... + 2$ (10 fois), soit $20$."
+            },
+            {
+                q: "La limite de la suite définie pour $n > 0$ par $u_n = \\frac{1}{n} + 5$ est :",
+                opts: ["$0$", "$1$", "$5$", "$+\\infty$"],
+                correct: 2,
+                exp: "Le terme $\\frac{1}{n}$ tend vers 0 quand $n$ devient très grand. Reste uniquement 5."
+            }
+        ];
 
-            <div class="question">
-                <p>3. La formule de la somme <span class="math">S = 1 + 2 + 3 + ... + n</span> est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="A"> A. <span class="math">n(n+1) / 2</span></label>
-                    <label><input type="radio" name="q3" value="B"> B. <span class="math">n(n-1) / 2</span></label>
-                    <label><input type="radio" name="q3" value="C"> C. <span class="math">n(n+1)</span></label>
-                    <label><input type="radio" name="q3" value="D"> D. <span class="math">n<sup>2</sup> + 1</span></label>
-                </div>
-            </div>
+        // MOTEUR DU QCM
+        const qcmContainer = document.getElementById('qcm-list');
+        
+        qcmData.forEach((item, index) => {
+            // Création du bloc HTML pour chaque question
+            const qDiv = document.createElement('div');
+            qDiv.className = 'question-block';
+            qDiv.style.marginBottom = '30px';
+            qDiv.style.borderBottom = '2px solid #E2E8F0';
+            qDiv.style.paddingBottom = '20px';
+            
+            let html = `<p style="font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; color: var(--nathan-blue);">${index + 1}. ${item.q}</p>`;
+            html += `<div class="qcm-grid" id="grid-${index}">`;
+            
+            item.opts.forEach((opt, optIndex) => {
+                html += `<button class="qcm-opt" onclick="answerQCM(${index}, ${optIndex}, ${item.correct})">
+                            <span style="display:inline-block; width:24px; height:24px; border-radius:50%; background:white; border:2px solid #CBD5E1; color:transparent; font-size:12px; line-height:20px; text-align:center;" class="check-circle">✔</span> 
+                            ${opt}
+                         </button>`;
+            });
+            
+            html += `</div>`;
+            html += `<div class="qcm-expanation" id="exp-${index}"><b>Explication :</b> ${item.exp}</div>`;
+            
+            qDiv.innerHTML = html;
+            qcmContainer.appendChild(qDiv);
+        });
 
-            <div class="question">
-                <p>4. Soit (<span class="math">w<sub>n</sub></span>) la suite définie par <span class="math">w<sub>n</sub> = 7 - 2n</span>. Son sens de variation est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="A"> A. Strictement croissante</label>
-                    <label><input type="radio" name="q4" value="B"> B. Constante</label>
-                    <label><input type="radio" name="q4" value="C"> C. Non monotone</label>
-                    <label><input type="radio" name="q4" value="D"> D. Strictement décroissante</label>
-                </div>
-            </div>
+        // Fonction appelée lors du clic sur une réponse
+        function answerQCM(qIndex, selectedIndex, correctIndex) {
+            const grid = document.getElementById(`grid-${qIndex}`);
+            const buttons = grid.querySelectorAll('.qcm-opt');
+            const exp = document.getElementById(`exp-${qIndex}`);
 
-            <div class="question">
-                <p>5. La limite de la suite <span class="math">t<sub>n</sub> = (0,4)<sup>n</sup></span> quand <span class="math">n</span> tend vers +&infin; est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="A"> A. +&infin;</label>
-                    <label><input type="radio" name="q5" value="B"> B. 0</label>
-                    <label><input type="radio" name="q5" value="C"> C. -&infin;</label>
-                    <label><input type="radio" name="q5" value="D"> D. 0,4</label>
-                </div>
-            </div>
+            // Désactiver tous les boutons de cette question
+            buttons.forEach((btn, i) => {
+                btn.classList.add('disabled');
+                
+                // Gérer les couleurs
+                if (i === correctIndex) {
+                    btn.classList.add('correct');
+                    btn.querySelector('.check-circle').style.color = '#166534';
+                    btn.querySelector('.check-circle').style.borderColor = '#166534';
+                } else if (i === selectedIndex && selectedIndex !== correctIndex) {
+                    btn.classList.add('wrong');
+                    btn.querySelector('.check-circle').innerHTML = '✘';
+                    btn.querySelector('.check-circle').style.color = '#9D174D';
+                    btn.querySelector('.check-circle').style.borderColor = '#9D174D';
+                }
+            });
 
-            <div class="question">
-                <p>6. Soit <span class="math">u<sub>n</sub> = 2n<sup>2</sup> - n</span>. La valeur exacte de <span class="math">u<sub>3</sub></span> est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q6" value="A"> A. 11</label>
-                    <label><input type="radio" name="q6" value="B"> B. 15</label>
-                    <label><input type="radio" name="q6" value="C"> C. 17</label>
-                    <label><input type="radio" name="q6" value="D"> D. 21</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>7. Si (<span class="math">v<sub>n</sub></span>) est une suite géométrique de raison <span class="math">q = -3</span> et de premier terme <span class="math">v<sub>0</sub> = 1</span> :</p>
-                <div class="options">
-                    <label><input type="radio" name="q7" value="A"> A. Elle est strictement décroissante</label>
-                    <label><input type="radio" name="q7" value="B"> B. Tous ses termes sont négatifs</label>
-                    <label><input type="radio" name="q7" value="C"> C. Elle n'est pas monotone</label>
-                    <label><input type="radio" name="q7" value="D"> D. Elle est constante</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>8. La limite de la suite <span class="math">h<sub>n</sub> = -5n + 20</span> en +&infin; est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q8" value="A"> A. -&infin;</label>
-                    <label><input type="radio" name="q8" value="B"> B. +&infin;</label>
-                    <label><input type="radio" name="q8" value="C"> C. -5</label>
-                    <label><input type="radio" name="q8" value="D"> D. 20</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>9. Soit la suite définie par <span class="math">u<sub>0</sub> = 3</span> et <span class="math">u<sub>n+1</sub> = 2u<sub>n</sub> - 1</span>. Que vaut <span class="math">u<sub>2</sub></span> ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q9" value="A"> A. 5</label>
-                    <label><input type="radio" name="q9" value="B"> B. 8</label>
-                    <label><input type="radio" name="q9" value="C"> C. 9</label>
-                    <label><input type="radio" name="q9" value="D"> D. 11</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>10. Si pour tout entier <span class="math">n</span>, on a <span class="math">u<sub>n+1</sub> - u<sub>n</sub> = n<sup>2</sup> + 3</span>, alors la suite (<span class="math">u<sub>n</sub></span>) est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q10" value="A"> A. Strictement décroissante</label>
-                    <label><input type="radio" name="q10" value="B"> B. Strictement croissante</label>
-                    <label><input type="radio" name="q10" value="C"> C. Arithmétique</label>
-                    <label><input type="radio" name="q10" value="D"> D. Géométrique</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>11. Laquelle de ces suites est une suite arithmétique ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q11" value="A"> A. <span class="math">u<sub>n</sub> = 2<sup>n</sup></span></label>
-                    <label><input type="radio" name="q11" value="B"> B. <span class="math">u<sub>n</sub> = n<sup>2</sup></span></label>
-                    <label><input type="radio" name="q11" value="C"> C. <span class="math">u<sub>n</sub> = 3n - 5</span></label>
-                    <label><input type="radio" name="q11" value="D"> D. <span class="math">u<sub>n</sub> = 1/n</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>12. Soit (<span class="math">w<sub>n</sub></span>) une suite arithmétique de raison <span class="math">r = 2</span> et <span class="math">w<sub>0</sub> = 4</span>. Que vaut <span class="math">w<sub>10</sub></span> ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q12" value="A"> A. 20</label>
-                    <label><input type="radio" name="q12" value="B"> B. 24</label>
-                    <label><input type="radio" name="q12" value="C"> C. 14</label>
-                    <label><input type="radio" name="q12" value="D"> D. 4096</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>13. Les premiers termes d'une suite (<span class="math">z<sub>n</sub></span>) sont : <span class="math">z<sub>0</sub> = 4 ; z<sub>1</sub> = 2,4 ; z<sub>2</sub> = 1,44 ; z<sub>3</sub> = 0,864</span>. Quelle conjecture peut-on faire ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q13" value="A"> A. Elle est strictement croissante</label>
-                    <label><input type="radio" name="q13" value="B"> B. Elle semble converger vers 0</label>
-                    <label><input type="radio" name="q13" value="C"> C. Elle diverge vers +&infin;</label>
-                    <label><input type="radio" name="q13" value="D"> D. Elle est arithmétique</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>14. Soit (<span class="math">u<sub>n</sub></span>) une suite arithmétique de <span class="math">n+1</span> termes. La somme <span class="math">u<sub>0</sub> + u<sub>1</sub> + ... + u<sub>n</sub></span> est égale à :</p>
-                <div class="options">
-                    <label><input type="radio" name="q14" value="A"> A. <span class="math">(n+1) &times; (u<sub>0</sub> + u<sub>n</sub>) / 2</span></label>
-                    <label><input type="radio" name="q14" value="B"> B. <span class="math">n &times; (u<sub>0</sub> + u<sub>n</sub>) / 2</span></label>
-                    <label><input type="radio" name="q14" value="C"> C. <span class="math">u<sub>0</sub> &times; (1 - q<sup>n+1</sup>) / (1 - q)</span></label>
-                    <label><input type="radio" name="q14" value="D"> D. <span class="math">u<sub>0</sub> + n &times; r</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>15. Si <span class="math">q > 1</span>, quelle est la limite de la suite (<span class="math">q<sup>n</sup></span>) ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q15" value="A"> A. 0</label>
-                    <label><input type="radio" name="q15" value="B"> B. 1</label>
-                    <label><input type="radio" name="q15" value="C"> C. +&infin;</label>
-                    <label><input type="radio" name="q15" value="D"> D. N'existe pas</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>16. Quel est le sens de variation de la suite définie par <span class="math">u<sub>n</sub> = n<sup>3</sup> + 1</span> ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q16" value="A"> A. Constante</label>
-                    <label><input type="radio" name="q16" value="B"> B. Strictement décroissante</label>
-                    <label><input type="radio" name="q16" value="C"> C. Strictement croissante</label>
-                    <label><input type="radio" name="q16" value="D"> D. Alternée</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>17. Laquelle de ces suites est constante (pour <span class="math">n &isin; &#8469;</span>) ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q17" value="A"> A. <span class="math">u<sub>n</sub> = (-1)<sup>n</sup></span></label>
-                    <label><input type="radio" name="q17" value="B"> B. <span class="math">u<sub>n</sub> = (-1)<sup>2n</sup></span></label>
-                    <label><input type="radio" name="q17" value="C"> C. <span class="math">u<sub>n</sub> = n - n<sup>2</sup></span></label>
-                    <label><input type="radio" name="q17" value="D"> D. <span class="math">u<sub>n</sub> = 1 / (n+1)</span></label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>18. Soit (<span class="math">u<sub>n</sub></span>) une suite arithmétique telle que <span class="math">u<sub>5</sub> = 10</span> et <span class="math">u<sub>10</sub> = 20</span>. Sa raison est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q18" value="A"> A. 1</label>
-                    <label><input type="radio" name="q18" value="B"> B. 2</label>
-                    <label><input type="radio" name="q18" value="C"> C. 5</label>
-                    <label><input type="radio" name="q18" value="D"> D. 10</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>19. La somme des 10 premiers termes de la suite définie par <span class="math">u<sub>n</sub> = 2</span> (pour tout <span class="math">n</span>) est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q19" value="A"> A. 2</label>
-                    <label><input type="radio" name="q19" value="B"> B. 10</label>
-                    <label><input type="radio" name="q19" value="C"> C. 20</label>
-                    <label><input type="radio" name="q19" value="D"> D. 40</label>
-                </div>
-            </div>
-
-            <div class="question">
-                <p>20. La limite de la suite définie pour <span class="math">n > 0</span> par <span class="math">u<sub>n</sub> = 1/n + 5</span> est :</p>
-                <div class="options">
-                    <label><input type="radio" name="q20" value="A"> A. 0</label>
-                    <label><input type="radio" name="q20" value="B"> B. 1</label>
-                    <label><input type="radio" name="q20" value="C"> C. 5</label>
-                    <label><input type="radio" name="q20" value="D"> D. +&infin;</label>
-                </div>
-            </div>
-
-        </form>
-    </div>
+            // Afficher l'explication
+            exp.style.display = 'block';
+            
+            // Demander à MathJax de re-rendre les maths si l'explication en contient
+            if (window.MathJax) {
+                MathJax.typesetPromise([exp]);
+            }
+        }
+    </script>
 </body>
 </html>
